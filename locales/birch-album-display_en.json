@@ -1,0 +1,14 @@
+{
+  "add_title": "Add Title",
+  "edit_title": "Edit Title",
+  "add_desc":"Add Description",
+  "edit_desc":"Edit Description",
+  "save":"Save",
+  "cancel":"Cancel",
+  "share":"Share",
+  "delete_album": "Delete Album",
+  "email": "Email",
+  "copy_link": "Copy Link",
+  "copy": "Copy",
+  "copied": "Copied"
+}

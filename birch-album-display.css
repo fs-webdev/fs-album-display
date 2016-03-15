@@ -1,0 +1,205 @@
+:host {
+  display: block;
+  margin:0 auto;
+  max-width:500px;
+  text-align: center;
+  width: 100%;
+  padding: 80px 0 20px;
+  --meta-control-margin: 0 0 0 7px;
+}
+
+clipboard-input {
+  width: 100%;
+}
+
+h4 {
+  margin: 0;
+}
+
+textarea {
+  resize: none;
+}
+
+div, input, textarea {
+  width: 100%;
+}
+
+fs-alert {
+  margin: 0 10px;
+}
+.full-width {
+  width: 100% !important;
+}
+pre {
+  font-family: proximanova,sans-serif;
+  white-space: pre-wrap;
+  line-height: 17px;
+  margin: 0;
+}
+.action {
+  color: #0060d7;
+  position: relative;
+  font-size: 14px;
+  font-size: 0.9286rem;
+}
+
+.action wc-i18n:hover, .share-dropdown:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.button-wrapper {
+  margin-top: 10px;
+}
+
+.chars-remaining {
+  float: right;
+}
+
+.content {
+  margin: 0 0 13px;
+}
+
+.meta-controls .action {
+  margin: var(--meta-control-margin);
+}
+
+.meta-controls .action:after {
+  display: inline-block;
+  color: #333333;
+  content: '|';
+  margin: var(--meta-control-margin);
+}
+
+.meta-controls .action:last-child:after {
+  content: '';
+}
+
+.tooltip-wrapper {
+  position: absolute;
+  width: 400px;
+  right: -166px;
+  top: 30px;
+}
+
+#close-tooltip {
+  float: right;
+  padding: 0 8px;
+}
+
+.share-tooltip p {
+  font-size: 14px;
+}
+
+.share-tooltip {
+  width: 100%;
+  margin: 0;
+  position: relative;
+  color: #666662;
+  border: 4px solid #ffffff;
+  background:#ffffff;
+  padding: 10px;
+  z-index: 99999999;
+  border-radius: 4px;
+  text-align: left;
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.35), 0px 3px 2px 0px rgba(0,0,0,0.18);
+}
+#linkTextContainer {
+  display: inline-block;
+  border: 1px solid #bab7b1;
+  overflow-x: hidden;
+  width: 50%;
+  white-space: nowrap;
+}
+#linkText {
+  color: #0060d7;
+  width: 100%;
+}
+button[is="fs-button"] {
+  margin: 0 10px;
+  top: -7px;
+}
+fs-alert {
+  top: -7px;
+}
+
+.share-tooltip:hover {
+  cursor: default;
+}
+
+.share-tooltip:after, .share-tooltip:before {
+  bottom: 103%;
+  left: 48%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.share-tooltip:after {
+  border-bottom: 1px solid #ffffff;
+  border-width: 10px;
+}
+
+.share-tooltip:before {
+  border-bottom: 1px solid rgba(0,0,0,0.18);
+  border-width: 10px;
+  margin-bottom: 2px;
+}
+
+#titleInput {
+  margin-bottom: 5px;
+}
+
+.email-icon {
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE2LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMiIgYmFzZVByb2ZpbGU9InRpbnkiIGlkPSJBcnQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiCgkgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIxOHB4IiBoZWlnaHQ9IjE4cHgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxyZWN0IGZpbGw9Im5vbmUiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIvPgo8cGF0aCBmaWxsPSIjNkNBNjAwIiBkPSJNMi41LDE3LjljLTEuMzIzLDAtMi40LTEuMDc3LTIuNC0yLjR2LTEzYzAtMS4zMjMsMS4wNzctMi40LDIuNC0yLjRoMTNjMS4zMjMsMCwyLjQsMS4wNzcsMi40LDIuNHYxMwoJYzAsMS4zMjMtMS4wNzcsMi40LTIuNCwyLjRIMi41eiIvPgo8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMTQuNjE2LDcuNjhMOS4zODQsMy4zMmMtMC4yMTEtMC4xNzYtMC41NTctMC4xNzYtMC43NjgsMEwzLjM4NCw3LjY4QzMuMTczLDcuODU2LDMsOC4yMjUsMyw4LjV2NgoJQzMsMTQuNzc1LDMuMjI1LDE1LDMuNSwxNWgxMWMwLjI3NSwwLDAuNS0wLjIyNSwwLjUtMC41di02QzE1LDguMjI1LDE0LjgyNyw3Ljg1NiwxNC42MTYsNy42OHogTTksMTFMNC41LDhoOUw5LDExeiIvPgo8L3N2Zz4=);
+  background-repeat: no-repeat;
+  background-size: contain;
+  width:18px;
+  height:18px;
+  display:inline-block;
+}
+
+.divider {
+  border-bottom: 1px solid rgba(0,0,0,.18);
+  display: block;
+  margin: 0 -15px;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+}
+
+@media all and (max-width: 480px) {
+  .layout {
+    /* !important here is necessary to overwrite polymer's flex styles */
+    display: block !important;
+  }
+  .layout .action {
+    display: block;
+    line-height: 32px;
+  }
+  .layout .action:after {
+    content: '';
+  }
+  .tooltip-wrapper {
+    width: 289px;
+    left: initial;
+  }
+  #shareTip.tooltip-wrapper {
+    display: block;
+    margin: auto;
+    left: -32px;
+    right: 0;
+  }
+  .share-tooltip:after, .share-tooltip:before {
+    left: 52%;
+  }
+}
+
+@media all and (max-width: 320px) {
+  .tooltip-wrapper {
+    width: 260px;
+    left: initial;
+  }
+}

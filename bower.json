@@ -1,0 +1,38 @@
+{
+  "name": "birch-album-display",
+  "version": "1.0.3",
+  "authors": [
+    "Josh Crowther <jshcrowthe@gmail.com>"
+  ],
+  "description": "An element providing a render of an album title and meta",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "seed"
+  ],
+  "main": "birch-album-display.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.1.0",
+    "fs-button": "jshcrowthe/fs-button",
+    "fs-styles": "fs-webdev/fs-styles#~1.8.0",
+    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#~1.0.3",
+    "layout": "Polymer/layout",
+    "iron-ajax": "PolymerElements/iron-ajax#~1.1.0",
+    "fs-behavior": "jshcrowthe/fs-behavior",
+    "clipboard-input": "jshcrowthe/clipboard-input#^1.0.0",
+    "wc-i18n": "jshcrowthe/wc-i18n#^1.1.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "*"
+  },
+  "resolutions": {
+    "polymer": "^1.2.0"
+  }
+}
