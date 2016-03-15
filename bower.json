@@ -1,6 +1,6 @@
 {
   "name": "birch-album-display",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "authors": [
     "Josh Crowther <jshcrowthe@gmail.com>"
   ],
@@ -12,7 +12,7 @@
   ],
   "main": "birch-album-display.html",
   "license": "http://polymer.github.io/LICENSE.txt",
-  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "homepage": "https://github.com/FamilySearchElements/birch-album-display/",
   "ignore": [
     "/.*",
     "/test/"
