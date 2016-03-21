@@ -45,7 +45,7 @@ Example:
       on-response="_saveSuccess"></iron-ajax>
     <!-- Title Display and Input -->
     <div class="layout vertical center content">
-      <span class='action' on-click='_toggleEditTitle'>
+      <span class='action' on-click='_toggleEditTitle' hidden='[[readOnly]]'>
         <wc-i18n key='birch-album-display.edit_title'></wc-i18n>
       </span>
       <h4 hidden='[[_editingTitle]]'>[[album.name]]</h4>
@@ -67,7 +67,7 @@ Example:
 
     <!-- Description Display and Edit -->
     <div class="layout vertical center content" hidden='[[!_hideDescription(album.description, _editingDesc)]]'>
-      <span class='action' on-tap='_toggleEditDescription'>
+      <span class='action' on-tap='_toggleEditDescription' hidden='[[readOnly]]'>
         <wc-i18n key='birch-album-display.edit_desc'></wc-i18n>
       </span>
       <pre hidden='[[_editingDesc]]'>[[album.description]]</pre>
@@ -90,7 +90,7 @@ Example:
     </div>
 
     <!-- Meta Controls (Including adding a description) -->
-    <div class="meta-controls layout horizontal center-justified">
+    <div class="meta-controls layout horizontal center-justified" hidden='[[readOnly]]'>
       <span class='action' on-tap='_toggleEditDescription' hidden='[[_hideAddDesc(album.description, _editingDesc)]]'>
         <wc-i18n key='birch-album-display.add_desc'></wc-i18n>
       </span>
@@ -178,6 +178,11 @@ Example:
         notify: true,
         value: function() { return {}; },
       },
+
+      readOnly: {
+        type: Boolean,
+        value: false
+      }
 
     },
     _closeShare: function(e) {
