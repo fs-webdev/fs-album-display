@@ -13,9 +13,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../fs-styles/fs-styles.html">
 <link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
-<link rel="import" href="../fs-behavior/fs-behavior.html">
 <link rel="import" href="../wc-i18n/wc-i18n.html">
 <link rel="import" href="../clipboard-input/clipboard-input.html">
+<link rel="import" href="../oak-ajax-behavior/oak-ajax-behavior.html">
+<link rel="import" href="../oak-i18n-behavior/oak-i18n-behavior.html">
 <!--
 An element providing a solution to no problem in particular.
 
@@ -32,14 +33,14 @@ Example:
   <style include='fs-styles'></style>
   <link rel="import" type="css" href="birch-album-display.css">
   <template>
-    <wc-i18n-src locale='[[_lang]]' locale-dir='[[localeDir()]]' domain='birch-album-display'></wc-i18n-src>
+    <wc-i18n-src locale='[[lang]]' locale-dir='[[localeDir()]]' domain='birch-album-display'></wc-i18n-src>
     <iron-ajax
       bubbles
       id='req'
       method='POST'
-      url="[[_base]]/artifactmanager/albums/[[album.id]]"
+      url="[[ajaxBase]]/artifactmanager/albums/[[album.id]]"
       handle-as="json"
-      headers='[[_headers]]'
+      headers='[[authHeaders]]'
       loading='{{loading}}'
       body='[[_newAlbum]]'
       on-response="_saveSuccess"></iron-ajax>
@@ -123,7 +124,8 @@ Example:
     is: 'birch-album-display',
 
     behaviors: [
-      FSBehavior,
+      OakAJAXBehavior,
+      OakI18nBehavior,
       WCI18nBehavior
     ],
 
@@ -240,6 +242,9 @@ Example:
     _saveEdits: function() {
       // Catch null title on key save
       if (this._editingTitle && (!this._newAlbum || !this._newAlbum.name)) return;
+
+      this.$.req.headers = this.authHeaders || {};
+      this.$.req.headers['content-type'] = 'application/json';
 
       // Fire off request to save album
       this.$.req.generateRequest();
