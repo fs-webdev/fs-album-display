@@ -10,6 +10,9 @@
 
 clipboard-input {
   width: 100%;
+  --clipboard-input-button: {
+    white-space: nowrap;
+  }
 }
 
 h4 {
