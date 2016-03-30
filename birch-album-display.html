@@ -46,11 +46,11 @@ Example:
       on-response="_saveSuccess"></iron-ajax>
     <!-- Title Display and Input -->
     <div class="layout vertical center content">
-      <span class='action' on-click='_toggleEditTitle' hidden='[[readOnly]]'>
+      <span class='action' on-click='_toggleEditTitle' hidden$='[[readOnly]]'>
         <wc-i18n key='birch-album-display.edit_title'></wc-i18n>
       </span>
-      <h4 hidden='[[_editingTitle]]'>[[album.name]]</h4>
-      <div hidden='[[!_editingTitle]]'>
+      <h4 hidden$='[[_editingTitle]]'>[[album.name]]</h4>
+      <div hidden$='[[!_editingTitle]]'>
         <iron-a11y-keys target="[[_titleInput]]" keys="enter" on-keys-pressed="_saveEdits"></iron-a11y-keys>
         <iron-a11y-keys target="[[_titleInput]]" keys="esc" on-keys-pressed="_toggleEditTitle"></iron-a11y-keys>
         <input id='titleInput' type="text" value="{{_newAlbum.name::input}}" maxlength="[[_titleLength]]">
@@ -67,12 +67,12 @@ Example:
     </div>
 
     <!-- Description Display and Edit -->
-    <div class="layout vertical center content" hidden='[[!_hideDescription(album.description, _editingDesc)]]'>
-      <span class='action' on-tap='_toggleEditDescription' hidden='[[readOnly]]'>
+    <div class="layout vertical center content" hidden$='[[!_hideDescription(album.description, _editingDesc)]]'>
+      <span class='action' on-tap='_toggleEditDescription' hidden$='[[readOnly]]'>
         <wc-i18n key='birch-album-display.edit_desc'></wc-i18n>
       </span>
-      <pre hidden='[[_editingDesc]]'>[[album.description]]</pre>
-      <div hidden='[[!_editingDesc]]'>
+      <pre hidden$='[[_editingDesc]]'>[[album.description]]</pre>
+      <div hidden$='[[!_editingDesc]]'>
         <!-- <iron-a11y-keys target="[[_descInput]]" keys="enter" on-keys-pressed="_saveEdits"></iron-a11y-keys> -->
         <iron-a11y-keys target="[[_descInput]]" keys="esc" on-keys-pressed="_toggleEditDescription"></iron-a11y-keys>
         <textarea id="descInput" rows="20" value='{{_newAlbum.description::input}}' maxlength='[[_descLength]]'></textarea>
@@ -91,8 +91,8 @@ Example:
     </div>
 
     <!-- Meta Controls (Including adding a description) -->
-    <div class="meta-controls layout horizontal center-justified" hidden='[[readOnly]]'>
-      <span class='action' on-tap='_toggleEditDescription' hidden='[[_hideAddDesc(album.description, _editingDesc)]]'>
+    <div class="meta-controls layout horizontal center-justified" hidden$='[[readOnly]]'>
+      <span class='action' on-tap='_toggleEditDescription' hidden$='[[_hideAddDesc(album.description, _editingDesc)]]'>
         <wc-i18n key='birch-album-display.add_desc'></wc-i18n>
       </span>
       <span class='action'>
@@ -105,8 +105,9 @@ Example:
               </a>
             </div>
             <span class="divider"></span>
-            <wc-i18n key='birch-album-display.copy' provider value='{{titleText}}'></wc-i18n>
-            <clipboard-input value='[[_shareLink(album.id)]]' title-text='[[titleText]]'></clipboard-input>
+            <wc-i18n key='birch-album-display.copy' provider value='{{copyText}}'></wc-i18n>
+            <wc-i18n key='birch-album-display.copied' provider value='{{copiedText}}'></wc-i18n>
+            <clipboard-input value='[[_shareLink(album.id)]]' title-text='[[copyText]]' copy-text='[[copyText]]' copied-text='[[copiedText]]'></clipboard-input>
           </div>
         </div>
         <span class='share-dropdown' on-tap="_toggleShare"><wc-i18n key='birch-album-display.share'></wc-i18n> ▾</span>
