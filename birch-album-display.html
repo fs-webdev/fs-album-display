@@ -100,14 +100,14 @@ Example:
           <div class="share-tooltip">
             <div>
               <i class="email-icon"></i>
-              <a id="emailLink" href$="{{_shareEmail(album.name, album.id)}}">
+              <a id="emailLink" href$="{{_shareEmail(album.name, album.id, ajaxBase)}}">
                 <wc-i18n key='birch-album-display.email'></wc-i18n>
               </a>
             </div>
             <span class="divider"></span>
             <wc-i18n key='birch-album-display.copy' provider value='{{copyText}}'></wc-i18n>
             <wc-i18n key='birch-album-display.copied' provider value='{{copiedText}}'></wc-i18n>
-            <clipboard-input value='[[_shareLink(album.id)]]' title-text='[[copyText]]' copy-text='[[copyText]]' copied-text='[[copiedText]]'></clipboard-input>
+            <clipboard-input value='[[_shareLink(album.id, ajaxBase)]]' title-text='[[copyText]]' copy-text='[[copyText]]' copied-text='[[copiedText]]'></clipboard-input>
           </div>
         </div>
         <span class='share-dropdown' on-tap="_toggleShare"><wc-i18n key='birch-album-display.share'></wc-i18n> ▾</span>
@@ -196,9 +196,8 @@ Example:
     _stopPropagation: function(e) {
       e.stopPropagation();
     },
-    _shareLink: function(id) {
-      var base = ~location.origin.indexOf('familysearch') ? '/' : 'https://beta.familysearch.org/';
-      return base + 'photos/albums/' + id;
+    _shareLink: function(id, ajaxBase) {
+      return ajaxBase + '/photos/albums/' + id;
     },
     _charsRemaining: function(val, length) {
       if (!val) return length;
@@ -267,8 +266,8 @@ Example:
       this._toggleEditDescription(false);
     },
 
-    _shareEmail: function(name, id) {
-      return 'mailto:?subject=' + name + '&body=' + this._shareLink(id);
+    _shareEmail: function(name, id, ajaxBase) {
+      return 'mailto:?subject=' + name + '&body=' + this._shareLink(id, ajaxBase);
     },
 
     _toggleShare: function(e) {
