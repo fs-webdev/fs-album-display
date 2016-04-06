@@ -45,8 +45,8 @@ Example:
       body='[[_newAlbum]]'
       on-response="_saveSuccess"></iron-ajax>
     <!-- Title Display and Input -->
-    <div class="layout vertical center content">
-      <span class='action' on-click='_toggleEditTitle' hidden$='[[readOnly]]'>
+    <div class="layout vertical center content title">
+      <span class='action edit-title' on-click='_toggleEditTitle' hidden$='[[readOnly]]'>
         <wc-i18n key='birch-album-display.edit_title'></wc-i18n>
       </span>
       <h4 hidden$='[[_editingTitle]]'>[[album.name]]</h4>
@@ -67,7 +67,7 @@ Example:
     </div>
 
     <!-- Description Display and Edit -->
-    <div class="layout vertical center content" hidden$='[[!_hideDescription(album.description, _editingDesc)]]'>
+    <div class="layout vertical center content description" hidden$='[[!_hideDescription(album.description, _editingDesc)]]'>
       <span class='action' on-tap='_toggleEditDescription' hidden$='[[readOnly]]'>
         <wc-i18n key='birch-album-display.edit_desc'></wc-i18n>
       </span>
@@ -92,7 +92,7 @@ Example:
 
     <!-- Meta Controls (Including adding a description) -->
     <div class="meta-controls layout horizontal center-justified" hidden$='[[readOnly]]'>
-      <span class='action' on-tap='_toggleEditDescription' hidden$='[[_hideAddDesc(album.description, _editingDesc)]]'>
+      <span class='action add-description' on-tap='_toggleEditDescription' hidden$='[[_hideAddDesc(album.description, _editingDesc)]]'>
         <wc-i18n key='birch-album-display.add_desc'></wc-i18n>
       </span>
       <span class='action'>
@@ -112,7 +112,7 @@ Example:
         </div>
         <span class='share-dropdown' on-tap="_toggleShare"><wc-i18n key='birch-album-display.share'></wc-i18n> ▾</span>
       </span>
-      <span class='action' on-tap='_tryAlbumDelete'>
+      <span class='action delete' on-tap='_tryAlbumDelete'>
         <wc-i18n key='birch-album-display.delete_album'></wc-i18n>
       </span>
     </div>
