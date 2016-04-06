@@ -4,7 +4,7 @@
   max-width:500px;
   text-align: center;
   width: 100%;
-  padding: 80px 0 20px;
+  padding: 30px 0 20px;
   --meta-control-margin: 0 0 0 7px;
 }
 
@@ -171,6 +171,12 @@ fs-alert {
   margin: 0 -15px;
   margin-bottom: 5px;
   padding-bottom: 5px;
+}
+
+@media all and (max-width: 979px) {
+  :host {
+    padding-top:80px;
+  }
 }
 
 @media all and (max-width: 480px) {
