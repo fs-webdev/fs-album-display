@@ -148,7 +148,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           deleteEl.click();
         });
 
-        
+        test('Display in read-only while still showing share button', function(){
+          el.album = dataObj.withDesc;
+          el.readOnly = true;
+          el.showShare = true;
+          var elRoot = Polymer.dom(el.root);
+
+          var shareAction = elRoot.querySelector('.action.only-action');
+          assert.isTrue(Boolean(shareAction));
+
+          assert.isTrue(elRoot.querySelector('.action.delete').hidden);
+
+          assert.isTrue(elRoot.querySelector('.action.add-description').hidden);
+        })        
 
       });
     </script>

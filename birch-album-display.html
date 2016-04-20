@@ -91,11 +91,11 @@ Example:
     </div>
 
     <!-- Meta Controls (Including adding a description) -->
-    <div class="meta-controls layout horizontal center-justified" hidden$='[[readOnly]]'>
-      <span class='action add-description' on-tap='_toggleEditDescription' hidden$='[[_hideAddDesc(album.description, _editingDesc)]]'>
+    <div class="meta-controls layout horizontal center-justified">
+      <span class='action add-description' on-tap='_toggleEditDescription' hidden$='[[_hideAddDesc(album.description, _editingDesc, readOnly)]]'>
         <wc-i18n key='birch-album-display.add_desc'></wc-i18n>
       </span>
-      <span class='action'>
+      <span class$='{{_updateShareStyles(showShare, readOnly)}}' hidden$='[[_hideShare(showShare, readOnly)]]'>
         <div id="shareTip" class="tooltip-wrapper" style="display:none;" on-tap='_stopPropagation'>
           <div class="share-tooltip">
             <div>
@@ -112,7 +112,7 @@ Example:
         </div>
         <span class='share-dropdown' on-tap="_toggleShare"><wc-i18n key='birch-album-display.share'></wc-i18n> ▾</span>
       </span>
-      <span class='action delete' on-tap='_tryAlbumDelete'>
+      <span class='action delete' hidden$='[[readOnly]]' on-tap='_tryAlbumDelete'>
         <wc-i18n key='birch-album-display.delete_album'></wc-i18n>
       </span>
     </div>
@@ -181,7 +181,13 @@ Example:
         notify: true,
         value: function() { return {}; },
       },
-
+      /*
+       * If in readOnly mode, showShare gives the developer the option to still show the share option.
+      */
+      showShare: {
+        type: Boolean,
+        value: false
+      },
       readOnly: {
         type: Boolean,
         value: false
@@ -203,11 +209,20 @@ Example:
       if (!val) return length;
       return parseInt(length) - parseInt(val.length);
     },
-    _hideAddDesc: function(albumDesc, editingDesc) {
-      return (albumDesc || editingDesc);
+    _hideAddDesc: function(albumDesc, editingDesc, readOnly) {
+      return (albumDesc || editingDesc || readOnly);
     },
     _hideDescription: function(desc, edit) {
       return (desc || edit);
+    },
+    /*
+     * If showShare and readOnly are both set to True, you will not be able to edit the title/description
+     * but you will be able to see the share option. If readOnly is off, you will always be able to see
+     * share.
+    */
+    _hideShare: function(showShare, readOnly) {
+      if (!showShare && readOnly) return true;
+      return false;
     },
     _toggleEditTitle: function(val) {
       this.fire('edit-album');
@@ -238,7 +253,6 @@ Example:
         this.$.descInput.focus();
       }
     },
-
     _saveEdits: function() {
       // Catch null title on key save
       if (this._editingTitle && (!this._newAlbum || !this._newAlbum.name)) return;
@@ -280,6 +294,18 @@ Example:
       this.fire('gallery-execute-action', {
         actionType: 'delete_album'
       });
+    },
+    /*
+     * Determines the classes applied for the share option. If readOnly and showShare are on,
+     * we want to hide the "|" divider that appears between the different actions because share
+     * is the only action showing.
+    */
+    _updateShareStyles: function(showShare, readOnly){
+      if (showShare && readOnly) { 
+        return "action only-action";
+      } else {
+        return "action";
+      }
     },
     _class: function(className, bool){
       return (bool) ? className : '';

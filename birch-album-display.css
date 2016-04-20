@@ -74,7 +74,7 @@ pre {
   margin: var(--meta-control-margin);
 }
 
-.meta-controls .action:last-child:after {
+.meta-controls .action:last-child:after, .meta-controls .action.only-action:after {
   content: '';
 }
 
