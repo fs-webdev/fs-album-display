@@ -1,5 +1,6 @@
 language: node_js
-sudo: false
+sudo: true
+dist: trusty
 before_script:
   - npm install -g bower web-component-tester istanbul git+https://github.com/thedeeno/web-component-tester-istanbul.git coveralls
   - bower install
