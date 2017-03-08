@@ -33,7 +33,6 @@ Example:
   <style include='fs-styles'></style>
   <link rel="import" type="css" href="birch-album-display.css">
   <template>
-    <wc-i18n-src locale='[[lang]]' locale-dir='[[localeDir()]]' domain='birch-album-display'></wc-i18n-src>
     <iron-ajax
       bubbles
       id='req'
@@ -47,7 +46,7 @@ Example:
     <!-- Title Display and Input -->
     <div class="layout vertical center content title">
       <span class='action edit-title' on-click='_toggleEditTitle' hidden$='[[readOnly]]'>
-        <wc-i18n key='birch-album-display.edit_title'></wc-i18n>
+        [[i18n('edit_title')]]
       </span>
       <h4 hidden$='[[_editingTitle]]'>[[album.name]]</h4>
       <div hidden$='[[!_editingTitle]]'>
@@ -56,9 +55,9 @@ Example:
         <input id='titleInput' type="text" value="{{_newAlbum.name::input}}" maxlength="[[_titleLength]]">
         <div class="layout horizontal justified button-wrapper">
           <div class='layout horizontal start-justified'>
-            <button is="fs-button" option='recommended' on-tap='_saveEdits' disabled='[[!_newAlbum.name]]' ><wc-i18n key='birch-album-display.save'></wc-i18n></button>
+            <button is="fs-button" option='recommended' on-tap='_saveEdits' disabled='[[!_newAlbum.name]]' >[[i18n('save')]]</button>
             <button is="fs-button" option='minor' on-tap='_toggleEditTitle'>
-              <wc-i18n key='birch-album-display.cancel'></wc-i18n>
+              [[i18n('cancel')]]
             </button>
           </div>
           <span class='chars-remaining'>[[_charsRemaining(_newAlbum.name, _titleLength)]]</span>
@@ -69,7 +68,7 @@ Example:
     <!-- Description Display and Edit -->
     <div class="layout vertical center content description" hidden$='[[!_hideDescription(album.description, _editingDesc)]]'>
       <span class='action' on-tap='_toggleEditDescription' hidden$='[[readOnly]]'>
-        <wc-i18n key='birch-album-display.edit_desc'></wc-i18n>
+        [[i18n('edit_desc')]]
       </span>
       <pre hidden$='[[_editingDesc]]'>[[album.description]]</pre>
       <div hidden$='[[!_editingDesc]]'>
@@ -79,10 +78,10 @@ Example:
         <div class="layout horizontal justified button-wrapper">
           <div class="layout horizontal start-justified">
             <button is="fs-button" option='recommended' on-tap='_saveEdits' >
-              <wc-i18n key='birch-album-display.save'></wc-i18n>
+              [[i18n('save')]]
             </button>
             <button is="fs-button" option='minor' on-tap='_toggleEditDescription'>
-              <wc-i18n key='birch-album-display.cancel'></wc-i18n>
+              [[i18n('cancel')]]
             </button>
           </div>
           <span class='chars-remaining'>[[_charsRemaining(_newAlbum.description, _descLength)]]</span>
@@ -93,7 +92,7 @@ Example:
     <!-- Meta Controls (Including adding a description) -->
     <div class="meta-controls layout horizontal center-justified">
       <span class='action add-description' on-tap='_toggleEditDescription' hidden$='[[_hideAddDesc(album.description, _editingDesc, readOnly)]]'>
-        <wc-i18n key='birch-album-display.add_desc'></wc-i18n>
+        [[i18n('add_desc')]]
       </span>
       <span class$='{{_updateShareStyles(showShare, readOnly)}}' hidden$='[[_hideShare(showShare, readOnly)]]'>
         <div id="shareTip" class="tooltip-wrapper" style="display:none;" on-tap='_stopPropagation'>
@@ -101,19 +100,17 @@ Example:
             <div>
               <i class="email-icon"></i>
               <a id="emailLink" href$="{{_shareEmail(album.name, album.id, ajaxBase)}}">
-                <wc-i18n key='birch-album-display.email'></wc-i18n>
+                [[i18n('email')]]
               </a>
             </div>
             <span class="divider"></span>
-            <wc-i18n key='birch-album-display.copy' provider value='{{copyText}}'></wc-i18n>
-            <wc-i18n key='birch-album-display.copied' provider value='{{copiedText}}'></wc-i18n>
-            <clipboard-input value='[[_shareLink(album.id, ajaxBase)]]' title-text='[[copyText]]' copy-text='[[copyText]]' copied-text='[[copiedText]]'></clipboard-input>
+            <clipboard-input value='[[_shareLink(album.id, ajaxBase)]]' title-text='[[i18n("copy")]]' copy-text="[[i18n('copy')]]" copied-text='[[i18n("copied")]]'></clipboard-input>
           </div>
         </div>
-        <span class='share-dropdown' on-tap="_toggleShare"><wc-i18n key='birch-album-display.share'></wc-i18n> ▾</span>
+        <span class='share-dropdown' on-tap="_toggleShare">[[i18n('share')]] ▾</span>
       </span>
       <span class='action delete' hidden$='[[readOnly]]' on-tap='_tryAlbumDelete'>
-        <wc-i18n key='birch-album-display.delete_album'></wc-i18n>
+        [[i18n('delete_album')]]
       </span>
     </div>
   </template>
@@ -127,7 +124,7 @@ Example:
     behaviors: [
       OakAJAXBehavior,
       OakI18nBehavior,
-      WCI18nBehavior
+      WCI18n()
     ],
 
     properties: {
@@ -192,7 +189,6 @@ Example:
         type: Boolean,
         value: false
       }
-
     },
     _closeShare: function(e) {
       var view = this.$.shareTip;

@@ -24,10 +24,9 @@
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#~1.0.3",
     "layout": "Polymer/layout",
     "iron-ajax": "PolymerElements/iron-ajax#~1.1.0",
-    "fs-behavior": "jshcrowthe/fs-behavior",
     "clipboard-input": "jshcrowthe/clipboard-input#^1.0.0",
-    "wc-i18n": "jshcrowthe/wc-i18n#^1.1.0",
-    "oak-i18n-behavior": "FamilySearchElements/oak-i18n-behavior",
+    "wc-i18n": "jshcrowthe/wc-i18n#^2.1.0",
+    "oak-i18n-behavior": "FamilySearchElements/oak-i18n-behavior#1.x",
     "oak-ajax-behavior": "FamilySearchElements/oak-ajax-behavior"
   },
   "devDependencies": {
