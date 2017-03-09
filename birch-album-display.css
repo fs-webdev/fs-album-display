@@ -46,7 +46,7 @@ pre {
   font-size: 0.9286rem;
 }
 
-.action wc-i18n:hover, .share-dropdown:hover {
+.action:hover, .share-dropdown:hover {
   text-decoration: underline;
   cursor: pointer;
 }
