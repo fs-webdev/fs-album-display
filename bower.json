@@ -22,7 +22,7 @@
     "fs-button": "jshcrowthe/fs-button",
     "fs-styles": "fs-webdev/fs-styles#~1.8.0",
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#~1.0.3",
-    "layout": "Polymer/layout",
+    "layout": "fs-webdev/layout#1.0.0",
     "iron-ajax": "PolymerElements/iron-ajax#~1.1.0",
     "clipboard-input": "jshcrowthe/clipboard-input#^1.0.0",
     "wc-i18n": "jshcrowthe/wc-i18n#^2.1.0",
