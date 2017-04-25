@@ -10,5 +10,6 @@
   "email": "Email",
   "copy_link": "Copy Link",
   "copy": "Copy",
-  "copied": "Copied"
+  "copied": "Copied",
+  "album_by": "Album by: {name}"
 }

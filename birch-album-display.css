@@ -44,6 +44,7 @@ pre {
   position: relative;
   font-size: 14px;
   font-size: 0.9286rem;
+  white-space: nowrap;
 }
 
 .action:hover, .share-dropdown:hover {
@@ -179,7 +180,7 @@ fs-alert {
   }
 }
 
-@media all and (max-width: 480px) {
+@media all and (max-width: 768px) {
   .layout {
     /* !important here is necessary to overwrite polymer's flex styles */
     display: block !important;

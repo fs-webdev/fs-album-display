@@ -63,7 +63,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           assert.isTrue(Boolean(elh4));
 
           var actionsArr = Polymer.dom(el.root).querySelectorAll('.action');
-          assert.equal(actionsArr.length, 5)
+          assert.equal(actionsArr.length, 6)
 
           var descriptionCont = Polymer.dom(el.root).querySelector('pre');
           assert.isBelow(descriptionCont.innerHTML.length, 1, "No description present");
@@ -160,7 +160,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           assert.isTrue(elRoot.querySelector('.action.delete').hidden);
 
           assert.isTrue(elRoot.querySelector('.action.add-description').hidden);
-        })        
+        });
+
+        test('Grab the album owner', function() {
+          el.showOwner = true;
+          var spy = sinon.spy(el, '_getAlbumOwner');
+          el.album = dataObj.withDesc;
+          assert.isTrue(spy.calledOnce);
+        });
+
+        test('Click the album owner to fire "gallery-open-contact-card" event', function(done) {
+          document.addEventListener('gallery-open-contact-card', function(e) {
+            assert.isOk(e);
+            done();
+          })
+
+          var data = {};
+          data.detail = {response: { name: 'testuser1234' } };
+          
+          flush(function() {
+            el.patronResponse(data);
+            var button = Polymer.dom(el.root).querySelector('#albumOwner');
+            assert.isOk(button.innerText.length);
+            button.click();
+          });
+        });
 
       });
     </script>

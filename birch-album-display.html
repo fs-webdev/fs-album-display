@@ -43,6 +43,13 @@ Example:
       loading='{{loading}}'
       body='[[_newAlbum]]'
       on-response="_saveSuccess"></iron-ajax>
+      <iron-ajax
+        id='getPatron'
+        url="[[ajaxBase]]/artifactmanager/patrons/[[album.contributorPatronId]]"
+        method='GET'
+        headers='[[authHeaders]]'
+        handle-as="json"
+        on-response="patronResponse"></iron-ajax>
     <!-- Title Display and Input -->
     <div class="layout vertical center content title">
       <span class='action edit-title' on-click='_toggleEditTitle' hidden$='[[readOnly]]'>
@@ -91,6 +98,7 @@ Example:
 
     <!-- Meta Controls (Including adding a description) -->
     <div class="meta-controls layout horizontal center-justified">
+      <span id='albumOwner' class='action' hidden="[[_hideOwner(showOwner, readOnly)]]" on-click="_openContactCard"></span>
       <span class='action add-description' on-tap='_toggleEditDescription' hidden$='[[_hideAddDesc(album.description, _editingDesc, readOnly)]]'>
         [[i18n('add_desc')]]
       </span>
@@ -188,12 +196,37 @@ Example:
       readOnly: {
         type: Boolean,
         value: false
+      },
+      showOwner: {
+        type: Boolean,
+        value: false
+      },
+      ownerCisId: {
+        type: String,
+        value: ''
       }
     },
+    observers: [
+      '_getAlbumOwner(album.contributorPatronId)'
+    ],
     _closeShare: function(e) {
       var view = this.$.shareTip;
       view.style.display = 'none'
       this.unlisten(document, 'tap', '_closeShare');
+    },
+    _getAlbumOwner: function(patron) {
+      if (patron && this.showOwner && !this.readOnly) this.$.getPatron.generateRequest();
+    },
+    patronResponse: function(data) {
+      if (!data || !data.detail || !data.detail.response) return;
+      this.ownerCisId = data.detail.response.cisUserId;
+      this.$.albumOwner.textContent = this.i18n('album_by').replace('{name}', data.detail.response.name);
+    },
+    _openContactCard: function(e) {
+      this.fire('gallery-open-contact-card', { cisId: this.ownerCisId, event: e })
+    },
+    _hideOwner: function(show, readOnly) {
+      return (!show || readOnly);
     },
     _stopPropagation: function(e) {
       e.stopPropagation();

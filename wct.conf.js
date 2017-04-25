@@ -5,8 +5,6 @@ module.exports = {
       "browsers": [
         "Windows 8.1/internet explorer",
         "Windows 10/microsoftedge",
-        "OS X 10.10/chrome",
-        "OS X 10.10/firefox",
         "OS X 10.10/safari"
       ]
     }
