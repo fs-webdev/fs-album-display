@@ -47,19 +47,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <birch-album-display language='[[locale]]' read-only show-share album='{"id":114959,"name":"Bug Test","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, aut! Aliquam amet adipisci incidunt, qui iste, labore impedit error atque pariatur odit nostrum sit. Quasi fugit animi nisi, vel! Veniam!","contributorPatronId":556427,"restrictionState":"OK","creationDatetime":1438802223000,"slug":"bug-test","thumbUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200.jpg?ctx=ArtCtxPublic","thumbSquareUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200s.jpg?ctx=ArtCtxPublic","thumbIconUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb64.jpg?ctx=ArtCtxPublic","artifactCount":5,"visitCount":0,"seoIndexable":true,"uploaderId":556427,"editableByCaller":true,"favorite":false}'></birch-album-display>
 
-      <birch-album-display id='showAlbum' language='[[locale]]' show-owner album='{"id":114959,"name":"Bug Test","description":"","contributorPatronId":556427,"restrictionState":"OK","creationDatetime":1438802223000,"slug":"bug-test","thumbUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200.jpg?ctx=ArtCtxPublic","thumbSquareUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200s.jpg?ctx=ArtCtxPublic","thumbIconUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb64.jpg?ctx=ArtCtxPublic","artifactCount":5,"visitCount":0,"seoIndexable":true,"uploaderId":556427,"editableByCaller":true,"favorite":false}'></birch-album-display>
+      <birch-album-display id='showAlbum' owner-name='testuser1234' language='[[locale]]' show-owner album='{"id":114959,"name":"Bug Test","description":"","contributorPatronId":556427,"restrictionState":"OK","creationDatetime":1438802223000,"slug":"bug-test","thumbUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200.jpg?ctx=ArtCtxPublic","thumbSquareUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200s.jpg?ctx=ArtCtxPublic","thumbIconUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb64.jpg?ctx=ArtCtxPublic","artifactCount":5,"visitCount":0,"seoIndexable":true,"uploaderId":556427,"editableByCaller":true,"favorite":false}'></birch-album-display>
 
     </template>
     
-    <script>
-      document.addEventListener('WebComponentsReady', function() {
-        var data = {};
-        data.detail = {response: { name: 'testuser1234' } };
-        // Wait for translations behavior
-        setTimeout(function() {
-          document.querySelector('#showAlbum').patronResponse(data)  
-        },100);
-      });
-    </script>
   </body>
 </html>

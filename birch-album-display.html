@@ -98,7 +98,10 @@ Example:
 
     <!-- Meta Controls (Including adding a description) -->
     <div class="meta-controls layout horizontal center-justified">
-      <span id='albumOwner' class='action' hidden="[[_hideOwner(showOwner, readOnly)]]" on-click="_openContactCard"></span>
+      <span id='albumOwner' class='action no-underline' hidden="[[_hideOwner(showOwner, loggedOut)]]">
+        <span id="albumBy">[[i18n('album_by')]]</span>
+        <span id='ownerName' on-click="_openContactCard">[[ownerName]]</span>
+      </span>
       <span class='action add-description' on-tap='_toggleEditDescription' hidden$='[[_hideAddDesc(album.description, _editingDesc, readOnly)]]'>
         [[i18n('add_desc')]]
       </span>
@@ -186,6 +189,10 @@ Example:
         notify: true,
         value: function() { return {}; },
       },
+      loggedOut: {
+        type: Boolean,
+        value: false
+      },
       /*
        * If in readOnly mode, showShare gives the developer the option to still show the share option.
       */
@@ -201,6 +208,10 @@ Example:
         type: Boolean,
         value: false
       },
+      ownerName: {
+        type: String,
+        value: ''
+      },
       ownerCisId: {
         type: String,
         value: ''
@@ -215,18 +226,18 @@ Example:
       this.unlisten(document, 'tap', '_closeShare');
     },
     _getAlbumOwner: function(patron) {
-      if (patron && this.showOwner && !this.readOnly) this.$.getPatron.generateRequest();
+      if (patron && this.showOwner && !this.loggedOut) this.$.getPatron.generateRequest();
     },
     patronResponse: function(data) {
       if (!data || !data.detail || !data.detail.response) return;
       this.ownerCisId = data.detail.response.cisUserId;
-      this.$.albumOwner.textContent = this.i18n('album_by').replace('{name}', data.detail.response.name);
+      this.ownerName = data.detail.response.name;
     },
     _openContactCard: function(e) {
       this.fire('gallery-open-contact-card', { cisId: this.ownerCisId, event: e })
     },
-    _hideOwner: function(show, readOnly) {
-      return (!show || readOnly);
+    _hideOwner: function(show, loggedOut) {
+      return (!show || loggedOut);
     },
     _stopPropagation: function(e) {
       e.stopPropagation();

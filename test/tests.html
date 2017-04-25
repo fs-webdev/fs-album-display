@@ -174,16 +174,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             assert.isOk(e);
             done();
           })
-
-          var data = {};
-          data.detail = {response: { name: 'testuser1234' } };
-          
-          flush(function() {
-            el.patronResponse(data);
-            var button = Polymer.dom(el.root).querySelector('#albumOwner');
-            assert.isOk(button.innerText.length);
-            button.click();
-          });
+                    
+          el.ownerName = 'testuser1234'
+          var button = Polymer.dom(el.root).querySelector('#ownerName');
+          button.click();
         });
 
       });
