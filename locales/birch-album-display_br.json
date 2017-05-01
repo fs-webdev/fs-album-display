@@ -1,0 +1,15 @@
+{
+  "add_desc": "add_desc|birch-album-display_en.json",
+  "add_title": "add_title|birch-album-display_en.json",
+  "album_by": "album_by|birch-album-display_en.json",
+  "cancel": "cancel|birch-album-display_en.json",
+  "copied": "copied|birch-album-display_en.json",
+  "copy": "copy|birch-album-display_en.json",
+  "copy_link": "copy_link|birch-album-display_en.json",
+  "delete_album": "delete_album|birch-album-display_en.json",
+  "edit_desc": "edit_desc|birch-album-display_en.json",
+  "edit_title": "edit_title|birch-album-display_en.json",
+  "email": "email|birch-album-display_en.json",
+  "save": "save|birch-album-display_en.json",
+  "share": "share|birch-album-display_en.json"
+}
