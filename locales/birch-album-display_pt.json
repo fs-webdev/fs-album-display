@@ -1,6 +1,8 @@
 {
+  "_LRM_PKTAG457": "birch-album-display_1_154 - CHANGES-ONLY",
   "add_desc": "Acrescentar uma Descrição",
   "add_title": "Acrescentar um Título",
+  "album_by": "Álbum criado por: {name}",
   "cancel": "Cancelar",
   "copied": "Copiado",
   "copy": "Copiar",
