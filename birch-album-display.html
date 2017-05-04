@@ -45,7 +45,7 @@ Example:
       on-response="_saveSuccess"></iron-ajax>
       <iron-ajax
         id='getPatron'
-        url="[[ajaxBase]]/artifactmanager/patrons/[[album.contributorPatronId]]"
+        url="[[ajaxBase]]/artifactmanager/patrons/[[album.contributorPatronId]]?includeContactInfo=true&onlyPublicData=true"
         method='GET'
         headers='[[authHeaders]]'
         handle-as="json"
