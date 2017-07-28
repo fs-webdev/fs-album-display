@@ -9,7 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../layout/layout.html">
-<link rel="import" href="../fs-button/fs-button.html">
+<link rel="import" href="../styles-wc/fs-button/fs-button.html">
 <link rel="import" href="../fs-styles/fs-styles.html">
 <link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
@@ -341,7 +341,7 @@ Example:
      * is the only action showing.
     */
     _updateShareStyles: function(showShare, readOnly){
-      if (showShare && readOnly) { 
+      if (showShare && readOnly) {
         return "action only-action";
       } else {
         return "action";

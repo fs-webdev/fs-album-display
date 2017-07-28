@@ -1,6 +1,6 @@
 {
   "name": "birch-album-display",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "authors": [
     "Josh Crowther <jshcrowthe@gmail.com>"
   ],
@@ -19,7 +19,6 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.1.0",
-    "fs-button": "jshcrowthe/fs-button",
     "fs-styles": "fs-webdev/fs-styles#~1.8.0",
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#~1.0.3",
     "layout": "fs-webdev/layout#1.0.0",
@@ -27,13 +26,16 @@
     "clipboard-input": "jshcrowthe/clipboard-input#^1.0.0",
     "wc-i18n": "jshcrowthe/wc-i18n#^2.1.0",
     "oak-i18n-behavior": "FamilySearchElements/oak-i18n-behavior#1.x",
-    "oak-ajax-behavior": "FamilySearchElements/oak-ajax-behavior"
+    "oak-ajax-behavior": "FamilySearchElements/oak-ajax-behavior",
+    "styles-wc": "fs-webdev/styles-wc#2.x"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
     "web-component-tester": "*"
   },
   "resolutions": {
-    "polymer": "^1.2.0"
+    "polymer": "^1.2.0",
+    "webcomponentsjs": "^v1.0.2",
+    "fetch": "~2.0.3"
   }
 }
