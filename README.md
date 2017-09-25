@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/FamilySearchElements/birch-album-display.svg?branch=master)](https://travis-ci.org/FamilySearchElements/birch-album-display)
-[![Coverage Status](https://coveralls.io/repos/github/FamilySearchElements/birch-album-display/badge.svg?branch=master)](https://coveralls.io/github/FamilySearchElements/birch-album-display?branch=master)
+[![Build Status](https://travis-ci.org/fs-webdev/fs-album-display.svg?branch=master)](https://travis-ci.org/fs-webdev/fs-album-display)
+[![Coverage Status](https://coveralls.io/repos/github/fs-webdev/fs-album-display/badge.svg?branch=master)](https://coveralls.io/github/fs-webdev/fs-album-display?branch=master)
 
-# birch-album-display
+# fs-album-display
 
 An element providing a starting point for your own reusable Polymer elements.
 

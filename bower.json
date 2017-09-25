@@ -1,5 +1,5 @@
 {
-  "name": "birch-album-display",
+  "name": "fs-album-display",
   "version": "2.1.2",
   "authors": [
     "Josh Crowther <jshcrowthe@gmail.com>"
@@ -10,9 +10,9 @@
     "polymer",
     "seed"
   ],
-  "main": "birch-album-display.html",
+  "main": "fs-album-display.html",
   "license": "http://polymer.github.io/LICENSE.txt",
-  "homepage": "https://github.com/FamilySearchElements/birch-album-display/",
+  "homepage": "https://github.com/fs-webdev/fs-album-display/",
   "ignore": [
     "/.*",
     "/test/"
