@@ -17,14 +17,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script src="../../web-component-tester/browser.js"></script>
 
     <!-- Step 1: import the element to test -->
-    <link rel="import" href="../birch-album-display.html">
+    <link rel="import" href="../fs-album-display.html">
   </head>
   <body>
 
     <!-- You can use the document as a place to set up your fixtures. -->
-    <test-fixture id="birch-album-display">
+    <test-fixture id="fs-album-display">
       <template>
-        <birch-album-display></birch-album-display>
+        <fs-album-display></fs-album-display>
       </template>
     </test-fixture>
 
@@ -35,12 +35,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      dataObj.withDesc = {"id":114959,"name":"Bug Test","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, aut! Aliquam amet adipisci incidunt, qui iste, labore impedit error atque pariatur odit nostrum sit. Quasi fugit animi nisi, vel! Veniam!","contributorPatronId":556427,"restrictionState":"OK","creationDatetime":1438802223000,"slug":"bug-test","thumbUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200.jpg?ctx=ArtCtxPublic","thumbSquareUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200s.jpg?ctx=ArtCtxPublic","thumbIconUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb64.jpg?ctx=ArtCtxPublic","artifactCount":5,"visitCount":0,"seoIndexable":true,"uploaderId":556427,"editableByCaller":true,"favorite":false};
 
 
-      suite('<birch-album-display>', function() {
+      suite('<fs-album-display>', function() {
         var el;
         var server;
 
         setup(function() {
-          el = fixture('birch-album-display');
+          el = fixture('fs-album-display');
           server = sinon.fakeServer.create();
 
           server.respondWith(

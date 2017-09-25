@@ -1,3 +1,11 @@
 bower_components
 coverage
 node_modules
+*.iml
+.DS_Store
+*.esproj
+.idea
+*.iml
+*.ipr
+*.iws
+*.env

@@ -12,14 +12,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <title>birch-album-display Demo</title>
+    <title>fs-album-display Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script>
     window.Polymer = window.Polymer || { dom: 'shadow' };
     </script>
-    <link rel="import" href="../birch-album-display.html">
+    <link rel="import" href="../fs-album-display.html">
     <style>
-      birch-album-display {
+      fs-album-display {
         margin-bottom: 50px;
       }
     </style>
@@ -27,7 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <body unresolved>
     <template is='dom-bind'>
 
-      <p>An example of <code>&lt;birch-album-display&gt;</code>:</p>
+      <p>An example of <code>&lt;fs-album-display&gt;</code>:</p>
       <select class="" name="locale" value="{{locale::change}}">
           <option value="de">German</option>
           <option value="en" selected>English</option>
@@ -41,13 +41,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <option value="zh">Chinese</option>
         </select>
 
-      <birch-album-display language='[[locale]]' album='{"id":114959,"name":"Bug Test","description":"","contributorPatronId":556427,"restrictionState":"OK","creationDatetime":1438802223000,"slug":"bug-test","thumbUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200.jpg?ctx=ArtCtxPublic","thumbSquareUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200s.jpg?ctx=ArtCtxPublic","thumbIconUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb64.jpg?ctx=ArtCtxPublic","artifactCount":5,"visitCount":0,"seoIndexable":true,"uploaderId":556427,"editableByCaller":true,"favorite":false}'></birch-album-display>
+      <fs-album-display language='[[locale]]' album='{"id":114959,"name":"Bug Test","description":"","contributorPatronId":556427,"restrictionState":"OK","creationDatetime":1438802223000,"slug":"bug-test","thumbUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200.jpg?ctx=ArtCtxPublic","thumbSquareUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200s.jpg?ctx=ArtCtxPublic","thumbIconUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb64.jpg?ctx=ArtCtxPublic","artifactCount":5,"visitCount":0,"seoIndexable":true,"uploaderId":556427,"editableByCaller":true,"favorite":false}'></fs-album-display>
 
-      <birch-album-display language='[[locale]]' read-only album='{"id":114959,"name":"Bug Test","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, aut! Aliquam amet adipisci incidunt, qui iste, labore impedit error atque pariatur odit nostrum sit. Quasi fugit animi nisi, vel! Veniam!","contributorPatronId":556427,"restrictionState":"OK","creationDatetime":1438802223000,"slug":"bug-test","thumbUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200.jpg?ctx=ArtCtxPublic","thumbSquareUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200s.jpg?ctx=ArtCtxPublic","thumbIconUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb64.jpg?ctx=ArtCtxPublic","artifactCount":5,"visitCount":0,"seoIndexable":true,"uploaderId":556427,"editableByCaller":true,"favorite":false}'></birch-album-display>
+      <fs-album-display language='[[locale]]' read-only album='{"id":114959,"name":"Bug Test","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, aut! Aliquam amet adipisci incidunt, qui iste, labore impedit error atque pariatur odit nostrum sit. Quasi fugit animi nisi, vel! Veniam!","contributorPatronId":556427,"restrictionState":"OK","creationDatetime":1438802223000,"slug":"bug-test","thumbUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200.jpg?ctx=ArtCtxPublic","thumbSquareUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200s.jpg?ctx=ArtCtxPublic","thumbIconUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb64.jpg?ctx=ArtCtxPublic","artifactCount":5,"visitCount":0,"seoIndexable":true,"uploaderId":556427,"editableByCaller":true,"favorite":false}'></fs-album-display>
 
-      <birch-album-display language='[[locale]]' read-only show-share album='{"id":114959,"name":"Bug Test","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, aut! Aliquam amet adipisci incidunt, qui iste, labore impedit error atque pariatur odit nostrum sit. Quasi fugit animi nisi, vel! Veniam!","contributorPatronId":556427,"restrictionState":"OK","creationDatetime":1438802223000,"slug":"bug-test","thumbUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200.jpg?ctx=ArtCtxPublic","thumbSquareUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200s.jpg?ctx=ArtCtxPublic","thumbIconUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb64.jpg?ctx=ArtCtxPublic","artifactCount":5,"visitCount":0,"seoIndexable":true,"uploaderId":556427,"editableByCaller":true,"favorite":false}'></birch-album-display>
+      <fs-album-display language='[[locale]]' read-only show-share album='{"id":114959,"name":"Bug Test","description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, aut! Aliquam amet adipisci incidunt, qui iste, labore impedit error atque pariatur odit nostrum sit. Quasi fugit animi nisi, vel! Veniam!","contributorPatronId":556427,"restrictionState":"OK","creationDatetime":1438802223000,"slug":"bug-test","thumbUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200.jpg?ctx=ArtCtxPublic","thumbSquareUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200s.jpg?ctx=ArtCtxPublic","thumbIconUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb64.jpg?ctx=ArtCtxPublic","artifactCount":5,"visitCount":0,"seoIndexable":true,"uploaderId":556427,"editableByCaller":true,"favorite":false}'></fs-album-display>
 
-      <birch-album-display id='showAlbum' owner-name='testuser1234' language='[[locale]]' show-owner album='{"id":114959,"name":"Bug Test","description":"","contributorPatronId":556427,"restrictionState":"OK","creationDatetime":1438802223000,"slug":"bug-test","thumbUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200.jpg?ctx=ArtCtxPublic","thumbSquareUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200s.jpg?ctx=ArtCtxPublic","thumbIconUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb64.jpg?ctx=ArtCtxPublic","artifactCount":5,"visitCount":0,"seoIndexable":true,"uploaderId":556427,"editableByCaller":true,"favorite":false}'></birch-album-display>
+      <fs-album-display id='showAlbum' owner-name='testuser1234' language='[[locale]]' show-owner album='{"id":114959,"name":"Bug Test","description":"","contributorPatronId":556427,"restrictionState":"OK","creationDatetime":1438802223000,"slug":"bug-test","thumbUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200.jpg?ctx=ArtCtxPublic","thumbSquareUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb200s.jpg?ctx=ArtCtxPublic","thumbIconUrl":"https://beta.familysearch.org/patron/v2/TH-903-57669-3-5/thumb64.jpg?ctx=ArtCtxPublic","artifactCount":5,"visitCount":0,"seoIndexable":true,"uploaderId":556427,"editableByCaller":true,"favorite":false}'></fs-album-display>
 
     </template>
     
