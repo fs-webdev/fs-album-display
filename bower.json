@@ -25,8 +25,8 @@
     "iron-ajax": "PolymerElements/iron-ajax#~1.1.0",
     "clipboard-input": "jshcrowthe/clipboard-input#^1.0.0",
     "wc-i18n": "jshcrowthe/wc-i18n#^2.1.0",
-    "oak-i18n-behavior": "FamilySearchElements/oak-i18n-behavior#1.x",
-    "oak-ajax-behavior": "FamilySearchElements/oak-ajax-behavior",
+    "oak-i18n-behavior": "fs-webdev/oak-i18n-behavior#1.x",
+    "oak-ajax-behavior": "fs-webdev/oak-ajax-behavior",
     "styles-wc": "fs-webdev/styles-wc#2.x"
   },
   "devDependencies": {
