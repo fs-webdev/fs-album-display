@@ -27,9 +27,6 @@ div, input, textarea {
   width: 100%;
 }
 
-fs-alert {
-  margin: 0 10px;
-}
 .full-width {
   width: 100% !important;
 }
@@ -134,9 +131,6 @@ pre {
 }
 button[is="fs-button"] {
   margin: 0 10px;
-  top: -7px;
-}
-fs-alert {
   top: -7px;
 }
 
