@@ -9,7 +9,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../layout/layout.html">
-<link rel="import" href="../styles-wc/fs-button/fs-button.html">
 <link rel="import" href="../fs-styles/fs-styles.html">
 <link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
@@ -62,8 +61,8 @@ Example:
         <input id='titleInput' type="text" value="{{_newAlbum.name::input}}" maxlength="[[_titleLength]]">
         <div class="layout horizontal justified button-wrapper">
           <div class='layout horizontal start-justified'>
-            <button is="fs-button" option='recommended' on-tap='_saveEdits' disabled='[[!_newAlbum.name]]' >[[i18n('save')]]</button>
-            <button is="fs-button" option='minor' on-tap='_toggleEditTitle'>
+            <button class="fs-button fs-button--recommended" on-tap='_saveEdits' disabled='[[!_newAlbum.name]]' >[[i18n('save')]]</button>
+            <button class="fs-button fs-button--minor" on-tap='_toggleEditTitle'>
               [[i18n('cancel')]]
             </button>
           </div>
@@ -84,10 +83,10 @@ Example:
         <textarea id="descInput" rows="20" value='{{_newAlbum.description::input}}' maxlength='[[_descLength]]'></textarea>
         <div class="layout horizontal justified button-wrapper">
           <div class="layout horizontal start-justified">
-            <button is="fs-button" option='recommended' on-tap='_saveEdits' >
+            <button class="fs-button fs-button--recommended" on-tap='_saveEdits' >
               [[i18n('save')]]
             </button>
-            <button is="fs-button" option='minor' on-tap='_toggleEditDescription'>
+            <button class="fs-button fs-button--minor" on-tap='_toggleEditDescription'>
               [[i18n('cancel')]]
             </button>
           </div>
