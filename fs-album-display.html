@@ -8,7 +8,6 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../layout/layout.html">
 <link rel="import" href="../fs-styles/fs-styles.html">
 <link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
@@ -221,17 +220,6 @@ Example:
       }
 
       @media all and (max-width: 768px) {
-        .layout {
-          /* !important here is necessary to overwrite polymer's flex styles */
-          display: block !important;
-        }
-        .layout .action {
-          display: block;
-          line-height: 32px;
-        }
-        .layout .action:after {
-          content: '';
-        }
         .tooltip-wrapper {
           width: 289px;
           left: initial;
@@ -272,7 +260,7 @@ Example:
         handle-as="json"
         on-response="patronResponse"></iron-ajax>
     <!-- Title Display and Input -->
-    <div class="layout vertical center content title">
+    <div class="content title">
       <span class='action edit-title' on-click='_toggleEditTitle' hidden$='[[readOnly]]'>
         [[i18n('edit_title')]]
       </span>
@@ -281,8 +269,8 @@ Example:
         <iron-a11y-keys target="[[_titleInput]]" keys="enter" on-keys-pressed="_saveEdits"></iron-a11y-keys>
         <iron-a11y-keys target="[[_titleInput]]" keys="esc" on-keys-pressed="_toggleEditTitle"></iron-a11y-keys>
         <input id='titleInput' type="text" value="{{_newAlbum.name::input}}" maxlength="[[_titleLength]]">
-        <div class="layout horizontal justified button-wrapper">
-          <div class='layout horizontal start-justified'>
+        <div class="button-wrapper">
+          <div>
             <button class="fs-button fs-button--recommended" on-tap='_saveEdits' disabled='[[!_newAlbum.name]]' >[[i18n('save')]]</button>
             <button class="fs-button fs-button--minor" on-tap='_toggleEditTitle'>
               [[i18n('cancel')]]
@@ -294,7 +282,7 @@ Example:
     </div>
 
     <!-- Description Display and Edit -->
-    <div class="layout vertical center content description" hidden$='[[!_hideDescription(album.description, _editingDesc)]]'>
+    <div class="content description" hidden$='[[!_hideDescription(album.description, _editingDesc)]]'>
       <span class='action' on-tap='_toggleEditDescription' hidden$='[[readOnly]]'>
         [[i18n('edit_desc')]]
       </span>
@@ -303,8 +291,8 @@ Example:
         <!-- <iron-a11y-keys target="[[_descInput]]" keys="enter" on-keys-pressed="_saveEdits"></iron-a11y-keys> -->
         <iron-a11y-keys target="[[_descInput]]" keys="esc" on-keys-pressed="_toggleEditDescription"></iron-a11y-keys>
         <textarea id="descInput" rows="20" value='{{_newAlbum.description::input}}' maxlength='[[_descLength]]'></textarea>
-        <div class="layout horizontal justified button-wrapper">
-          <div class="layout horizontal start-justified">
+        <div class="button-wrapper">
+          <div>
             <button class="fs-button fs-button--recommended" on-tap='_saveEdits' >
               [[i18n('save')]]
             </button>
@@ -318,7 +306,7 @@ Example:
     </div>
 
     <!-- Meta Controls (Including adding a description) -->
-    <div class="meta-controls layout horizontal center-justified">
+    <div class="meta-controls">
       <span id='albumOwner' class='action no-underline' hidden="[[_hideOwner(showOwner, loggedOut)]]">
         <span id="albumBy">[[i18n('album_by')]]</span>
         <span id='ownerName' on-click="_openContactCard">[[ownerName]]</span>
