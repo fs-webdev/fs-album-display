@@ -386,13 +386,11 @@ Example:
       // iron-a11y-keys input targets
 
       _titleInput: {
-        type: Object,
-        value: function() { return this.$.titleInput; }
+        type: Object
       },
 
       _descInput: {
-        type: Object,
-        value: function() { return this.$.descInput; }
+        type: Object
       },
 
       // ELEMENT INPUTS
@@ -436,6 +434,10 @@ Example:
     observers: [
       '_getAlbumOwner(album.contributorPatronId)'
     ],
+    ready: function() {
+      this._titleInput = this.$$('#titleInput');
+      this._descInput = this.$$('#descInput');
+    },
     _closeShare: function(e) {
       var view = this.$.shareTip;
       view.style.display = 'none'
