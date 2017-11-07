@@ -76,15 +76,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
 
         test('Add description', function(done){
-
           el.album = dataObj.withoutDesc;
-          var elRoot = Polymer.dom(el.root);
-          var addDescEl = elRoot.querySelector('.action.add-description');
+          var addDescEl = el.$$('.action.add-description');
           addDescEl.click();
 
-          elRoot.querySelector('textarea').value = "Here's a sample description Bro!";
+          el.$$('textarea').value = "Here's a sample description Bro!";
 
-          elRoot.querySelector('.description button[option="recommended"]').click();
+          el.$$('.description button.fs-button--recommended').click();
           server.respond();
           assert.isTrue(server.requests[0].response.success);
 
@@ -99,13 +97,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           elRoot.querySelector('.action.edit-title').click();
           elRoot.querySelector('#titleInput').value = "New Title";
-          elRoot.querySelector('.title button[option="recommended"]').click();
+          elRoot.querySelector('.title button.fs-button--recommended').click();
           server.respond();
           assert.isTrue(server.requests[0].response.success);
 
           elRoot.querySelector('.action.edit-title').click();
           elRoot.querySelector('#titleInput').value = null;
-          elRoot.querySelector('.title button[option="recommended"]').click();
+          elRoot.querySelector('.title button.fs-button--recommended').click();
           assert.equal(server.requests.length, 1);
 
         });
@@ -123,7 +121,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           shareEl.click();
           assert.equal(sharePopup.style.display, "block");
 
-          elRoot.querySelector('h4').click();
+          el.click();
           assert.equal(sharePopup.style.display, "none");
 
           sharePopup.style.display = "block";
