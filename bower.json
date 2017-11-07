@@ -18,26 +18,36 @@
     "/test/"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.1.0",
-    "fs-styles": "fs-webdev/fs-styles#~1.8.0",
-    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#~1.0.3",
-    "layout": "fs-webdev/layout#1.0.0",
-    "iron-ajax": "PolymerElements/iron-ajax#~1.1.0",
-    "clipboard-input": "jshcrowthe/clipboard-input#^1.0.0",
+    "polymer": "Polymer/polymer#1 - 2",
+    "fs-styles": "fs-webdev/fs-styles#3.x",
+    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0",
+    "iron-ajax": "PolymerElements/iron-ajax#^2.0.0",
+    "clipboard-input": "fs-webdev/clipboard-input#1.x",
     "wc-i18n": "jshcrowthe/wc-i18n#^2.1.0",
     "oak-i18n-behavior": "fs-webdev/oak-i18n-behavior#1.x",
-    "oak-ajax-behavior": "fs-webdev/oak-ajax-behavior",
-    "styles-wc": "fs-webdev/styles-wc#2.x"
+    "oak-ajax-behavior": "fs-webdev/oak-ajax-behavior#1.x"
   },
   "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "web-component-tester": "*"
+    "iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
+    "web-component-tester": "^6.0.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "Polymer/polymer#^1.9"
+      },
+      "devDependencies": {
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "web-component-tester": "^4.0.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7",
+        "iron-ajax": "^2.0.0",
+        "promise-polyfill": "^2.0.1"
+      }
+    }
   },
   "resolutions": {
-    "polymer": "^1.2.0",
-    "webcomponentsjs": "^v1.0.2",
-    "fetch": "~2.0.3",
-    "wc-i18n": "^2.1.0",
-    "promise-polyfill": "^2.0.1"
+    "webcomponentsjs": "^v1.0.2"
   }
 }

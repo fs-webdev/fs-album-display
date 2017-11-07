@@ -1,11 +1,15 @@
 module.exports = {
   "plugins": {
     "sauce": {
-      "disabled": true, 
+      "disabled": true,
       "browsers": [
         "Windows 8.1/internet explorer",
         "Windows 10/microsoftedge",
-        "OS X 10.10/safari"
+        {
+          "browserName": "safari",
+          "platform": "OS X 10.12",
+          "version": "11.0"
+        }
       ]
     }
   }
