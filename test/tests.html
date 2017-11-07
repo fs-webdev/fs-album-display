@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <body>
 
     <!-- You can use the document as a place to set up your fixtures. -->
-    <test-fixture id="fs-album-display">
+    <test-fixture id="fs-album-display-fixture">
       <template>
         <fs-album-display></fs-album-display>
       </template>
@@ -40,7 +40,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var server;
 
         setup(function() {
-          el = fixture('fs-album-display');
+          el = fixture('fs-album-display-fixture');
           server = sinon.fakeServer.create();
 
           server.respondWith(
@@ -115,7 +115,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           var elRoot = Polymer.dom(el.root);
 
           var shareEl = elRoot.querySelector('.share-dropdown');
-          
+
           var sharePopup = elRoot.querySelector('#shareTip');
 
           assert.equal(sharePopup.style.display, "none");
@@ -139,7 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           var elRoot = Polymer.dom(el.root);
 
           var deleteEl = elRoot.querySelector('.action.delete');
-          
+
           el.addEventListener("gallery-execute-action", function(e){
             assert.equal(e.detail.actionType, "delete_album");
             done();
@@ -174,7 +174,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             assert.isOk(e);
             done();
           })
-                    
+
           el.ownerName = 'testuser1234'
           var button = Polymer.dom(el.root).querySelector('#ownerName');
           button.click();
