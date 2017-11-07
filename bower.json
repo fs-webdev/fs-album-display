@@ -36,6 +36,8 @@
   "resolutions": {
     "polymer": "^1.2.0",
     "webcomponentsjs": "^v1.0.2",
-    "fetch": "~2.0.3"
+    "fetch": "~2.0.3",
+    "wc-i18n": "^2.1.0",
+    "promise-polyfill": "^2.0.1"
   }
 }
