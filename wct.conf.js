@@ -7,8 +7,8 @@ module.exports = {
         "Windows 10/microsoftedge",
         {
           "browserName": "safari",
-          "platform": "OS X 10.11",
-          "version": "11"
+          "platform": "OS X 10.12",
+          "version": "11.0"
         }
       ]
     }
