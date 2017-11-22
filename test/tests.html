@@ -17,6 +17,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script src="../../web-component-tester/browser.js"></script>
     <link rel="import" href="../../promise-polyfill/promise-polyfill.html">
 
+    <script>
+      window.FS = {};
+      window.FS.Analytics = {
+        trackLink: function() {},
+        trackData: function() {}
+      };
+    </script>
+
     <!-- Step 1: import the element to test -->
     <link rel="import" href="../fs-album-display.html">
   </head>

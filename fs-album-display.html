@@ -15,6 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../clipboard-input/clipboard-input.html">
 <link rel="import" href="../oak-ajax-behavior/oak-ajax-behavior.html">
 <link rel="import" href="../oak-i18n-behavior/oak-i18n-behavior.html">
+<link rel="import" href="../fs-metrics/fs-metrics.html">
 <!--
 An element providing a solution to no problem in particular.
 
@@ -326,12 +327,12 @@ Example:
           <div class="share-tooltip">
             <div>
               <i class="email-icon"></i>
-              <a id="emailLink" href$="{{_shareEmail(album.name, album.id, ajaxBase)}}">
+              <a id="emailLink" href$="{{_shareEmail(album.name, album.id, ajaxBase)}}" metrics-id="Album: Share: Email" on-tap="_metrics">
                 [[i18n('email')]]
               </a>
             </div>
             <span class="divider"></span>
-            <clipboard-input value='[[_shareLink(album.id, ajaxBase)]]' title-text='[[i18n("copy")]]' copy-text="[[i18n('copy')]]" copied-text='[[i18n("copied")]]'></clipboard-input>
+            <clipboard-input value='[[_shareLink(album.id, ajaxBase)]]' metrics-id="Album: Share: Copy Link" on-tap="_metrics" title-text='[[i18n("copy")]]' copy-text="[[i18n('copy')]]" copied-text='[[i18n("copied")]]'></clipboard-input>
           </div>
         </div>
         <span class='share-dropdown' on-tap="_toggleShare">[[i18n('share')]] ▾</span>
@@ -351,7 +352,8 @@ Example:
     behaviors: [
       OakAJAXBehavior,
       OakI18nBehavior,
-      WCI18n()
+      WCI18n(),
+      FsBehaviors.Metrics
     ],
 
     properties: {
@@ -434,45 +436,57 @@ Example:
     observers: [
       '_getAlbumOwner(album.contributorPatronId)'
     ],
+
     ready: function() {
       this._titleInput = this.$$('#titleInput');
       this._descInput = this.$$('#descInput');
     },
+
     _closeShare: function(e) {
       var view = this.$.shareTip;
       view.style.display = 'none'
       this.unlisten(document, 'tap', '_closeShare');
     },
+
     _getAlbumOwner: function(patron) {
       if (patron && this.showOwner && !this.loggedOut) this.$.getPatron.generateRequest();
     },
+
     patronResponse: function(data) {
       if (!data || !data.detail || !data.detail.response) return;
       this.ownerCisId = data.detail.response.cisUserId;
       this.ownerName = data.detail.response.name;
     },
+
     _openContactCard: function(e) {
       this.fire('gallery-open-contact-card', { cisId: this.ownerCisId, event: e })
     },
+
     _hideOwner: function(show, loggedOut) {
       return (!show || loggedOut);
     },
+
     _stopPropagation: function(e) {
       e.stopPropagation();
     },
+
     _shareLink: function(id, ajaxBase) {
       return ajaxBase + '/photos/gallery/album/' + id;
     },
+
     _charsRemaining: function(val, length) {
       if (!val) return length;
       return parseInt(length) - parseInt(val.length);
     },
+
     _hideAddDesc: function(albumDesc, editingDesc, readOnly) {
       return (albumDesc || editingDesc || readOnly);
     },
+
     _hideDescription: function(desc, edit) {
       return (desc || edit);
     },
+
     /*
      * If showShare and readOnly are both set to True, you will not be able to edit the title/description
      * but you will be able to see the share option. If readOnly is off, you will always be able to see
@@ -482,6 +496,7 @@ Example:
       if (!showShare && readOnly) return true;
       return false;
     },
+
     _toggleEditTitle: function(val) {
       this.fire('edit-album');
       this._editingDesc = false;
@@ -511,6 +526,7 @@ Example:
         this.$.descInput.focus();
       }
     },
+
     _saveEdits: function() {
       // Catch null title on key save
       if (this._editingTitle && (!this._newAlbum || !this._newAlbum.name)) return;
@@ -532,6 +548,14 @@ Example:
 
       this.fire('gallery-album-edit', this.album);
 
+      if (this._editingTitle) {
+        this.fireMetrics({link_name: 'Album: Save Title'});
+      }
+
+      if (this._editingDesc) {
+        this.fireMetrics({link_name: 'Album: Save Description'});
+      }
+
       // Reset _newAlbum state and clear edit mode
       this._newAlbum = {};
       this._toggleEditTitle(false);
@@ -547,12 +571,16 @@ Example:
       var view = this.$.shareTip;
       (view.style.display === 'none') ? view.style.display = 'block' : view.style.display = 'none';
       this.listen(document, 'tap', '_closeShare');
+
+      this.fireMetrics({link_name: 'Album: Share: Click'});
     },
+
     _tryAlbumDelete: function() {
       this.fire('gallery-execute-action', {
         actionType: 'delete_album'
       });
     },
+
     /*
      * Determines the classes applied for the share option. If readOnly and showShare are on,
      * we want to hide the "|" divider that appears between the different actions because share
@@ -565,10 +593,14 @@ Example:
         return "action";
       }
     },
+
     _class: function(className, bool){
       return (bool) ? className : '';
-    }
+    },
 
+    _metrics: function(e) {
+      this.fireMetrics(e);
+    }
   });
 })();
 </script>
