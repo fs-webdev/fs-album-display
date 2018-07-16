@@ -276,7 +276,7 @@ Example:
       <div hidden$='[[!_editingTitle]]'>
         <iron-a11y-keys target="[[_titleInput]]" keys="enter" on-keys-pressed="_saveEdits"></iron-a11y-keys>
         <iron-a11y-keys target="[[_titleInput]]" keys="esc" on-keys-pressed="_toggleEditTitle"></iron-a11y-keys>
-        <input id='titleInput' type="text" value="{{_newAlbum.name::input}}" maxlength="[[_titleLength]]">
+        <input id='titleInput' type="text" value="{{_newAlbum.name::input}}" maxlength$="[[_titleLength]]">
         <div class="button-wrapper">
           <div>
             <button class="fs-button fs-button--recommended" on-tap='_saveEdits' disabled='[[!_newAlbum.name]]' >[[i18n('save')]]</button>
