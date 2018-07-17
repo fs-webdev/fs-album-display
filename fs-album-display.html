@@ -298,7 +298,7 @@ Example:
       <div hidden$='[[!_editingDesc]]'>
         <!-- <iron-a11y-keys target="[[_descInput]]" keys="enter" on-keys-pressed="_saveEdits"></iron-a11y-keys> -->
         <iron-a11y-keys target="[[_descInput]]" keys="esc" on-keys-pressed="_toggleEditDescription"></iron-a11y-keys>
-        <textarea id="descInput" rows="20" value='{{_newAlbum.description::input}}' maxlength='[[_descLength]]'></textarea>
+        <textarea id="descInput" rows="20" value='{{_newAlbum.description::input}}' maxlength$='[[_descLength]]'></textarea>
         <div class="button-wrapper">
           <div>
             <button class="fs-button fs-button--recommended" on-tap='_saveEdits' >
