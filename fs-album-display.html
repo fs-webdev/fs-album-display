@@ -269,46 +269,47 @@ Example:
         on-response="patronResponse"></iron-ajax>
     <!-- Title Display and Input -->
     <div class="content title">
-      <span class='action edit-title' on-click='_toggleEditTitle' hidden$='[[readOnly]]'>
+      <span class='action edit-title' on-click='_toggleEditTitle' hidden$='[[readOnly]]' data-test="EditAlbumTitle">
         [[i18n('edit_title')]]
       </span>
-      <h4 hidden$='[[_editingTitle]]'>[[album.name]]</h4>
+      <h4 data-test="AlbumTitleName" hidden$='[[_editingTitle]]'>[[album.name]]</h4>
       <div hidden$='[[!_editingTitle]]'>
         <iron-a11y-keys target="[[_titleInput]]" keys="enter" on-keys-pressed="_saveEdits"></iron-a11y-keys>
         <iron-a11y-keys target="[[_titleInput]]" keys="esc" on-keys-pressed="_toggleEditTitle"></iron-a11y-keys>
-        <input id='titleInput' type="text" value="{{_newAlbum.name::input}}" maxlength$="[[_titleLength]]">
+        <input id='titleInput' type="text" value="{{_newAlbum.name::input}}" maxlength$="[[_titleLength]]"
+          data-test="AlbumTitleInput">
         <div class="button-wrapper">
           <div>
-            <button class="fs-button fs-button--recommended" on-tap='_saveEdits' disabled='[[!_newAlbum.name]]' >[[i18n('save')]]</button>
-            <button class="fs-button fs-button--minor" on-tap='_toggleEditTitle'>
+            <button class="fs-button fs-button--recommended" on-tap='_saveEdits' disabled='[[!_newAlbum.name]]' data-test="AlbumTitleSaveBtn">[[i18n('save')]]</button>
+            <button class="fs-button fs-button--minor" on-tap='_toggleEditTitle' data-test="AlbumTitleCancelBtn">
               [[i18n('cancel')]]
             </button>
           </div>
-          <span class='chars-remaining'>[[_charsRemaining(_newAlbum.name, _titleLength)]]</span>
+          <span class='chars-remaining' data-test="AlbumTitleCharLimit">[[_charsRemaining(_newAlbum.name, _titleLength)]]</span>
         </div>
       </div>
     </div>
 
     <!-- Description Display and Edit -->
     <div class="content description" hidden$='[[!_hideDescription(album.description, _editingDesc)]]'>
-      <span class='action' on-tap='_toggleEditDescription' hidden$='[[readOnly]]'>
+      <span class='action' data-test="AlbumEditDescriptionBtn" on-tap='_toggleEditDescription' hidden$='[[readOnly]]'>
         [[i18n('edit_desc')]]
       </span>
-      <pre hidden$='[[_editingDesc]]'>[[album.description]]</pre>
+      <pre data-test="AlbumDescription"hidden$='[[_editingDesc]]'>[[album.description]]</pre>
       <div hidden$='[[!_editingDesc]]'>
         <!-- <iron-a11y-keys target="[[_descInput]]" keys="enter" on-keys-pressed="_saveEdits"></iron-a11y-keys> -->
         <iron-a11y-keys target="[[_descInput]]" keys="esc" on-keys-pressed="_toggleEditDescription"></iron-a11y-keys>
-        <textarea id="descInput" rows="20" value='{{_newAlbum.description::input}}' maxlength$='[[_descLength]]'></textarea>
+        <textarea id="descInput" data-test="AlbumEditDescriptionInput" rows="20" value='{{_newAlbum.description::input}}' maxlength$='[[_descLength]]'></textarea>
         <div class="button-wrapper">
           <div>
-            <button class="fs-button fs-button--recommended" on-tap='_saveEdits' >
+            <button class="fs-button fs-button--recommended" data-test="AlbumEditDescriptionSaveBtn" on-tap='_saveEdits' >
               [[i18n('save')]]
             </button>
-            <button class="fs-button fs-button--minor" on-tap='_toggleEditDescription'>
+            <button class="fs-button fs-button--minor" data-test="AlbumEditDescriptionCancelBtn" on-tap='_toggleEditDescription'>
               [[i18n('cancel')]]
             </button>
           </div>
-          <span class='chars-remaining'>[[_charsRemaining(_newAlbum.description, _descLength)]]</span>
+          <span class='chars-remaining' data-test="AlbumDescriptionCharLimit">[[_charsRemaining(_newAlbum.description, _descLength)]]</span>
         </div>
       </div>
     </div>
@@ -317,9 +318,9 @@ Example:
     <div class="meta-controls">
       <span id='albumOwner' class='action no-underline' hidden="[[_hideOwner(showOwner, loggedOut)]]">
         <span id="albumBy">[[i18n('album_by')]]</span>
-        <span id='ownerName' on-click="_openContactCard">[[ownerName]]</span>
+        <span id='ownerName' data-test="AlbumOwnerName" on-click="_openContactCard">[[ownerName]]</span>
       </span>
-      <span class='action add-description' on-tap='_toggleEditDescription' hidden$='[[_hideAddDesc(album.description, _editingDesc, readOnly)]]'>
+      <span class='action add-description' data-test="AlbumAddDescriptionBtn" on-tap='_toggleEditDescription' hidden$='[[_hideAddDesc(album.description, _editingDesc, readOnly)]]'>
         [[i18n('add_desc')]]
       </span>
       <span class$='{{_updateShareStyles(showShare, readOnly)}}' hidden$='[[_hideShare(showShare, readOnly)]]'>
@@ -327,7 +328,7 @@ Example:
           <div class="share-tooltip">
             <div>
               <i class="email-icon"></i>
-              <a id="emailLink" href$="{{_shareEmail(album.name, album.id, ajaxBase)}}" metrics-id="Album: Share: Email" on-tap="_metrics">
+              <a id="emailLink" data-test="ShareEmailLink" href$="{{_shareEmail(album.name, album.id, ajaxBase)}}" metrics-id="Album: Share: Email" on-tap="_metrics">
                 [[i18n('email')]]
               </a>
             </div>
@@ -335,9 +336,9 @@ Example:
             <clipboard-input value='[[_shareLink(album.id, ajaxBase)]]' metrics-id="Album: Share: Copy Link" on-tap="_metrics" title-text='[[i18n("copy")]]' copy-text="[[i18n('copy')]]" copied-text='[[i18n("copied")]]'></clipboard-input>
           </div>
         </div>
-        <span class='share-dropdown' on-tap="_toggleShare">[[i18n('share')]] ▾</span>
+        <span class='share-dropdown' data-test="AlbumShareBtn" on-tap="_toggleShare">[[i18n('share')]] ▾</span>
       </span>
-      <span class='action delete' hidden$='[[readOnly]]' on-tap='_tryAlbumDelete'>
+      <span class='action delete' data-test="DeleteAlbumBtn" hidden$='[[readOnly]]' on-tap='_tryAlbumDelete'>
         [[i18n('delete_album')]]
       </span>
     </div>
