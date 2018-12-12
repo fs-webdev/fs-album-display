@@ -425,8 +425,10 @@
           <h1>[[i18n('reorder_album')]]</h1>
           <p>[[i18n('drag_drop_instructions')]]</p>
         </div>
-        <button id="saveBtn" type="button" class="modal-action-btn fs-button fs-button--recommended" disabled="[[disableReorderSave]]" data-dialog-confirm>[[i18n('save')]]</button>	          <svg aria-hidden="true" width="13" height="13" viewBox="0 0 13 13" preserveAspectRatio="xMidYMin"><g transform="translate(-1.000000, -1.000000)"><path d="M13 2L2 13M2 2L13 13" stroke="currentColor" stroke-width="2.5"></path></g></svg>
-        <button type="button" class="modal-action-btn fs-button fs-button--minor" on-click="_confirmCancelReorder">[[i18n('cancel')]]</button>
+        <div>
+          <button id="saveBtn" type="button" class="modal-action-btn fs-button fs-button--recommended" disabled="[[disableReorderSave]]" data-dialog-confirm>[[i18n('save')]]</button>
+          <button type="button" class="modal-action-btn fs-button fs-button--minor" on-click="_confirmCancelReorder">[[i18n('cancel')]]</button>
+        </div>
       </header>
       <div id="dialogBody" class="fs-dialog__body" on-drop="_handleDrop">
         <div class="artifact-container">
