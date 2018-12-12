@@ -16,6 +16,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../oak-ajax-behavior/oak-ajax-behavior.html">
 <link rel="import" href="../oak-i18n-behavior/oak-i18n-behavior.html">
 <link rel="import" href="../fs-metrics/fs-metrics.html">
+<link rel="import" href="../fs-memories-filter-behavior/fs-memories-filter-behavior.html">
+<link rel="import" href="../fs-album-display/fs-album-reorder-dialog.html">
+
 <!--
 An element providing a solution to no problem in particular.
 
@@ -38,7 +41,7 @@ Example:
         text-align: center;
         width: 100%;
         padding: 30px 0 20px;
-        --meta-control-margin: 0 0 0 7px;
+        --meta-control-margin: 0 7px 0 0;
       }
 
       clipboard-input {
@@ -118,14 +121,14 @@ Example:
         margin: var(--meta-control-margin);
       }
 
-      .meta-controls .action:after {
+      .meta-controls .action:before {
         display: inline-block;
         color: #333333;
         content: '|';
         margin: var(--meta-control-margin);
       }
 
-      .meta-controls .action:last-child:after, .meta-controls .action.only-action:after {
+      .meta-controls .action:first-child:before, .meta-controls .action.only-action:before {
         content: '';
       }
 
@@ -220,10 +223,17 @@ Example:
         margin-bottom: 5px;
         padding-bottom: 5px;
       }
-
+      
+      *[hidden] {
+        display: none !important;
+      }
+      
       @media all and (max-width: 979px) {
         :host {
           padding-top:80px;
+        }
+        .reorder {
+          display: none;
         }
       }
 
@@ -251,6 +261,13 @@ Example:
       }
     </style>
     <iron-ajax
+      id='getPatron'
+      url="[[ajaxBase]]/artifactmanager/patrons/[[album.contributorPatronId]]?includeContactInfo=true&onlyPublicData=true"
+      method='GET'
+      headers='[[authHeaders]]'
+      handle-as="json"
+      on-response="patronResponse"></iron-ajax>
+    <iron-ajax
       bubbles
       id='req'
       method='POST'
@@ -260,13 +277,6 @@ Example:
       loading='{{loading}}'
       body='[[_newAlbum]]'
       on-response="_saveSuccess"></iron-ajax>
-      <iron-ajax
-        id='getPatron'
-        url="[[ajaxBase]]/artifactmanager/patrons/[[album.contributorPatronId]]?includeContactInfo=true&onlyPublicData=true"
-        method='GET'
-        headers='[[authHeaders]]'
-        handle-as="json"
-        on-response="patronResponse"></iron-ajax>
     <!-- Title Display and Input -->
     <div class="content title">
       <span class='action edit-title' on-click='_toggleEditTitle' hidden$='[[readOnly]]' data-test="EditAlbumTitle">
@@ -316,7 +326,7 @@ Example:
 
     <!-- Meta Controls (Including adding a description) -->
     <div class="meta-controls">
-      <span id='albumOwner' class='action no-underline' hidden="[[_hideOwner(showOwner, loggedOut)]]">
+      <span id='albumOwner' class='action no-underline' hidden$="[[_hideOwner(showOwner, loggedOut)]]">
         <span id="albumBy">[[i18n('album_by')]]</span>
         <span id='ownerName' data-test="AlbumOwnerName" on-click="_openContactCard">[[ownerName]]</span>
       </span>
@@ -341,6 +351,9 @@ Example:
       <span class='action delete' data-test="DeleteAlbumBtn" hidden$='[[readOnly]]' on-tap='_tryAlbumDelete'>
         [[i18n('delete_album')]]
       </span>
+      <span class='action reorder' data-test="ReorderAlbumBtn" hidden$='[[_showReorderLink(reorderAlbumExp, readOnly)]]' on-click='_openReorderModal'>
+        [[i18n('reorder_album')]]
+      </span>
     </div>
   </template>
 </dom-module>
@@ -353,6 +366,7 @@ Example:
     behaviors: [
       OakAJAXBehavior,
       OakI18nBehavior,
+      FsMemoriesFilterBehavior,
       WCI18n(),
       FsBehaviors.Metrics
     ],
@@ -432,6 +446,25 @@ Example:
       ownerCisId: {
         type: String,
         value: ''
+      },
+      reorderAlbumExp: {
+        type: Boolean,
+        value: function(){ return FS.showEx('reorderAlbum'); }
+      },
+      artifacts: {
+        type: Array,
+        value: function() { return []; },
+        notify: true
+      },
+      /* When the 'arrange' filter is used, the 'artifacts' array can be reduced.
+         This array holds the full list of artifacts, despite filter. */
+      fullArtifactsList: {
+        type: Array,
+        value: function() { return []; }
+      },
+      listView: {
+        type: Boolean,
+        value: false,
       }
     },
     observers: [
@@ -439,8 +472,21 @@ Example:
     ],
 
     ready: function() {
+      document.addEventListener('gallery-filter-behavior:unfiltered-album-artifacts', this._storeArtifactList.bind(this));
+      document.addEventListener('fs-album-reorder-dialog:setUpdatedArtifactsOrder', this._updateArtifacts.bind(this));
       this._titleInput = this.$$('#titleInput');
       this._descInput = this.$$('#descInput');
+    },
+
+    _storeArtifactList: function(e) {
+      if (!e || !e.detail || !e.detail.artifacts || !e.detail.artifacts.length) return;
+      this.set('fullArtifactsList', e.detail.artifacts);
+    },
+
+    _updateArtifacts: function(e) {
+      if (!e || !e.detail || !e.detail.artifacts || !e.detail.artifacts.length) return;
+      this.set('artifacts', e.detail.artifacts);
+      this.set('fullArtifactsList', e.detail.artifacts);
     },
 
     _closeShare: function(e) {
@@ -580,6 +626,25 @@ Example:
       this.fire('gallery-execute-action', {
         actionType: 'delete_album'
       });
+    },
+
+    _openReorderModal: function() {
+      // If no artifacts in `fullArtifactsList`, assign `artifacts`. On rare occation
+      // the filter event is not fired, which populates the fullArtifactsList.
+      if (!this.fullArtifactsList.length) this.fullArtifactsList = this.artifacts.slice(0);
+
+      FS.dialog.fsAlbumReorderDialog.open({
+        fullArtifactsList: this.fullArtifactsList,
+        album: this.album,
+        listView: this.listView
+      });
+    },
+
+    _showReorderLink: function(reorderAlbumExp, readOnly) {
+      if (reorderAlbumExp) {
+        return readOnly ? true : false;
+      } 
+      return true;
     },
 
     /*

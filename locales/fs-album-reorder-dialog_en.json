@@ -1,0 +1,13 @@
+{
+  "save":"Save",
+  "cancel":"Cancel",
+  "reorder_album": "Reorder Album",
+  "drag_drop_instructions": "Drag and drop the items to reorder them.",
+  "cancel_confirmation_header": "Discard your reorder changes?",
+  "cancel_confirmation_body": "Are you sure you want to cancel? None of your changes will be saved.",
+  "discard_changes": "Discard Changes",
+  "continue_editing": "Continue Editing",
+  "no_title": "No title",
+  "no_date": "No event date",
+  "no_place": "No event place"
+}

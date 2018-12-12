@@ -1,0 +1,833 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../fs-styles/fs-styles.html">
+<link rel="import" href="../wc-i18n/wc-i18n.html">
+<link rel="import" href="../fs-metrics/fs-metrics.html">
+<link rel="import" href="../fs-dialog/fs-modal-dialog.html">
+<link rel="import" href="../fs-memories-filter-behavior/fs-memories-filter-behavior.html">
+
+<dom-module id="fs-album-reorder-dialog">
+  <template>
+    <style include='fs-styles'>
+      .flex-row-between {
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+      }
+      .flex-row-between div {
+        width: auto;
+        height: 60px;
+        display: flex;
+        align-items: center;
+      }
+      .flex-row-between div:first-child {
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .modal-action-btn {
+        margin: 0 5px;
+      }
+      .modal-footer-btn.fs-button.disabled, 
+      .modal-footer-btn.fs-button:disabled {
+        border: none;
+        border-radius: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #3073dd;
+        color: #eee;
+        opacity: 0.5;
+        font-size: 1.25rem;
+      }
+
+      fs-modal-dialog * {
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+      }
+
+      #reorderModal .fs-dialog__body {
+        width: auto;
+        background-color: #ECEBEA;
+        scroll-behavior: smooth;
+      }
+
+      fs-modal-dialog .modal-header {
+        z-index: 10;
+        background-color: #fff;
+        padding: 50px 30px 15px 30px !important;
+        box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.35), 0px 3px 2px 0px rgba(0,0,0,0.18);
+      }
+
+      .artifact-container {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .artifact-card {
+        width: 130px;
+        height: 160px;
+        border: 10px solid transparent;
+        position: relative;
+        box-sizing: border-box;
+        will-change: transform;
+        transition: opacity 0.3s;
+      }
+
+      .artifact-list-item {
+        width: 100%;
+        height: 60px;
+        border: 5px solid transparent;
+        margin: 0 10px;
+        position: relative;
+        box-sizing: border-box;
+        will-change: transform;
+        transition: opacity 0.3s;
+      }
+
+      .list-inner-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-radius: 4px;
+        background-color: #ffffff;
+        box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.35), 0px 1px 1px 0px rgba(0,0,0,0.10);
+      }
+
+      .list-data-container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        margin-left: 15px;
+        background-color: #ffffff;
+      }
+
+      .list-data-container span {
+        padding-right: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .light-overlay {
+        background-color: #ffffff;
+      }
+
+      .dark-overlay {
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+
+      .list-svg-container {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        height: 50px;
+        width: 50px;
+        position: absolute;
+        background-color: #ffffff;
+      }
+      .list-svg-container.dark {
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+
+      .card-inner-container {
+        height: 140px;
+        overflow: hidden;
+        border-radius: 4px;
+        box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.35), 0px 3px 2px 0px rgba(0,0,0,0.18);
+      }
+
+      .artifact-img {
+        height: 140px;
+        border-radius: 4px;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      .list-img {
+        width: 50px;
+        height: 50px;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        pointer-events: none;
+      }
+
+      .artifact-title {
+        height: 35px;
+        background-color: #fff;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        position: relative;
+        bottom: 52px;
+        padding: 5px 2px 18px 2px;
+        box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.35), 0px 3px 2px 0px rgba(0,0,0,0.18);
+      }
+
+      .title-container {
+        display: -webkit-box;
+        width: 95%;
+        margin: auto;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+        font-size: 12px;
+        line-height: 1.5
+      }
+
+      .artifact-card.drag-over-right:before {
+        display: inline-block;
+        content: "";
+        background-color:#26C4F4;
+        border-radius: 50%;
+        margin: 0 110px;
+        height: 15px;
+        width: 15px;
+        position: absolute;
+        left: 2px;
+        top: -18px;
+      }
+      .artifact-card.drag-over-right:after {
+        display: inline-block;
+        content: "";
+        background-color:#26C4F4;
+        width: 7px;
+        margin: 0 110px;
+        height: 108%;
+        position: absolute;
+        left: 6px;
+        bottom: 0;
+        z-index: 10;
+      }
+      .artifact-card.drag-over-left:before {
+        display: inline-block;
+        content: "";
+        background-color:#26C4F4;
+        border-radius: 50%;
+        margin: 0 -25px;
+        height: 15px;
+        width: 15px;
+        position: absolute;
+        left: 7px;
+        top: -18px;
+        z-index: 10;
+      }
+      .artifact-card.drag-over-left:after {
+        display: inline-block;
+        content: "";
+        background-color:#26C4F4;
+        width: 7px;
+        margin: 0 -25px;
+        height: 108%;
+        position: absolute;
+        left: 11px;
+        bottom: 0;
+        z-index: 10;
+      }
+      .artifact-list-item.drag-over-bottom:before {
+        display: inline-block;
+        content: "";
+        background-color: #26C4F4;
+        border-radius: 50%;
+        height: 12px;
+        width: 12px;
+        position: absolute;
+        left: -11px;
+        bottom: -10px;
+        z-index: 10;
+      }
+      .artifact-list-item.drag-over-bottom:after {
+        display: inline-block;
+        content: "";
+        background-color: #26C4F4;
+        width: 100%;
+        height: 5px;
+        position: absolute;
+        left: 0;
+        bottom: -7px;
+        z-index: 10;
+      }
+      .artifact-list-item.drag-over-top:before {
+        display: inline-block;
+        content: "";
+        background-color:#26C4F4;
+        border-radius: 50%;
+        margin: 0 -25px;
+        height: 12px;
+        width: 12px;
+        position: absolute;
+        left: 14px;
+        top: -12px;
+        z-index: 10;
+      }
+      .artifact-list-item.drag-over-top:after {
+        display: inline-block;
+        content: "";
+        background-color: #26C4F4;
+        width: 100%;
+        margin: 0 -25px;
+        height: 5px;
+        position: absolute;
+        top: -8px;
+        left: 25px;
+        right: 0;
+        z-index: 10;
+      }
+
+      .audio-card,
+      .story-card,
+      .listOpacity {
+        opacity: 0.2;
+      }
+
+      .list-img.audio-card:not(.listOpacity):not(.emptyListMedia), 
+      .list-img.story-card:not(.listOpacity):not(.emptyListMedia)  {
+        opacity: 1;
+      }
+      
+      .list-img.audio-card, 
+      .list-img.story-card  {
+        position: relative;
+      }
+      .list-img.audio-card:not(.listOpacity):not(.emptyListMedia) {
+        height: 30px;
+        width: 30px;
+        padding: 10px;
+      }
+      .list-img.story-card:not(.listOpacity):not(.emptyListMedia) {
+        height: 35px;
+        width: 35px;
+        padding: 7.5px;
+      }
+
+      .list-img.emptyListMedia {
+        opacity: 0;
+      }
+
+      .audio-svg, 
+      .story-svg, 
+      .story-img-svg {
+        background-repeat: no-repeat;
+        background-color: transparent;
+        position: absolute;
+        top: 50px;
+        padding: 30px;
+      }
+
+      .audio-svg {
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIGJhc2VQcm9maWxlPSJ0aW55IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PHBhdGggZmlsbD0iIzg4Yjg0OCIgZD0iTTI1LjAxOCAzNC4wOTZjLTMuODM4IDAtNy4wNTktMy4xNzgtNy44NDctNi4xMjJsLS4wMi0uMDc0aC0uMjI5Yy0uNDQ2IDAtLjgyMi0uNzUyLS44MjItMS4yMjR2LTQuNzMzYzAtLjQ2NC4zNjktLjg0Mi44MjItLjg0MmgxNy4xMjJhLjg2Ljg2IDAgMCAxIC44NTYuODQydjQuNzMzYzAgLjQ2MS0uNCAxLjIyNC0uODU2IDEuMjI0aC0uMjI4bC0uMDIxLjA3NGMtLjgwNCAyLjk5LTQuMDI1IDYuMjE2LTcuODI5IDYuMjE2bC0uOTQ4LS4wOTR6TTE2LjEgMTguOXYtNy45MjVjMC00Ljg5NCAzLjk3OS04Ljg3NSA4Ljg3LTguODc1bDEuMDQ4LjAwMWM0LjkgMCA4Ljg4MyAzLjk3OSA4Ljg4MyA4Ljg3MVYxOC45SDE2LjF6bTE0LjgyLTQuODE2Yy0uODc4IDAtMS41OTIuODI2LTEuNTkyIDEuODQycy43MTQgMS44NDIgMS41OTIgMS44NDJjLjg3OSAwIDEuNTk0LS44MjYgMS41OTQtMS44NDJzLS43MTUtMS44NDItMS41OTQtMS44NDJ6bS01LjQzOCAwYTEuODQ0IDEuODQ0IDAgMCAwLTEuODQzIDEuODQyIDEuODQ0IDEuODQ0IDAgMCAwIDMuNjg3IDAgMS44NDUgMS44NDUgMCAwIDAtMS44NDQtMS44NDJ6bS01LjQxMiAwYy0uODc4IDAtMS41OTMuODI2LTEuNTkzIDEuODQycy43MTUgMS44NDIgMS41OTMgMS44NDJjLjg3OSAwIDEuNTk0LS44MjYgMS41OTQtMS44NDJzLS43MTUtMS44NDItMS41OTQtMS44NDJ6bTEwLjg1LTUuMTc2Yy0uODc4IDAtMS41OTIuODI3LTEuNTkyIDEuODQ0IDAgMS4wMTUuNzE0IDEuODQxIDEuNTkyIDEuODQxLjg3OSAwIDEuNTk0LS44MjYgMS41OTQtMS44NDEgMC0xLjAxNy0uNzE1LTEuODQ0LTEuNTk0LTEuODQ0em0tNS40MzggMGExLjg0NCAxLjg0NCAwIDEgMCAxLjg0NCAxLjg0NCAxLjg0NiAxLjg0NiAwIDAgMC0xLjg0NC0xLjg0NHptLTUuNDEyIDBjLS44NzggMC0xLjU5My44MjctMS41OTMgMS44NDQgMCAxLjAxNS43MTUgMS44NDEgMS41OTMgMS44NDEuODc5IDAgMS41OTQtLjgyNiAxLjU5NC0xLjg0MSAwLTEuMDE3LS43MTUtMS44NDQtMS41OTQtMS44NDR6bTEwLjEwNC0zLjcyYy0uNzQyIDAtMS4zNDYuNjAzLTEuMzQ2IDEuMzQzIDAgLjc0Mi42MDQgMS4zNDUgMS4zNDYgMS4zNDVhMS4zNDUgMS4zNDUgMCAwIDAgMC0yLjY4OHptLTkuMzU4LS4wMDNhMS4zNDcgMS4zNDcgMCAwIDAgMCAyLjY5MmMuNzQzIDAgMS4zNDgtLjYwNCAxLjM0OC0xLjM0NSAwLS43NDMtLjYwNC0xLjM0Ny0xLjM0OC0xLjM0N3ptNC42NjYtLjc0M2ExLjU5NSAxLjU5NSAwIDAgMCAwIDMuMTg4Yy44NzkgMCAxLjU5NC0uNzE1IDEuNTk0LTEuNTk0cy0uNzE1LTEuNTk0LTEuNTk0LTEuNTk0eiIvPjxwYXRoIGZpbGw9IiM4OGI4NDgiIGQ9Ik0xMy45OTIgNDYuOWMtLjQ4MyAwLS44OTItLjM5OS0uODkyLS44NzF2LS4xODljMC0xLjI0MSAxLjA0Ni0yLjc0IDIuMzQ2LTIuNzRoMy41NWMxLjY3NCAwIDIuODI3LTEuMTczIDMuNjI5LTMuNjlsLjAzMy0uMTA0LS4xMDctLjAyM2MtNi44Ny0xLjQ5NS0xMS40ODYtNy41OTUtMTEuNDg2LTE1LjE3OGExLjYxMiAxLjYxMiAwIDAgMSAzLjIyMy0uMDA1YzAgNy4xMTYgNC44MTIgMTIuNDgxIDExLjE5MiAxMi40ODEgNi4zODIgMCAxMS4xOTMtNS4zNzQgMTEuMTkzLTEyLjUwMSAwLS45MDMuNzI0LTEuNjM3IDEuNjEzLTEuNjM3LjkwMyAwIDEuNjExLjY4NSAxLjYxMSAxLjU2IDAgNy43ODEtNC41OTcgMTMuOTM4LTExLjQzOCAxNS4zMjJsLS4xMS4wMjEuMDM1LjEwNmMuOCAyLjQ4OSAxLjk0NyAzLjY0OCAzLjYxMSAzLjY0OGgzLjU1NGMxLjMwMiAwIDIuMzUxIDEuNDk5IDIuMzUxIDIuNzR2LjE4OWMwIC40NzItLjQxMS44NzEtLjg5Ni44NzFIMTMuOTkyeiIvPjxwYXRoIGZpbGw9Im5vbmUiIGQ9Ik0wIDBoNTB2NTBIMHoiLz48L3N2Zz4=');
+        background-size: 30px 30px;
+        left: 42px;
+        top: 20px;
+        pointer-events: none;
+      }
+
+      .story-svg {
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMyIgaGVpZ2h0PSIyMCI+PGcgZGF0YS1uYW1lPSJMYXllciAyIj48cGF0aCBkPSJNMCAwdjIwaDMzVjB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTE2LjUxIDE5Ljc3YTIuMjMgMi4yMyAwIDAgMS0xLjQ0LS41MiAxLjI3IDEuMjcgMCAwIDAtLjc1LS4zM2gtMTNhLjc0Ljc0IDAgMCAxLS43LS43NmMwLS4yNCAyLjA3LTE0Ljg4IDIuMDktMTVhLjU5LjU5IDAgMCAxIC41Ny0uNWwuODcuMjMtMS42OSAxMi4yNi4yNS4yMWMxLjE5Ljc3IDQgMSA3IDEuMjIgMi42OC4yMSA1LjcxLjQ1IDYuNSAxLjExbC4yNi4yMS4zNS0uMjFjLjgtLjY2IDMuODItLjkgNi40OS0xLjExIDMtLjIzIDUuODEtLjQ1IDctMS4yMmwuMjItLjE0LTEuNjItMTIuMzUuODgtLjI1YS42LjYgMCAwIDEgLjU0LjUxYzAgLjE1IDIuMDggMTQuNzkgMi4wOSAxNWEuNzMuNzMgMCAwIDEtLjcuNzZoLTEzYTEuMjIgMS4yMiAwIDAgMC0uNzUuMzMgMi4yMyAyLjIzIDAgMCAxLTEuNDQuNTJ6IiBmaWxsPSIjODhiODQ4Ii8+PHBhdGggZD0iTTE2IDE2LjI5YTI3IDI3IDAgMCAwLTYuMjMtLjkxYy0yLjU2LS4yLTUuMjEtLjQtNi4zNi0xTDUuMzMuNzRhMjMuNDkgMjMuNDkgMCAwIDAgNS4zOS42N2MyLjMuMTIgNC40OC4yMyA1LjMzIDF6TTYgMTEuMTdhMS4zOSAxLjM5IDAgMCAwLS44Ni45MWwtLjI1IDEgOS42OS45M3YtMWExLjM2IDEuMzYgMCAwIDAtLjY4LTEuMDVsLTIuMy0xLjE2YTIuOTEgMi45MSAwIDAgMCAyLjMtMS40NnYtLjA4aC0uMDhhMS4zMSAxLjMxIDAgMCAxLS43My0uNTkgMi4zMyAyLjMzIDAgMCAxLS4wOS0xLjggMi41MyAyLjUzIDAgMCAwIC4wNy0uNDggMi4wOSAyLjA5IDAgMCAwLS40Ni0xLjU3IDIuODcgMi44NyAwIDAgMC0yLTEgMi4xNyAyLjE3IDAgMCAwLS4zNiAwIDIuMzMgMi4zMyAwIDAgMC0yLjU0IDIuMDYgMiAyIDAgMCAwIDAgLjQ4IDIuMjYgMi4yNiAwIDAgMS0uNDUgMS43MyAxLjI4IDEuMjggMCAwIDEtLjgyLjQ0aC0uMTJ2LjA5YTMgMyAwIDAgMCAyIDEuODd6TTE3IDIuMzZjLjgyLS43MiAzLS44MyA1LjMyLS45NWEyMy40IDIzLjQgMCAwIDAgNS4zNi0uNjdsMS44NiAxMy43NmMtMS4xLjQ4LTMuNzUuNjgtNi4zMS44OGEyNy4xNSAyNy4xNSAwIDAgMC02LjI1Ljkxem03LjYgMTAuMzdsLTEuODkuMTRhMzkuMTcgMzkuMTcgMCAwIDAtNC4zMy40My42LjYgMCAwIDAtLjM4LjI0LjYxLjYxIDAgMCAwLS4wOS40NC41OS41OSAwIDAgMCAuNTcuNDhoLjExYTM4LjU3IDM4LjU3IDAgMCAxIDQuMTctLjQ2bDEuOTQtLjE0YS41OS41OSAwIDAgMC0uMDYtMS4xN3ptMi4yMS0yLjYxYTM3IDM3IDAgMCAxLTQuMTcuNDEgNDEuNTIgNDEuNTIgMCAwIDAtNC4yNi40Mi41OC41OCAwIDAgMC0uMzcuMjQuNTcuNTcgMCAwIDAtLjA5LjQ0LjU4LjU4IDAgMCAwIC41Ny40N2guMWE0MS4xNiA0MS4xNiAwIDAgMSA0LjEyLS40IDQwLjM5IDQwLjM5IDAgMCAwIDQuMjktLjQzLjU1LjU1IDAgMCAwIC4zNy0uMjQuNTcuNTcgMCAwIDAgLjEtLjQ0LjU5LjU5IDAgMCAwLS41Ny0uNDhoLS4xMXptLS4yNS0yLjI5Yy0xLjE0LjE5LTIuNTguMjgtNCAuMzZhNDAuNDIgNDAuNDIgMCAwIDAtNC4yLjQxLjYuNiAwIDAgMC0uNDcuNjguNTguNTggMCAwIDAgLjU4LjQ3aC4xYTQwLjUxIDQwLjUxIDAgMCAxIDQuMDYtLjM4YzEuNDMtLjA5IDIuOS0uMTggNC4xLS4zOGEuNTguNTggMCAwIDAgLjM3LS4yNC41Ni41NiAwIDAgMCAuMS0uNDMuNTguNTggMCAwIDAtLjU3LS40OWgtLjF6bS0uMjUtMi4zYy0xLjA5LjE3LTIuNDMuMjUtMy43NC4zM2EzNS4wOCAzNS4wOCAwIDAgMC00LjE3LjM5LjU4LjU4IDAgMCAwLS4zOC4yNC41NS41NSAwIDAgMC0uMDkuNDMuNTguNTggMCAwIDAgLjU3LjQ4aC4xMWEzNi42OCAzNi42OCAwIDAgMSA0LS4zNyAzNi45MyAzNi45MyAwIDAgMCAzLjg3LS4zNC41My41MyAwIDAgMCAuMzgtLjIzQS41NS41NSAwIDAgMCAyNyA2YS41OS41OSAwIDAgMC0uNTctLjQ5aC0uMXptLS4yNS0yLjI5Yy0xIC4xNS0yLjMyLjIyLTMuNTUuMjhhMzQuMzMgMzQuMzMgMCAwIDAtNC4xMS4zOC41Ny41NyAwIDAgMC0uNDYuNjcuNTguNTggMCAwIDAgLjU3LjQ4aC4xYTMzLjkyIDMzLjkyIDAgMCAxIDQtLjM1YzEuMjYtLjA3IDIuNTYtLjE0IDMuNjYtLjNhLjU3LjU3IDAgMCAwIC4zOC0uMjIuNTQuNTQgMCAwIDAgLjExLS40NC41OS41OSAwIDAgMC0uNTctLjVoLS4wOXoiIGZpbGw9IiM4OGI4NDgiLz48L2c+PC9zdmc+');
+        background-size: 45px 30px;
+        left: 33px;
+        top: 35px;
+        pointer-events: none;
+      }
+      .story-img-svg {
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMyIgaGVpZ2h0PSIyMCI+PGcgZGF0YS1uYW1lPSJMYXllciAyIj48cGF0aCBkPSJNMCAwdjIwaDMzVjB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTE2LjUxIDE5Ljc3YTIuMjMgMi4yMyAwIDAgMS0xLjQ0LS41MiAxLjI3IDEuMjcgMCAwIDAtLjc1LS4zM2gtMTNhLjc0Ljc0IDAgMCAxLS43LS43NmMwLS4yNCAyLjA3LTE0Ljg4IDIuMDktMTVhLjU5LjU5IDAgMCAxIC41Ny0uNWwuODcuMjMtMS42OSAxMi4yNi4yNS4yMWMxLjE5Ljc3IDQgMSA3IDEuMjIgMi42OC4yMSA1LjcxLjQ1IDYuNSAxLjExbC4yNi4yMS4zNS0uMjFjLjgtLjY2IDMuODItLjkgNi40OS0xLjExIDMtLjIzIDUuODEtLjQ1IDctMS4yMmwuMjItLjE0LTEuNjItMTIuMzUuODgtLjI1YS42LjYgMCAwIDEgLjU0LjUxYzAgLjE1IDIuMDggMTQuNzkgMi4wOSAxNWEuNzMuNzMgMCAwIDEtLjcuNzZoLTEzYTEuMjIgMS4yMiAwIDAgMC0uNzUuMzMgMi4yMyAyLjIzIDAgMCAxLTEuNDQuNTJ6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTE2IDE2LjI5YTI3IDI3IDAgMCAwLTYuMjMtLjkxYy0yLjU2LS4yLTUuMjEtLjQtNi4zNi0xTDUuMzMuNzRhMjMuNDkgMjMuNDkgMCAwIDAgNS4zOS42N2MyLjMuMTIgNC40OC4yMyA1LjMzIDF6TTYgMTEuMTdhMS4zOSAxLjM5IDAgMCAwLS44Ni45MWwtLjI1IDEgOS42OS45M3YtMWExLjM2IDEuMzYgMCAwIDAtLjY4LTEuMDVsLTIuMy0xLjE2YTIuOTEgMi45MSAwIDAgMCAyLjMtMS40NnYtLjA4aC0uMDhhMS4zMSAxLjMxIDAgMCAxLS43My0uNTkgMi4zMyAyLjMzIDAgMCAxLS4wOS0xLjggMi41MyAyLjUzIDAgMCAwIC4wNy0uNDggMi4wOSAyLjA5IDAgMCAwLS40Ni0xLjU3IDIuODcgMi44NyAwIDAgMC0yLTEgMi4xNyAyLjE3IDAgMCAwLS4zNiAwIDIuMzMgMi4zMyAwIDAgMC0yLjU0IDIuMDYgMiAyIDAgMCAwIDAgLjQ4IDIuMjYgMi4yNiAwIDAgMS0uNDUgMS43MyAxLjI4IDEuMjggMCAwIDEtLjgyLjQ0aC0uMTJ2LjA5YTMgMyAwIDAgMCAyIDEuODd6TTE3IDIuMzZjLjgyLS43MiAzLS44MyA1LjMyLS45NWEyMy40IDIzLjQgMCAwIDAgNS4zNi0uNjdsMS44NiAxMy43NmMtMS4xLjQ4LTMuNzUuNjgtNi4zMS44OGEyNy4xNSAyNy4xNSAwIDAgMC02LjI1Ljkxem03LjYgMTAuMzdsLTEuODkuMTRhMzkuMTcgMzkuMTcgMCAwIDAtNC4zMy40My42LjYgMCAwIDAtLjM4LjI0LjYxLjYxIDAgMCAwLS4wOS40NC41OS41OSAwIDAgMCAuNTcuNDhoLjExYTM4LjU3IDM4LjU3IDAgMCAxIDQuMTctLjQ2bDEuOTQtLjE0YS41OS41OSAwIDAgMC0uMDYtMS4xN3ptMi4yMS0yLjYxYTM3IDM3IDAgMCAxLTQuMTcuNDEgNDEuNTIgNDEuNTIgMCAwIDAtNC4yNi40Mi41OC41OCAwIDAgMC0uMzcuMjQuNTcuNTcgMCAwIDAtLjA5LjQ0LjU4LjU4IDAgMCAwIC41Ny40N2guMWE0MS4xNiA0MS4xNiAwIDAgMSA0LjEyLS40IDQwLjM5IDQwLjM5IDAgMCAwIDQuMjktLjQzLjU1LjU1IDAgMCAwIC4zNy0uMjQuNTcuNTcgMCAwIDAgLjEtLjQ0LjU5LjU5IDAgMCAwLS41Ny0uNDhoLS4xMXptLS4yNS0yLjI5Yy0xLjE0LjE5LTIuNTguMjgtNCAuMzZhNDAuNDIgNDAuNDIgMCAwIDAtNC4yLjQxLjYuNiAwIDAgMC0uNDcuNjguNTguNTggMCAwIDAgLjU4LjQ3aC4xYTQwLjUxIDQwLjUxIDAgMCAxIDQuMDYtLjM4YzEuNDMtLjA5IDIuOS0uMTggNC4xLS4zOGEuNTguNTggMCAwIDAgLjM3LS4yNC41Ni41NiAwIDAgMCAuMS0uNDMuNTguNTggMCAwIDAtLjU3LS40OWgtLjF6bS0uMjUtMi4zYy0xLjA5LjE3LTIuNDMuMjUtMy43NC4zM2EzNS4wOCAzNS4wOCAwIDAgMC00LjE3LjM5LjU4LjU4IDAgMCAwLS4zOC4yNC41NS41NSAwIDAgMC0uMDkuNDMuNTguNTggMCAwIDAgLjU3LjQ4aC4xMWEzNi42OCAzNi42OCAwIDAgMSA0LS4zNyAzNi45MyAzNi45MyAwIDAgMCAzLjg3LS4zNC41My41MyAwIDAgMCAuMzgtLjIzQS41NS41NSAwIDAgMCAyNyA2YS41OS41OSAwIDAgMC0uNTctLjQ5aC0uMXptLS4yNS0yLjI5Yy0xIC4xNS0yLjMyLjIyLTMuNTUuMjhhMzQuMzMgMzQuMzMgMCAwIDAtNC4xMS4zOC41Ny41NyAwIDAgMC0uNDYuNjcuNTguNTggMCAwIDAgLjU3LjQ4aC4xYTMzLjkyIDMzLjkyIDAgMCAxIDQtLjM1YzEuMjYtLjA3IDIuNTYtLjE0IDMuNjYtLjNhLjU3LjU3IDAgMCAwIC4zOC0uMjIuNTQuNTQgMCAwIDAgLjExLS40NC41OS41OSAwIDAgMC0uNTctLjVoLS4wOXoiIGZpbGw9IiNmZmYiLz48L2c+PC9zdmc+');
+        background-size: 45px 30px;
+        left: 33px;
+        top: 35px;
+        pointer-events: none;
+      }
+
+      .list-inner-container .story-svg, 
+      .list-inner-container .story-img-svg {
+        background-size: 40px 26px;
+        left: 4px;
+        top: 12px;
+      }
+      .list-inner-container .audio-svg {
+        left: 10px;
+        top: 10px;
+      }
+
+      .drag-dots-svg {
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTExIDE4YzAgMS4xLS45IDItMiAycy0yLS45LTItMiAuOS0yIDItMiAyIC45IDIgMnptLTItOGMtMS4xIDAtMiAuOS0yIDJzLjkgMiAyIDIgMi0uOSAyLTItLjktMi0yLTJ6bTAtNmMtMS4xIDAtMiAuOS0yIDJzLjkgMiAyIDIgMi0uOSAyLTItLjktMi0yLTJ6bTYgNGMxLjEgMCAyLS45IDItMnMtLjktMi0yLTItMiAuOS0yIDIgLjkgMiAyIDJ6bTAgMmMtMS4xIDAtMiAuOS0yIDJzLjkgMiAyIDIgMi0uOSAyLTItLjktMi0yLTJ6bTAgNmMtMS4xIDAtMiAuOS0yIDJzLjkgMiAyIDIgMi0uOSAyLTItLjktMi0yLTJ6IiBmaWxsPSIjNzY3Njc0Ii8+PC9zdmc+');
+        background-repeat: no-repeat;
+        width: 25px;
+        height: 25px;
+        margin-right: 10px; 
+      }
+
+      .audio-duration {
+        position: absolute;
+        top: 55px;
+        left: 40px;
+      }
+
+      .grey-text {
+        opacity: 0.7;
+      }
+
+      .hide {
+        opacity: 0;
+      }
+      
+      *[hidden] {
+        display: none !important;
+      }
+
+      #reorderModal .fs-dialog__close {
+        display: none;
+      }
+      
+      /* Only hide modal's "X" on non-mobile */
+      @media all and (min-width: 769px) {
+        fs-modal-dialog .fs-dialog-close {
+          background-image: none !important;
+          -webkit-appearance: none;
+          -webkit-touch-callout: none;
+          background-color: transparent;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: 10px;
+          border: none;
+          box-shadow: 0 0 0 transparent;
+          height: 48px;
+          height: 4rem;
+          line-height: 1;
+          opacity: 1;
+          padding: 0;
+          position: absolute;
+          right: 0;
+          top: 0;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          width: 48px;
+          width: 4rem;
+          color: inherit;
+          z-index: 2;
+        }
+      }
+      @media all and (max-width: 979px) {
+        :host {
+          padding-top:80px;
+        }
+      }
+
+      @media all and (max-width: 768px) {
+        fs-modal-dialog .fs-dialog__body {
+          padding: 15px 15px 60px 15px !important;
+        }
+      }
+    </style>
+    <fs-modal-dialog id="reorderModal" no-close-button keep-fullscreen on-fs-dialog-confirm="_saveReorder" on-drop="_handleDrop">
+      <header class="modal-header flex-row-between">
+        <div>
+          <h1>[[i18n('reorder_album')]]</h1>
+          <p>[[i18n('drag_drop_instructions')]]</p>
+        </div>
+        <button class="fs-dialog-close" on-click="_confirmCancelReorder" aria-label="Close">
+          <svg aria-hidden="true" width="13" height="13" viewBox="0 0 13 13" preserveAspectRatio="xMidYMin"><g transform="translate(-1.000000, -1.000000)"><path d="M13 2L2 13M2 2L13 13" stroke="currentColor" stroke-width="2.5"></path></g></svg>
+        </button>
+      </header>
+      <div id="dialogBody" class="fs-dialog__body" on-drop="_handleDrop">
+        <div class="artifact-container">
+          <template is="dom-repeat" items="[[fullArtifactsList]]">
+            <template is="dom-if" if="[[!listView]]">
+              <div data-id$="[[item.id]]" class="artifact-card" on-drag="_handleDrag" on-dragstart="_handleDragStart" on-dragend="_handleDragEnd" on-dragleave="_handleDragLeave" on-dragover="_handleDragOver">
+                <div draggable="true" class$="card-inner-container [[_overlayColorClass(item)]]" on-drop="_handleDrop">
+                  <div hidden$="[[hideTypeSVG(item)]]">
+                    <img class$="[[_artifactSVGClass(item)]]">
+                    <span hidden$="[[hideTypeAudio(item)]]" class="audio-duration" data-audio-id$="[[item.id]]">[[_getAudioFileDuration(item)]]</span>
+                  </div>
+                  <img class$="artifact-img [[_artifactImgClass(item)]]" src="[[item.thumbSquareUrl]]" on-error="setGreyPlaceholder">
+                  <div class="artifact-title" hidden="[[!item.title]]">
+                    <div class="title-container">
+                      <span>[[item.title]]</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <template is="dom-if" if="[[listView]]">
+              <div data-id$="[[item.id]]" class="artifact-list-item" on-drag="_handleDrag" on-dragstart="_handleDragStart" on-dragend="_handleDragEnd" on-dragleave="_handleDragLeave" on-dragover="_handleDragOver">
+                <div draggable="true" class$="list-inner-container [[_overlayColorClass(item)]]" on-drop="_handleDrop">
+                  <div class$="[[_listContainerClass(item)]]" hidden$="[[hideTypeSVG(item)]]">
+                    <img class$="[[_artifactSVGClass(item)]]">
+                  </div>
+                  <img class$="list-img [[_artifactImgClass(item)]]" src="[[item.thumbSquareUrl]]" on-error="setGreyPlaceholder">
+                  <div class="list-data-container">
+                    <span class$="[[_setListTextColor(item, 'title')]]">[[_returnListText(item, 'title', i18n)]]</span>
+                    <span class$="[[_setListTextColor(item, 'date')]]">[[_returnListText(item, 'date', i18n)]]</span>
+                    <span class$="[[_setListTextColor(item, 'place')]]">[[_returnListText(item, 'place', i18n)]]</span>
+                  </div>
+                  <i class="drag-dots-svg"></i>
+                </div>
+              </div>
+            </template>
+          </template>
+        </div>
+      </div>
+    </fs-modal-dialog>
+    <fs-modal-dialog id="discardConfirmationDialog" on-fs-dialog-confirm="_cancelReorder">
+      <header>
+        <h4>[[i18n('cancel_confirmation_header')]]</h4>
+      </header>
+      <div class="fs-dialog__body">[[i18n('cancel_confirmation_body')]]</div>
+      <footer>
+        <button class="fs-button fs-button--destructive" data-dialog-confirm>[[i18n('discard_changes')]]</button>
+        <button class="fs-button fs-button--minor" data-dialog-dismiss>[[i18n('continue_editing')]]</button>
+      </footer>
+    </fs-modal-dialog>
+  </template>
+</dom-module>
+<script>
+(function() {
+  // Set up dialog as a "global" dialog to prevent overlapping elments (on top of dialog)
+  FS.dialog.register('fs-album-reorder-dialog');
+  
+  Polymer({
+
+    is: 'fs-album-reorder-dialog',
+
+    behaviors: [
+      FsMemoriesFilterBehavior,
+      WCI18n(),
+      FsBehaviors.Metrics
+    ],
+
+    properties: {
+      // ELEMENT INPUTS
+      reorderAlbumExp: {
+        type: Boolean,
+        value: function(){ return FS.showEx('reorderAlbum'); }
+      },
+      disableReorderSave: {
+        type: Boolean,
+        value: true
+      },
+      _album: {
+        type: Object,
+        value: function() { return {}; },
+      },
+      /* When the 'arrange' filter is used, the 'artifacts' array can be reduced.
+         This array holds the full list of artifacts, despite filter. */
+      fullArtifactsList: {
+        type: Array,
+        value: function() { return []; }
+      },
+      draggedItemId: String,
+      dropTargetId: String,
+      dropRightSide: {
+        type: Boolean,
+        value: false
+      },
+      dropBottomSide: {
+        type: Boolean,
+        value: false
+      },
+      listView: {
+        type: Boolean,
+        value: false
+      }
+    },
+
+    resetValues: function() {
+      this._album = {};
+      this.set('fullArtifactsList', []);
+      this.notifyPath('fullArtifactList.*');
+      this.notifyPath('fullArtifactList.length');
+    },
+
+    setGreyPlaceholder: function(e) {
+      if (!e || !e.target) return;
+      e.target.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVR4nGO6AwAA4gDfCQGlpwAAAABJRU5ErkJggg==';
+    },
+
+    open: function(data) {
+      if (!data.album || !data.fullArtifactsList || !data.fullArtifactsList.length) return;
+      // Set initial artifacts order to account for change -> cancel
+      this._album = data.album;
+      this.listView = data.listView;
+      this.set('fullArtifactsList', data.fullArtifactsList.slice(0));
+      this.disableReorderSave = true;
+      this.$.reorderModal.open();
+    },
+
+    _getSimpleArtifactType: function(artifact) {
+      if (artifact.category !== 'IMAGE') {
+        if (artifact.category === 'AUDIO') return 'audio';
+        if (artifact.category === 'TEXT')  return 'story';
+      }
+      return 'image';
+    },
+
+    _artifactImgClass: function(artifact){
+      let type = this._getSimpleArtifactType(artifact);
+      if (type !== 'image') {
+        if (type === 'audio') {
+        if (this.listView && artifact.thumbSquareUrl) return 'audio-card listOpacity';
+        if (this.listView && !artifact.thumbSquareUrl) return 'audio-card emptyListMedia';
+          return 'audio-card';
+        }
+        if (type === 'story') {
+        if (this.listView && artifact.thumbSquareUrl) return 'story-card listOpacity';
+        if (this.listView && !artifact.thumbSquareUrl) return 'story-card emptyListMedia';
+          return 'story-card';
+        }
+      }
+      return '';
+    },
+
+    hideTypeSVG: function(artifact){
+      let type = this._getSimpleArtifactType(artifact);
+      return !!(type === 'image');
+    },
+
+    hideTypeAudio: function(artifact){
+      let type = this._getSimpleArtifactType(artifact);
+      return !!(type !== 'audio');
+    },
+
+    _artifactSVGClass: function(artifact){
+      let type = this._getSimpleArtifactType(artifact);
+      if (type !== 'image') {
+        if (type === 'audio') {
+          return 'audio-svg';
+        }
+        if (type === 'story') {
+          if (!artifact.thumbSquareUrl) return 'story-svg'
+          return 'story-img-svg';
+        }
+      }
+      return '';
+    },
+
+    _overlayColorClass: function(artifact){
+      let type = this._getSimpleArtifactType(artifact);
+      if (this.listView) return '';
+      if (type !== 'image') {
+        if (type === 'audio') {
+          return 'light-overlay';
+        }
+        if (type === 'story') {
+          if (!artifact.thumbSquareUrl) return 'light-overlay'
+        }
+      }
+      return 'dark-overlay';
+    },
+    _listContainerClass: function(artifact){
+      let type = this._getSimpleArtifactType(artifact);
+      if (type !== 'image') {
+        if (type === 'audio') {
+          return 'list-svg-container';
+        }
+        if (type === 'story') {
+          if (!artifact.thumbSquareUrl) return 'list-svg-container';
+          return 'list-svg-container dark';
+        }
+      }
+      return 'list-svg-container';
+    },
+
+    _returnListText: function(item, type, i18n) {
+      if (type === 'title') return item.title || i18n('no_title');
+      if (type === 'date') {
+        if (item.datesPlaces && item.datesPlaces[0].dateLocalizedText) {
+          return item.datesPlaces[0].dateLocalizedText;
+        }
+        return i18n('no_date');
+      }
+      if (type === 'place') {
+        if (item.datesPlaces && item.datesPlaces[0].placeLocalizedText) {
+          return item.datesPlaces[0].placeLocalizedText;
+        }
+        return i18n('no_place');
+      }
+    },
+    _setListTextColor: function(item, type) {
+      if (type === 'title' && !item.title) return 'grey-text';
+      if (type === 'date' && (!item.datesPlaces || !item.datesPlaces[0].dateLocalizedText)) {
+        return 'grey-text';
+      }
+      if (type === 'place' && (!item.datesPlaces || !item.datesPlaces[0].placeLocalizedText)) {
+        return 'grey-text';
+      }
+      return '';
+    },
+
+    _getAudioFileDuration: function(artifact) {
+      let type = this._getSimpleArtifactType(artifact);
+      if (type !== 'audio') return '';
+      const _audio = new Audio(artifact.url);
+      _audio.addEventListener('loadeddata',() => {
+        const minutes = _audio.duration / 60;
+        const seconds = Math.floor((minutes % 1) * 60);
+        const duration = Math.floor(_audio.duration / 60) + ':' + ((seconds < 10) ? ("0" + seconds) : seconds);
+
+        let audioSpan = this.shadowRoot.querySelector(`span[data-audio-id="${artifact.id}"]`);
+        if (audioSpan) audioSpan.innerHTML = duration;
+      })
+    },
+
+    _saveReorder: async function() {
+      let saveBtn = this.shadowRoot.querySelector('#saveBtn');
+      this.disableReorderSave = true;
+      saveBtn.classList.add('fs-button--loading');
+      let reorder = this.fullArtifactsList.map((item, i) => {
+          item.ordinal = i;
+        return item;
+      });
+      let url = `/artifactmanager/albums/${this._album.id}/items/positions`;
+      let config = {
+        method: 'PUT',
+        headers: new Headers({
+          'Authorization': 'Bearer ' + FS.User.sessionId,
+          'Cache-Control': 'no-cache' }),
+        body: JSON.stringify({ itemPosition: reorder})
+      };
+      try {
+        const resp = await FS.fetch(url, config);
+        this.artifacts = this.fullArtifactsList.slice(0);
+        this.fire('fs-album-reorder-dialog:showCustomOption');
+        this.fire('fs-album-reorder-dialog:setUpdatedArtifactsOrder', { artifacts: this.fullArtifactsList.slice(0) });
+        this.disableReorderSave = false;
+        saveBtn.classList.remove('fs-button--loading');
+        this.$.reorderModal.close();
+        this.resetValues();
+      } catch(err) {
+        console.error(err);
+      }
+    },
+
+    _confirmCancelReorder: function() {
+      // If reordered, prompt for confirmation of discard
+      if (!this.disableReorderSave) {
+        this.$.discardConfirmationDialog.open();
+      } else {
+        this.$.reorderModal.close();
+        this.resetValues();
+      }
+    },
+
+    _cancelReorder: function() {
+      this.$.discardConfirmationDialog.close();
+      this.$.reorderModal.close();
+      this.resetValues();
+    },
+
+    removeDragIndicatorStyles: function(e) {
+      if (!e || !e.target || !e.target.closest) return;
+      let contianerClassList = e.target.closest('div[data-id]').classList;
+      contianerClassList.remove('drag-over-right');
+      contianerClassList.remove('drag-over-left');
+      contianerClassList.remove('drag-over-top');
+      contianerClassList.remove('drag-over-bottom');
+    },
+
+    _handleDrag: function(e) {
+      if (!e) return;
+      let scrollBody = this.$.dialogBody;
+      if (e.clientY < 110) {
+        scrollBody.scrollBy(0, -15);
+      }
+
+      if (e.clientY > (scrollBody.clientHeight - 110)) {
+        scrollBody.scrollBy(0, 15);
+      }
+    },
+    _handleDragStart: function(e) {
+      e.dataTransfer.setData("text/plain", e.target.id);
+      e.dataTransfer.dropEffect = "move";
+      // Hide artifact-card of dragged item during drag
+      e.currentTarget.closest('div[data-id]').classList.add('hide');
+      this.draggedItemId = e.currentTarget.closest('div[data-id]').dataset.id;
+    },
+    _handleDragLeave: function(e) {
+      this.removeDragIndicatorStyles(e);
+    },
+    _handleDragOver: function(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      let card = e.currentTarget.closest('div[data-id]');
+      if (this.draggedItemId && this.draggedItemId !== card.dataset.id) {
+        this.dropTargetId = card.dataset.id;
+        if (this.listView) {
+          if (e.offsetY >= 25) {
+            this.dropBottomSide = true;
+            card.classList.remove('drag-over-top');
+            card.classList.add('drag-over-bottom');
+          } else {
+            this.dropBottomSide = false;
+            card.classList.remove('drag-over-bottom');
+            card.classList.add('drag-over-top');
+          }
+        } else {
+          if (e.offsetX >= 62) {
+            this.dropRightSide = true;
+            card.classList.remove('drag-over-left');
+            card.classList.add('drag-over-right');
+          } else {
+            this.dropRightSide = false;
+            card.classList.remove('drag-over-right');
+            card.classList.add('drag-over-left');
+          }
+        }
+      }
+    },
+    _handleDragEnd: function(e) {
+      e.preventDefault();
+      // This is only for when they drag to an unsupported drop zone (since that 
+      // doesn't fire '_handleDrop')
+      if (!this.draggedItemId) return;
+      // Restore visibility of card
+      let orig = this.shadowRoot.querySelector(`div[data-id="${this.draggedItemId}"]`);
+      if (orig) orig.classList.remove('hide');
+      this.removeDragIndicatorStyles(e);
+    },
+    _handleDrop: function(e) {
+      e.preventDefault();
+      let orig = this.shadowRoot.querySelector(`div[data-id="${this.draggedItemId}"]`);
+      if (orig) orig.classList.remove('hide');
+      // Detect 'drop' on invalid area
+      if (e.target.classList.contains('artifact-container') || e.target.classList.contains('fs-dialog__body')) {
+        return;
+      }
+      this.removeDragIndicatorStyles(e);
+      
+      let draggedItemIndex = this.fullArtifactsList.findIndex(item => item.id === parseInt(this.draggedItemId));
+      let droppedTargetIndex = this.fullArtifactsList.findIndex(item => item.id === parseInt(this.dropTargetId));
+      // Ensure we have a valid drag and drop index
+      if (draggedItemIndex !== -1 && droppedTargetIndex !== -1) {
+        let removedItem = this.fullArtifactsList.splice(draggedItemIndex, 1)[0];
+        let insertIndex; 
+        if (draggedItemIndex < droppedTargetIndex) {
+          if (this.listView) {
+            insertIndex = this.dropBottomSide ? droppedTargetIndex : (droppedTargetIndex - 1);
+          } else {
+            insertIndex = this.dropRightSide ? droppedTargetIndex : (droppedTargetIndex - 1);
+          }
+        } else if (draggedItemIndex > droppedTargetIndex) {
+          if (this.listView) {
+            insertIndex = this.dropBottomSide ? (droppedTargetIndex + 1) : droppedTargetIndex;
+          } else {
+            insertIndex = this.dropRightSide ? (droppedTargetIndex + 1) : droppedTargetIndex;
+          }
+        }
+        this.fullArtifactsList.splice(insertIndex, 0, removedItem);  
+        this.set('fullArtifactsList', this.fullArtifactsList.slice(0));
+        this.notifyPath(`fullArtifactsList.${insertIndex}`);
+        this.disableReorderSave = false;
+      }
+      this.dropBottomSide = false;
+      this.dropRightSide = false;
+      this.draggedItemId = '';
+    },
+    // _returnListImgSrc: function(item) {
+    //   if (item.thumbSquareUrl) return item.thumbSquareUrl;
+    //   let type = this._getSimpleArtifactType(item);
+    //   if (type === 'audio') return 'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIGJhc2VQcm9maWxlPSJ0aW55IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PHBhdGggZmlsbD0iIzMzMzMzMSIgZD0iTTI1LjAxOCAzNC4wOTZjLTMuODM4IDAtNy4wNTktMy4xNzgtNy44NDctNi4xMjJsLS4wMi0uMDc0aC0uMjI5Yy0uNDQ2IDAtLjgyMi0uNzUyLS44MjItMS4yMjR2LTQuNzMzYzAtLjQ2NC4zNjktLjg0Mi44MjItLjg0MmgxNy4xMjJhLjg2Ljg2IDAgMCAxIC44NTYuODQydjQuNzMzYzAgLjQ2MS0uNCAxLjIyNC0uODU2IDEuMjI0aC0uMjI4bC0uMDIxLjA3NGMtLjgwNCAyLjk5LTQuMDI1IDYuMjE2LTcuODI5IDYuMjE2bC0uOTQ4LS4wOTR6TTE2LjEgMTguOXYtNy45MjVjMC00Ljg5NCAzLjk3OS04Ljg3NSA4Ljg3LTguODc1bDEuMDQ4LjAwMWM0LjkgMCA4Ljg4MyAzLjk3OSA4Ljg4MyA4Ljg3MVYxOC45SDE2LjF6bTE0LjgyLTQuODE2Yy0uODc4IDAtMS41OTIuODI2LTEuNTkyIDEuODQycy43MTQgMS44NDIgMS41OTIgMS44NDJjLjg3OSAwIDEuNTk0LS44MjYgMS41OTQtMS44NDJzLS43MTUtMS44NDItMS41OTQtMS44NDJ6bS01LjQzOCAwYy0xLjAxNyAwLTEuODQzLjgyNi0xLjg0MyAxLjg0MmExLjg0NCAxLjg0NCAwIDAgMCAzLjY4NyAwIDEuODQ1IDEuODQ1IDAgMCAwLTEuODQ0LTEuODQyem0tNS40MTIgMGMtLjg3OCAwLTEuNTkzLjgyNi0xLjU5MyAxLjg0MnMuNzE1IDEuODQyIDEuNTkzIDEuODQyYy44NzkgMCAxLjU5NC0uODI2IDEuNTk0LTEuODQycy0uNzE1LTEuODQyLTEuNTk0LTEuODQyem0xMC44NS01LjE3NmMtLjg3OCAwLTEuNTkyLjgyNy0xLjU5MiAxLjg0NCAwIDEuMDE1LjcxNCAxLjg0MSAxLjU5MiAxLjg0MS44NzkgMCAxLjU5NC0uODI2IDEuNTk0LTEuODQxIDAtMS4wMTctLjcxNS0xLjg0NC0xLjU5NC0xLjg0NHptLTUuNDM4IDBhMS44NDQgMS44NDQgMCAxIDAgMS44NDQgMS44NDQgMS44NDYgMS44NDYgMCAwIDAtMS44NDQtMS44NDR6bS01LjQxMiAwYy0uODc4IDAtMS41OTMuODI3LTEuNTkzIDEuODQ0IDAgMS4wMTUuNzE1IDEuODQxIDEuNTkzIDEuODQxLjg3OSAwIDEuNTk0LS44MjYgMS41OTQtMS44NDEgMC0xLjAxNy0uNzE1LTEuODQ0LTEuNTk0LTEuODQ0em0xMC4xMDQtMy43MmMtLjc0MiAwLTEuMzQ2LjYwMy0xLjM0NiAxLjM0MyAwIC43NDIuNjA0IDEuMzQ1IDEuMzQ2IDEuMzQ1YTEuMzQ1IDEuMzQ1IDAgMCAwIDAtMi42ODh6bS05LjM1OC0uMDAzYTEuMzQ3IDEuMzQ3IDAgMCAwIDAgMi42OTJjLjc0MyAwIDEuMzQ4LS42MDQgMS4zNDgtMS4zNDUgMC0uNzQzLS42MDQtMS4zNDctMS4zNDgtMS4zNDd6bTQuNjY2LS43NDNhMS41OTUgMS41OTUgMCAwIDAgMCAzLjE4OGMuODc5IDAgMS41OTQtLjcxNSAxLjU5NC0xLjU5NHMtLjcxNS0xLjU5NC0xLjU5NC0xLjU5NHoiLz48cGF0aCBmaWxsPSIjMzMzMzMxIiBkPSJNMTMuOTkyIDQ2LjljLS40ODMgMC0uODkyLS4zOTktLjg5Mi0uODcxdi0uMTg5YzAtMS4yNDEgMS4wNDYtMi43NCAyLjM0Ni0yLjc0aDMuNTVjMS42NzQgMCAyLjgyNy0xLjE3MyAzLjYyOS0zLjY5bC4wMzMtLjEwNC0uMTA3LS4wMjNjLTYuODctMS40OTUtMTEuNDg2LTcuNTk1LTExLjQ4Ni0xNS4xNzhhMS42MTIgMS42MTIgMCAwIDEgMy4yMjMtLjAwNWMwIDcuMTE2IDQuODEyIDEyLjQ4MSAxMS4xOTIgMTIuNDgxIDYuMzgyIDAgMTEuMTkzLTUuMzc0IDExLjE5My0xMi41MDEgMC0uOTAzLjcyNC0xLjYzNyAxLjYxMy0xLjYzNy45MDMgMCAxLjYxMS42ODUgMS42MTEgMS41NiAwIDcuNzgxLTQuNTk3IDEzLjkzOC0xMS40MzggMTUuMzIybC0uMTEuMDIxLjAzNS4xMDZjLjggMi40ODkgMS45NDcgMy42NDggMy42MTEgMy42NDhoMy41NTRjMS4zMDIgMCAyLjM1MSAxLjQ5OSAyLjM1MSAyLjc0di4xODljMCAuNDcyLS40MTEuODcxLS44OTYuODcxSDEzLjk5MnoiLz48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDUwdjUwSDB6Ii8+PC9zdmc+';
+    //   if (type === 'story')  return 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjY2cHgiIGhlaWdodD0iNDFweCIgdmlld0JveD0iMCAwIDY2IDQxIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDwhLS0gR2VuZXJhdG9yOiBTa2V0Y2ggMy4zLjMgKDEyMDcyKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5waG90b3MtYW5kLXN0b3JpZXMtbWVkaXVtPC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGRlZnM+PC9kZWZzPgogICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc2tldGNoOnR5cGU9Ik1TUGFnZSI+CiAgICAgICAgPGcgaWQ9Ikdyb3VwIiBza2V0Y2g6dHlwZT0iTVNMYXllckdyb3VwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTMxLjAwMDAwMCwgLTYuMDAwMDAwKSI+CiAgICAgICAgICAgIDxnIGlkPSJwaG90b3MtYW5kLXN0b3JpZXMtbWVkaXVtLSstU3RvcmllcyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTMxLjAwMDAwMCwgNi4wMDAwMDApIiBza2V0Y2g6dHlwZT0iTVNTaGFwZUdyb3VwIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJwaG90b3MtYW5kLXN0b3JpZXMtbWVkaXVtIj4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMjguODM3Mjg1NywyOC41NTEyODU3IEwyOC43NTI0Mjg2LDI2LjY0NjcxNDMgQzI4LjcxOTQyODYsMjUuODcyIDI4LjEyNTQyODYsMjQuOTUyNzE0MyAyNy40MzQsMjQuNjAwNzE0MyBMMjIuNDE4LDIyLjA1MTg1NzEgTDIyLjQxOTU3MTQsMjIuMDI4Mjg1NyBDMjYuNDYxMjg1NywyMS41MTc1NzE0IDI3LjUzOTI4NTcsMTkuMDE0Mjg1NyAyNy41MzkyODU3LDE5LjAxNDI4NTcgQzI3LjUzOTI4NTcsMTkuMDE0Mjg1NyAyNC41NTUxNDI5LDE4LjI4NTE0MjkgMjUuNjk0NDI4NiwxMy44ODgyODU3IEMyNS43ODQsMTMuNTM5NDI4NiAyNS44MTM4NTcxLDEzLjIyMiAyNS44MjE3MTQzLDEyLjkyMTg1NzEgQzI2LjExNCwxMC41MjcgMjQuMzExNTcxNCw4LjExMDE0Mjg2IDIwLjgzMjQyODYsNy43NzcgQzE3LjM1NjQyODYsNy40NDU0Mjg1NyAxNS4xMzEyODU3LDkuNDc1NzE0MjkgMTQuOTU4NDI4NiwxMS44OCBDMTQuOTA4MTQyOSwxMi4xNzg1NzE0IDE0Ljg3ODI4NTcsMTIuNDk0NDI4NiAxNC45MDM0Mjg2LDEyLjg1NzQyODYgQzE1LjE4NDcxNDMsMTcuMzkxIDEyLjExNTcxNDMsMTcuNTM4NzE0MyAxMi4xMTU3MTQzLDE3LjUzODcxNDMgQzEyLjExNTcxNDMsMTcuNTM4NzE0MyAxMi43NTA1NzE0LDIwLjE4MzQyODYgMTYuNTk1ODU3MSwyMS40NjEgTDE2LjU5MjcxNDMsMjEuNDk0IEwxMS4xOTAxNDI5LDIzLjA0NSBDMTAuNDQ1Mjg1NywyMy4yNTg3MTQzIDkuNjg2Mjg1NzEsMjQuMDQ5MTQyOSA5LjUwNCwyNC44MDM0Mjg2IEM5LjUwNCwyNC44MDM0Mjg2IDkuMjcxNDI4NTcsMjUuNzMzNzE0MyA5LjA0MiwyNi42NTQ1NzE0IEwyOC44MzcyODU3LDI4LjU1MTI4NTcgTDI4LjgzNzI4NTcsMjguNTUxMjg1NyBaIiBpZD0iU2hhcGUiIGZpbGw9IiMzMzMzMzEiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMzMsNDAuNyBDMzEuNTA0LDQwLjY5ODQyODYgMzAuNzE2NzE0Myw0MC4yMTQ0Mjg2IDMwLjAyMzcxNDMsMzkuNzg4NTcxNCBDMjkuNTE3NzE0MywzOS40Nzc0Mjg2IDI5LjA3OTI4NTcsMzkuMjA4NzE0MyAyOC40ODUyODU3LDM5LjIwODcxNDMgTDEuNjA2LDM5LjIwODcxNDMgQzAuODA3NzE0Mjg2LDM5LjIwODcxNDMgMC4xNTcxNDI4NTcsMzguNTAxNTcxNCAwLjE1NzE0Mjg1NywzNy42MzEgQzAuMTg3LDM3LjE1MDE0MjkgNC40MjgyODU3MSw2LjU2MjI4NTcxIDQuNDcwNzE0MjksNi4yNTI3MTQyOSBDNC41NDkyODU3MSw1LjY4MDcxNDI5IDUuMDcxLDUuMjE0IDUuNjM1MTQyODYsNS4yMTQgTDYuNTM4NzE0MjksNS4yMTQgTDcuMzI0NDI4NTcsMC4yMzQxNDI4NTcgQzExLjAwOTQyODYsMS45OTQxNDI4NiAxNi40NDk3MTQzLDIuMzM4Mjg1NzEgMjEuMjU4Mjg1NywyLjY0MTU3MTQzIEMyNy40NzY0Mjg2LDMuMDM0NDI4NTcgMzIuODQ2LDMuMzcyMjg1NzEgMzIuODQ2LDYuNDYzMjg1NzEgTDMzLjE1NzE0MjksNi40NjMyODU3MSBDMzMuMTU3MTQyOSwzLjM3Mzg1NzE0IDM4LjUyNjcxNDMsMy4wMzQ0Mjg1NyA0NC43NDQ4NTcxLDIuNjQxNTcxNDMgQzQ5LjU1NSwyLjMzODI4NTcxIDU0Ljk5NTI4NTcsMS45OTQxNDI4NiA1OC42ODAyODU3LDAuMjM0MTQyODU3IEw1OS40NjEyODU3LDUuMjE0IEw2MC4zNjk1NzE0LDUuMjE0IEM2MC45MTk1NzE0LDUuMjE0IDYxLjQ1MDcxNDMsNS42OTAxNDI4NiA2MS41MzI0Mjg2LDYuMjUyNzE0MjkgQzYxLjU3MzI4NTcsNi41NjA3MTQyOSA2NS44MTMsMzcuMTQ4NTcxNCA2NS44NDI4NTcxLDM3LjYzNzI4NTcgQzY1Ljg0Mjg1NzEsMzguNTAxNTcxNCA2NS4xOTIyODU3LDM5LjIwODcxNDMgNjQuMzkyNDI4NiwzOS4yMDg3MTQzIEwzNy41MTQ3MTQzLDM5LjIwODcxNDMgQzM2LjkxOTE0MjksMzkuMjA4NzE0MyAzNi40ODIyODU3LDM5LjQ3NzQyODYgMzUuOTc0NzE0MywzOS43ODg1NzE0IEMzNS4yODAxNDI5LDQwLjIxNiAzNC40OTQ0Mjg2LDQwLjY5ODQyODYgMzMsNDAuNyBMMzMsNDAuNyBMMzMsNDAuNyBaIE01Ljc2ODcxNDI5LDMwLjg1NjU3MTQgTDUuODUwNDI4NTcsMzAuOTA4NDI4NiBDOC4yMjMyODU3MSwzMi4zOTAyODU3IDEzLjcwOTE0MjksMzIuNzggMTkuMDE0Mjg1NywzMy4xNTg3MTQzIEMyNC4zOTY0Mjg2LDMzLjU0MDU3MTQgMjkuOTYwODU3MSwzMy45MzY1NzE0IDMxLjg2NywzNS40NzgxNDI5IEwzMi4xMjE1NzE0LDM1LjY4NCBMMzIuMTIxNTcxNCw2LjUwMjU3MTQzIEMzMC4yMTU0Mjg2LDQuNDUwMjg1NzEgMjUuMDU0ODU3MSw0LjE5NTcxNDI5IDE5LjU5MjU3MTQsMy45Mjg1NzE0MyBDMTUuNTI4ODU3MSwzLjczMDU3MTQzIDExLjMyNTI4NTcsMy41MjMxNDI4NiA4LjczMjQyODU3LDIuNTUzNTcxNDMgTDguNTQwNzE0MjksMi40ODEyODU3MSBMNS43Njg3MTQyOSwzMC44NTY1NzE0IEw1Ljc2ODcxNDI5LDMwLjg1NjU3MTQgWiBNNTcuMjY2LDIuNTUzNTcxNDMgQzU0LjY3NjI4NTcsMy41MjQ3MTQyOSA1MC40NzI3MTQzLDMuNzMwNTcxNDMgNDYuNDA3NDI4NiwzLjkyODU3MTQzIEM0MC45NDM1NzE0LDQuMTk1NzE0MjkgMzUuNzgzLDQuNDUwMjg1NzEgMzMuOTE5Mjg1Nyw2LjM5NDE0Mjg2IEwzMy44NzY4NTcxLDM1LjY4MjQyODYgTDM0LjEzMTQyODYsMzUuNDc2NTcxNCBDMzYuMDQwNzE0MywzMy45MzY1NzE0IDQxLjYwNTE0MjksMzMuNTQwNTcxNCA0Ni45ODcyODU3LDMzLjE1NzE0MjkgQzUyLjI5NCwzMi43OCA1Ny43ODE0Mjg2LDMyLjM5MDI4NTcgNjAuMTUyNzE0MywzMC45MDY4NTcxIEw2MC4yMzYsMzAuODU1IEw1Ny40NTc3MTQzLDIuNDgxMjg1NzEgTDU3LjI2NiwyLjU1MzU3MTQzIEw1Ny4yNjYsMi41NTM1NzE0MyBaIiBpZD0iU2hhcGUiIGZpbGw9IiMzMzMzMzEiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8ZyBpZD0iR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDM3LjcxNDI4NiwgNy44NTcxNDMpIiBzdHJva2U9IiMzMzMzMzEiIHN0cm9rZS13aWR0aD0iMS4zMyI+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xMy4xNDgxNDI5LDIwLjAyNzg1NzEgQzguODA0NzE0MjksMjAuMzk3MTQyOSAzLjkyODU3MTQzLDIwLjU1OSAwLjQyNDI4NTcxNCwyMS4xOTciIGlkPSJTaGFwZSI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTcuODI2Mjg1NywxNC42NDI1NzE0IEMxMi44NDE3MTQzLDE1LjU0MyA1LjMxMTQyODU3LDE1LjQ1OTcxNDMgMC40MzUyODU3MTQsMTYuMzQ3NTcxNCIgaWQ9IlNoYXBlIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xNy4yOTY3MTQzLDkuOTA5NDI4NTcgQzEyLjM3ODE0MjksMTAuNzM3NTcxNCA1LjE3MTU3MTQzLDEwLjYzNTQyODYgMC40NDk0Mjg1NzEsMTEuNDk1IiBpZD0iU2hhcGUiPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTE2Ljc2NTU3MTQsNS4xNzYyODU3MSBDMTEuOTE0NTcxNCw1LjkzMzcxNDI5IDUuMDI4NTcxNDMsNS44MTI3MTQyOSAwLjQ2MDQyODU3MSw2LjY0NCIgaWQ9IlNoYXBlIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xNi4yMzYsMC40NDQ3MTQyODYgQzExLjQ1MSwxLjEzMTQyODU3IDQuODg4NzE0MjksMC45OSAwLjQ3NDU3MTQyOSwxLjc5MyIgaWQ9IlNoYXBlIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtcGF0aCIgeD0iMCIgeT0iMCIgd2lkdGg9IjY2IiBoZWlnaHQ9IjQwLjg1NzE0MjkiPjwvcmVjdD4KICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+';
+    // }
+  });
+})();
+</script>
