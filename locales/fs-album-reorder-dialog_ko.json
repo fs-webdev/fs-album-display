@@ -1,0 +1,14 @@
+{
+  "_LRM_PKTAG556": "fs-album-display_1_105 - FULL-FILE",
+  "cancel": "취소",
+  "cancel_confirmation_body": "정말로 취소하시겠습니까? 변경 내용이 저장되지 않습니다.",
+  "cancel_confirmation_header": "재정렬 변경 내용을 삭제하시겠습니까?",
+  "continue_editing": "편집 계속하기",
+  "discard_changes": "변경 내용 취소",
+  "drag_drop_instructions": "재정렬하려면 해당 품목을 끌어다 놓으십시오.",
+  "no_date": "생애 사건 날짜 없음",
+  "no_place": "생애 사건 장소 없음",
+  "no_title": "제목 없음",
+  "reorder_album": "앨범 재정렬",
+  "save": "저장"
+}

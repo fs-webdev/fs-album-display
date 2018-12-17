@@ -1,4 +1,5 @@
 {
+  "_LRM_PKTAG410": "fs-album-display_1_105 - CHANGES-ONLY",
   "add_desc": "설명 추가",
   "add_title": "제목 추가",
   "album_by": "앨범 제공자:",
@@ -10,6 +11,7 @@
   "edit_desc": "설명 편집",
   "edit_title": "제목 편집",
   "email": "이메일",
+  "reorder_album": "재정렬",
   "save": "저장",
   "share": "공유"
 }
