@@ -1,0 +1,14 @@
+{
+  "_LRM_PKTAG788": "fs-album-display_1_108 - FULL-FILE",
+  "cancel": "取消",
+  "cancel_confirmation_body": "確定要取消嗎？你所有的變更將不會儲存。",
+  "cancel_confirmation_header": "捨棄你的重新排序變更？",
+  "continue_editing": "繼續編輯",
+  "discard_changes": "捨棄變更",
+  "drag_drop_instructions": "拖放項目來重新把它們排序。",
+  "no_date": "沒有事項日期",
+  "no_place": "沒有事項地點",
+  "no_title": "無標題",
+  "reorder_album": "重新排序專輯",
+  "save": "儲存"
+}
