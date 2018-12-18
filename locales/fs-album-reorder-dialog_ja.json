@@ -1,0 +1,14 @@
+{
+  "_LRM_PKTAG754": "fs-album-display_1_104 - FULL-FILE",
+  "cancel": "キャンセル",
+  "cancel_confirmation_body": "ほんとうにキャンセルしたいですか？あなたの作業が保存されることはありません。",
+  "cancel_confirmation_header": "再注文の変更を破棄しますか。",
+  "continue_editing": "編集を続ける",
+  "discard_changes": "変更を破棄する",
+  "drag_drop_instructions": "それらの商品を再注文するには，それらをドラッグ・アンド・ドロップしてください。",
+  "no_date": "出来事の日付がありません",
+  "no_place": "出来事の場所がありません",
+  "no_title": "タイトルがありません",
+  "reorder_album": "アルバムを再注文する",
+  "save": "保存"
+}
