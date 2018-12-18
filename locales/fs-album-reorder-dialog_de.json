@@ -1,0 +1,14 @@
+{
+  "_LRM_PKTAG368": "fs-album-display_1_146 - FULL-FILE",
+  "cancel": "Abbrechen",
+  "cancel_confirmation_body": "Möchten Sie wirklich abbrechen? Ihre Änderungen werden nicht gespeichert.",
+  "cancel_confirmation_header": "Ihre Änderungen an der Anordnung verwerfen?",
+  "continue_editing": "Bearbeitung fortsetzen",
+  "discard_changes": "Änderungen verwerfen",
+  "drag_drop_instructions": "Ziehen Sie die Elemente an eine andere Stelle, um sie neu anzuordnen.",
+  "no_date": "Kein Datum zu dem Ereignis",
+  "no_place": "Kein Ort zu dem Ereignis",
+  "no_title": "Kein Titel",
+  "reorder_album": "Album neu ordnen",
+  "save": "Speichern"
+}
