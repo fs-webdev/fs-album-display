@@ -1,0 +1,14 @@
+{
+  "_LRM_PKTAG211": "fs-album-display_1_102 - FULL-FILE",
+  "cancel": "Annuler",
+  "cancel_confirmation_body": "Êtes-vous sûr de vouloir annuler ? Aucun des changements ne sera enregistré.",
+  "cancel_confirmation_header": "Annuler cette réorganisation ?",
+  "continue_editing": "Poursuivre la modification",
+  "discard_changes": "Ne pas tenir compte des changements",
+  "drag_drop_instructions": "Déplacez vos photos pour les remettre en ordre.",
+  "no_date": "Aucune date d’événement",
+  "no_place": "Aucun lieu d’événement",
+  "no_title": "Sans titre",
+  "reorder_album": "Réorganiser l’album",
+  "save": "Enregistrer"
+}
