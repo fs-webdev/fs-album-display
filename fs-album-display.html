@@ -224,11 +224,11 @@ Example:
         margin-bottom: 5px;
         padding-bottom: 5px;
       }
-      
+
       *[hidden] {
         display: none !important;
       }
-      
+
       @media all and (max-width: 979px) {
         :host {
           padding-top:80px;
@@ -263,7 +263,7 @@ Example:
     </style>
     <iron-ajax
       id='getPatron'
-      url="[[ajaxBase]]/artifactmanager/patrons/[[album.contributorPatronId]]?includeContactInfo=true&onlyPublicData=true"
+      url="[[ajaxBase]]/service/memories/manager/patrons/[[album.contributorPatronId]]?includeContactInfo=true&onlyPublicData=true"
       method='GET'
       headers='[[authHeaders]]'
       handle-as="json"
@@ -272,7 +272,7 @@ Example:
       bubbles
       id='req'
       method='POST'
-      url="[[ajaxBase]]/artifactmanager/albums/[[album.id]]"
+      url="[[ajaxBase]]/service/memories/manager/albums/[[album.id]]"
       handle-as="json"
       headers='[[authHeaders]]'
       loading='{{loading}}'
@@ -644,7 +644,7 @@ Example:
     _showReorderLink: function(reorderAlbumExp, readOnly) {
       if (reorderAlbumExp) {
         return readOnly ? true : false;
-      } 
+      }
       return true;
     },
 
