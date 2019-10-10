@@ -18,6 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../fs-metrics/fs-metrics.html">
 <link rel="import" href="../fs-memories-filter-behavior/fs-memories-filter-behavior.html">
 <link rel="import" href="../fs-album-display/fs-album-reorder-dialog.html">
+<link rel="import" href="../fs-social-menu/fs-social-menu.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -229,6 +230,10 @@ Example:
         display: none !important;
       }
 
+      #social_menu {
+        text-align: left;
+      }
+
       @media all and (max-width: 979px) {
         :host {
           padding-top:80px;
@@ -335,19 +340,15 @@ Example:
         [[i18n('add_desc')]]
       </span>
       <span class$='{{_updateShareStyles(showShare, readOnly)}}' hidden$='[[_hideShare(showShare, readOnly)]]'>
-        <div id="shareTip" class="tooltip-wrapper" style="display:none;" on-tap='_stopPropagation'>
-          <div class="share-tooltip">
-            <div>
-              <i class="email-icon"></i>
-              <a id="emailLink" data-test="ShareEmailLink" href$="{{_shareEmail(album.name, album.id, ajaxBase)}}" metrics-id="Album: Share: Email" on-tap="_metrics">
-                [[i18n('email')]]
-              </a>
-            </div>
-            <span class="divider"></span>
-            <clipboard-input value='[[_shareLink(album.id, ajaxBase)]]' metrics-id="Album: Share: Copy Link" on-tap="_metrics" title-text='[[i18n("copy")]]' copy-text="[[i18n('copy')]]" copied-text='[[i18n("copied")]]'></clipboard-input>
-          </div>
-        </div>
-        <span class='share-dropdown' data-test="AlbumShareBtn" on-tap="_toggleShare">[[i18n('share')]] ▾</span>
+        <fs-social-menu
+            id="social_menu"
+            metrics-id="Social Media Share"
+            config="[[socialConfig]]"
+            remain-open-on-resize
+            product-metric-prefix="mem">
+            <span id="show-social-menu" class='share-dropdown' data-test="AlbumShareBtn" on-tap="_toggleShare">[[i18n('share')]] ▾</span>
+          </fs-social-menu>
+        <!-- <span class='share-dropdown' data-test="AlbumShareBtn" on-tap="_toggleShare">[[i18n('share')]] ▾</span> -->
       </span>
       <span class='action delete' data-test="DeleteAlbumBtn" hidden$='[[readOnly]]' on-tap='_tryAlbumDelete'>
         [[i18n('delete_album')]]
@@ -498,6 +499,17 @@ Example:
 
     _getAlbumOwner: function(patron) {
       if (patron && this.showOwner && !this.loggedOut) this.$.getPatron.generateRequest();
+      this._updateSocial()
+    },
+
+    _updateSocial: function() {
+      if (!this.socialConfig) this.socialConfig = {};
+        this.socialConfig.uri = '/photos/gallery/album/' + this.album.id;
+        this.socialConfig.title = this.album.name;
+        this.socialConfig.desc = this.album.description;
+        this.socialConfig.media = this.album.thumbUrl;
+        this.socialConfig.thumb = this.album.thumbUrl;
+        this.socialConfig = Object.assign({}, this.socialConfig);
     },
 
     patronResponse: function(data) {
@@ -615,12 +627,15 @@ Example:
     },
 
     _toggleShare: function(e) {
-      e.stopPropagation();
-      var view = this.$.shareTip;
-      (view.style.display === 'none') ? view.style.display = 'block' : view.style.display = 'none';
+      // e.stopPropagation();
+      // var view = this.$.shareTip;
+      // (view.style.display === 'none') ? view.style.display = 'block' : view.style.display = 'none';
       this.listen(document, 'tap', '_closeShare');
 
       this.fireMetrics({link_name: 'Album: Share: Click'});
+      e.preventDefault();
+      e.stopPropagation();
+      this.$['social_menu'].toggle({target: this.$['show-social-menu']});
     },
 
     _tryAlbumDelete: function() {
