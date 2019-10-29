@@ -27,7 +27,7 @@
       .modal-action-btn {
         margin: 0 5px;
       }
-      .modal-footer-btn.fs-button.disabled, 
+      .modal-footer-btn.fs-button.disabled,
       .modal-footer-btn.fs-button:disabled {
         border: none;
         border-radius: 0;
@@ -157,7 +157,7 @@
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
         position: relative;
-        bottom: 52px;
+        bottom: 50px;
         padding: 5px 2px 18px 2px;
         box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.35), 0px 3px 2px 0px rgba(0,0,0,0.18);
       }
@@ -279,12 +279,12 @@
         opacity: 0.2;
       }
 
-      .list-img.audio-card:not(.listOpacity):not(.emptyListMedia), 
+      .list-img.audio-card:not(.listOpacity):not(.emptyListMedia),
       .list-img.story-card:not(.listOpacity):not(.emptyListMedia)  {
         opacity: 1;
       }
-      
-      .list-img.audio-card, 
+
+      .list-img.audio-card,
       .list-img.story-card  {
         position: relative;
       }
@@ -303,8 +303,8 @@
         opacity: 0;
       }
 
-      .audio-svg, 
-      .story-svg, 
+      .audio-svg,
+      .story-svg,
       .story-img-svg {
         background-repeat: no-repeat;
         background-color: transparent;
@@ -336,7 +336,7 @@
         pointer-events: none;
       }
 
-      .list-inner-container .story-svg, 
+      .list-inner-container .story-svg,
       .list-inner-container .story-img-svg {
         background-size: 40px 26px;
         left: 4px;
@@ -352,7 +352,7 @@
         background-repeat: no-repeat;
         width: 25px;
         height: 25px;
-        margin-right: 10px; 
+        margin-right: 10px;
       }
 
       .audio-duration {
@@ -368,7 +368,7 @@
       .hide {
         opacity: 0;
       }
-      
+
       *[hidden] {
         display: none !important;
       }
@@ -376,7 +376,7 @@
       #reorderModal .fs-dialog__close {
         display: none;
       }
-      
+
       /* Only hide modal's "X" on non-mobile */
       @media all and (min-width: 769px) {
         fs-modal-dialog .fs-dialog-close {
@@ -442,7 +442,7 @@
                   </div>
                   <img class$="artifact-img [[_artifactImgClass(item)]]" src="[[item.thumbSquareUrl]]" on-error="setGreyPlaceholder">
                   <div class="artifact-title" hidden="[[!item.title]]">
-                    <div class="title-container">
+                    <div class="title-container" title="[[item.title]]">
                       <span>[[item.title]]</span>
                     </div>
                   </div>
@@ -485,7 +485,7 @@
 (function() {
   // Set up dialog as a "global" dialog to prevent overlapping elments (on top of dialog)
   FS.dialog.register('fs-album-reorder-dialog');
-  
+
   Polymer({
 
     is: 'fs-album-reorder-dialog',
@@ -678,7 +678,7 @@
           item.ordinal = i;
         return item;
       });
-      let url = `/artifactmanager/albums/${this._album.id}/items/positions`;
+      let url = `/service/memories/manager/albums/${this._album.id}/items/positions`;
       let config = {
         method: 'PUT',
         headers: new Headers({
@@ -689,7 +689,16 @@
       try {
         const resp = await FS.fetch(url, config);
         this.artifacts = this.fullArtifactsList.slice(0);
-        this.fire('fs-album-reorder-dialog:showCustomOption');
+        const sortedAddedToAlbum = this.fullArtifactsList.slice(0).sort((a, b) => a.albumItemId - b.albumItemId);
+        const isSame = this.fullArtifactsList.every((item, index) => {
+          return item.albumItemId === sortedAddedToAlbum[index].albumItemId
+        });
+        // Don't show 'custom' order if reset to added to album order
+        if (!isSame) {
+          this.fire('fs-album-reorder-dialog:showCustomOption');
+        } else {
+          this.fire('fs-album-reorder-dialog:hideCustomOption');
+        }
         this.fire('fs-album-reorder-dialog:setUpdatedArtifactsOrder', { artifacts: this.fullArtifactsList.slice(0) });
         this.disableReorderSave = false;
         saveBtn.classList.remove('fs-button--loading');
@@ -777,7 +786,7 @@
     },
     _handleDragEnd: function(e) {
       e.preventDefault();
-      // This is only for when they drag to an unsupported drop zone (since that 
+      // This is only for when they drag to an unsupported drop zone (since that
       // doesn't fire '_handleDrop')
       if (!this.draggedItemId) return;
       // Restore visibility of card
@@ -794,13 +803,13 @@
         return;
       }
       this.removeDragIndicatorStyles(e);
-      
+
       let draggedItemIndex = this.fullArtifactsList.findIndex(item => item.id === parseInt(this.draggedItemId));
       let droppedTargetIndex = this.fullArtifactsList.findIndex(item => item.id === parseInt(this.dropTargetId));
       // Ensure we have a valid drag and drop index
       if (draggedItemIndex !== -1 && droppedTargetIndex !== -1) {
         let removedItem = this.fullArtifactsList.splice(draggedItemIndex, 1)[0];
-        let insertIndex; 
+        let insertIndex;
         if (draggedItemIndex < droppedTargetIndex) {
           if (this.listView) {
             insertIndex = this.dropBottomSide ? droppedTargetIndex : (droppedTargetIndex - 1);
@@ -814,7 +823,7 @@
             insertIndex = this.dropRightSide ? (droppedTargetIndex + 1) : droppedTargetIndex;
           }
         }
-        this.fullArtifactsList.splice(insertIndex, 0, removedItem);  
+        this.fullArtifactsList.splice(insertIndex, 0, removedItem);
         this.set('fullArtifactsList', this.fullArtifactsList.slice(0));
         this.notifyPath(`fullArtifactsList.${insertIndex}`);
         this.disableReorderSave = false;
