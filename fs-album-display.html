@@ -309,10 +309,10 @@ Example:
       on-response="_saveSuccess"></iron-ajax>
       <div id="album-toast-container">
         <fs-inline-alert id="liked-success" class="album-toast" type="success" hidden>
-          <p>[[i18n('album_liked_toast')]]</p>
+          <p>[[_handleAlbumToastText(i18n, album.name)]]</p>
         </fs-inline-alert>
         <fs-inline-alert id="unliked-success" class="album-toast" type="warning" hidden>
-          <p>[[i18n('album_unliked_toast')]]</p>
+          <p>[[_handleAlbumToastText(i18n, album.name, false)]]</p>
         </fs-inline-alert>
       </div>
     <!-- Title Display and Input -->
@@ -755,6 +755,12 @@ Example:
 
     _metrics: function(e) {
       this.fireMetrics(e);
+    },
+
+    _handleAlbumToastText: function(i18n, title, liked = true) {
+      if (!i18n) return;
+      const text = liked ? i18n('album_liked_toast') : i18n('album_unliked_toast');
+      if (text) return text.replace('{title}', title);
     },
 
     triggerAlbumLikeToast: function() {
