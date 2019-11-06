@@ -239,7 +239,7 @@ Example:
       #album-toast-container {
         hyphens: auto;
         position: relative;
-        top: 20px;
+        top: -25px;
       }
 
       .album-toast {
@@ -403,7 +403,7 @@ Example:
       <span class='action reorder' data-test="ReorderAlbumBtn" hidden$='[[_showReorderLink(reorderAlbumExp, readOnly)]]' on-click='_openReorderModal'>
         [[i18n('reorder_album')]]
       </span>
-      <span class="favorite" data-test="FavoriteAlbumBtn" hidden$="[[!readOnly]]">
+      <span class="favorite" data-test="FavoriteAlbumBtn" hidden$="[[_hideFavBtn(loggedIn, readOnly)]]">
         <fs-favorite-memory
           id="favorite_album"
           metrics-id="Favorite Album"
@@ -755,6 +755,11 @@ Example:
 
     _metrics: function(e) {
       this.fireMetrics(e);
+    },
+
+    _hideFavBtn: function(loggedIn, readOnly) {
+      if (!loggedIn) return true;
+      return readOnly ? false : true;
     },
 
     _handleAlbumToastText: function(i18n, title, liked = true) {
