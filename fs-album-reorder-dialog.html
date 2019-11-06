@@ -689,7 +689,16 @@
       try {
         const resp = await FS.fetch(url, config);
         this.artifacts = this.fullArtifactsList.slice(0);
-        this.fire('fs-album-reorder-dialog:showCustomOption');
+        const sortedAddedToAlbum = this.fullArtifactsList.slice(0).sort((a, b) => a.albumItemId - b.albumItemId);
+        const isSame = this.fullArtifactsList.every((item, index) => {
+          return item.albumItemId === sortedAddedToAlbum[index].albumItemId
+        });
+        // Don't show 'custom' order if reset to added to album order
+        if (!isSame) {
+          this.fire('fs-album-reorder-dialog:showCustomOption');
+        } else {
+          this.fire('fs-album-reorder-dialog:hideCustomOption');
+        }
         this.fire('fs-album-reorder-dialog:setUpdatedArtifactsOrder', { artifacts: this.fullArtifactsList.slice(0) });
         this.disableReorderSave = false;
         saveBtn.classList.remove('fs-button--loading');
