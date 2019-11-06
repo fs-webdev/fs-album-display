@@ -1,0 +1,14 @@
+{
+  "_LRM_PKTAG477": "fs-album-display_1_103 - FULL-FILE",
+  "cancel": "Annulla",
+  "cancel_confirmation_body": "Sei sicuro di voler annullare? Nessuna delle modifiche verrà salvata.",
+  "cancel_confirmation_header": "Scartare le modifiche all’ordinamento degli album?",
+  "continue_editing": "Continua a modificare",
+  "discard_changes": "Non salvare modifiche",
+  "drag_drop_instructions": "Trascina gli elementi per riordinarli.",
+  "no_date": "Nessuna data dell’evento",
+  "no_place": "Nessun luogo dell’evento",
+  "no_title": "Nessun titolo",
+  "reorder_album": "Riordina album",
+  "save": "Salva"
+}

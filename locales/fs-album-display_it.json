@@ -1,15 +1,18 @@
 {
-  "add_desc": "Aggiungi descrizione",
   "add_title": "Aggiungi titolo",
-  "album_by": "Album creato da:",
-  "cancel": "Annulla",
-  "copied": "Copiato",
-  "copy": "Copia",
-  "copy_link": "Copia collegamento",
-  "delete_album": "Cancella album",
-  "edit_desc": "Modifica descrizione",
   "edit_title": "Modifica titolo",
-  "email": "E-mail",
+  "add_desc": "Aggiungi descrizione",
+  "edit_desc": "Modifica descrizione",
   "save": "Salva",
-  "share": "Condividi"
+  "cancel": "Annulla",
+  "share": "Condividi",
+  "delete_album": "Cancella album",
+  "email": "E-mail",
+  "copy_link": "Copia collegamento",
+  "copy": "Copia",
+  "copied": "Copiato",
+  "album_by": "Album creato da:",
+  "reorder_album": "Riordina",
+  "album_liked_toast": "L’album {title} è stato aggiunto alla raccolta “I miei Mi piace” della Galleria.",
+  "album_unliked_toast": "L’album {title} è stato rimosso dalla raccolta “I miei Mi piace” della Galleria."
 }

@@ -1,15 +1,18 @@
 {
-  "add_desc": "Agregar descripción",
   "add_title": "Agregar título",
-  "album_by": "Álbum creado por:",
-  "cancel": "Cancelar",
-  "copied": "Copiado",
-  "copy": "Copiar",
-  "copy_link": "Copiar enlace",
-  "delete_album": "Eliminar álbum",
-  "edit_desc": "Editar descripción",
   "edit_title": "Editar título",
-  "email": "Correo electrónico",
+  "add_desc": "Agregar descripción",
+  "edit_desc": "Editar descripción",
   "save": "Guardar",
-  "share": "Compartir"
+  "cancel": "Cancelar",
+  "share": "Compartir",
+  "delete_album": "Eliminar álbum",
+  "email": "Correo electrónico",
+  "copy_link": "Copiar enlace",
+  "copy": "Copiar",
+  "copied": "Copiado",
+  "album_by": "Álbum creado por:",
+  "reorder_album": "Reordenar",
+  "album_liked_toast": "{title} el álbum se agregó a la colección “Me gustan” de tu Galería.",
+  "album_unliked_toast": "{title} el álbum se eliminó de la colección “Me gustan” de tu Galería."
 }

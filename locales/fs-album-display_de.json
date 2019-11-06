@@ -1,4 +1,5 @@
 {
+  "_LRM_PKTAG184": "fs-album-display_1_146 - CHANGES-ONLY",
   "add_desc": "Beschreibung hinzufügen",
   "add_title": "Titel hinzufügen",
   "album_by": "Album von:",
@@ -10,6 +11,7 @@
   "edit_desc": "Beschreibung bearbeiten",
   "edit_title": "Titel bearbeiten",
   "email": "E-Mail",
+  "reorder_album": "Neu ordnen",
   "save": "Speichern",
   "share": "Weitergeben"
 }
