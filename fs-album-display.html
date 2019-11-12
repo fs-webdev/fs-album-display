@@ -769,9 +769,11 @@ Example:
     },
 
     triggerAlbumLikeToast: function() {
+      this.fire('album-liked-success', this.album);
       this._displayToast('liked-success');
     },
     triggerAlbumUnlikeToast: function() {
+      this.fire('album-unliked-success', this.album);
       this._displayToast('unliked-success');
     },
     _hideAllToasts: function() {
