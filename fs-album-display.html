@@ -403,15 +403,17 @@ Example:
       <span class='action reorder' data-test="ReorderAlbumBtn" hidden$='[[_showReorderLink(reorderAlbumExp, readOnly)]]' on-click='_openReorderModal'>
         [[i18n('reorder_album')]]
       </span>
-      <span class="favorite" data-test="FavoriteAlbumBtn" hidden$="[[_hideFavBtn(loggedIn, readOnly)]]">
-        <fs-favorite-memory
-          id="favorite_album"
-          metrics-id="Favorite Album"
-          is-logged-in="[[loggedIn]]"
-          cis-id="[[cisId]]"
-          album-id="[[album.id]]">
-        </fs-favorite-memory>
-      </span>
+      <template is="dom-if" if="[[likeAlbumEx]]">
+        <span class="favorite" data-test="FavoriteAlbumBtn" hidden$="[[_hideFavBtn(loggedIn, readOnly)]]">
+          <fs-favorite-memory
+            id="favorite_album"
+            metrics-id="Favorite Album"
+            is-logged-in="[[loggedIn]]"
+            cis-id="[[cisId]]"
+            album-id="[[album.id]]">
+          </fs-favorite-memory>
+        </span>
+      </template>
     </div>
   </template>
 </dom-module>
@@ -533,7 +535,13 @@ Example:
       loggedIn: {
         type: Boolean,
         value: function(){ return Boolean(FS.User.sessionId); }
-      }
+      },
+      likeAlbumEx: {
+        type: Boolean,
+        value: function () {
+          return FS.showEx('likeAlbumEx');
+        }
+      },
     },
     observers: [
       '_getAlbumOwner(album.contributorPatronId)'
@@ -769,10 +777,12 @@ Example:
     },
 
     triggerAlbumLikeToast: function() {
+      if (!this.likeAlbumEx) return;
       this.fire('album-liked-success', this.album);
       this._displayToast('liked-success');
     },
     triggerAlbumUnlikeToast: function() {
+      if (!this.likeAlbumEx) return;
       this.fire('album-unliked-success', this.album);
       this._displayToast('unliked-success');
     },
