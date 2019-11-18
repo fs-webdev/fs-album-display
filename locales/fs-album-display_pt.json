@@ -13,6 +13,6 @@
   "copied": "Copiado",
   "album_by": "Álbum criado por: ",
   "reorder_album": "Reorganizar",
-  "album_liked_toast": "{title} o álbum foi acrescentado à coleção “Minhas curtidas” em sua galeria.",
-  "album_unliked_toast": "{title} o álbum foi removido da coleção “Minhas curtidas” em sua galeria."
+  "album_liked_toast": "O álbum {title} foi acrescentado à coleção “Minhas curtidas” em sua galeria.",
+  "album_unliked_toast": "O álbum {title} foi removido da coleção “Minhas curtidas” em sua galeria."
 }
