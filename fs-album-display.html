@@ -258,6 +258,11 @@ Example:
         opacity: 1;
       }
 
+      .album-name {
+        text-transform: capitalize;
+        font-style: italic;
+      }
+
       @media all and (max-width: 979px) {
         :host {
           padding-top:80px;
@@ -308,11 +313,11 @@ Example:
       body='[[_newAlbum]]'
       on-response="_saveSuccess"></iron-ajax>
       <div id="album-toast-container">
-        <fs-inline-alert id="liked-success" class="album-toast" type="success" hidden>
+        <fs-inline-alert id="likedSuccess" class="album-toast" type="success" hidden>
           <p>[[_handleAlbumToastText(i18n, album.name)]]</p>
         </fs-inline-alert>
-        <fs-inline-alert id="unliked-success" class="album-toast" type="warning" hidden>
-          <p>[[_handleAlbumToastText(i18n, album.name, false)]]</p>
+        <fs-inline-alert id="unlikedSuccess" class="album-toast" type="warning" hidden>
+          <p>[[_handleAlbumToastText(i18n, album.name, 0)]]</p>
         </fs-inline-alert>
       </div>
     <!-- Title Display and Input -->
@@ -771,26 +776,30 @@ Example:
     },
 
     _handleAlbumToastText: function(i18n, title, liked = true) {
-      if (!i18n) return;
-      const text = liked ? i18n('album_liked_toast') : i18n('album_unliked_toast');
-      if (text) return text.replace('{title}', title);
+      if (!i18n || !title) return;
+      const toastEl = liked ? this.$.likedSuccess : this.$.unlikedSuccess;
+      let text = liked ? i18n('album_liked_toast') : i18n('album_unliked_toast');
+      if (text) {
+        text = text.replace('{title}', `<span class="album-name">${title}</span>`);
+        toastEl.querySelector('p').innerHTML = text;
+      }
     },
 
     triggerAlbumLikeToast: function() {
       if (!this.likeAlbumEx) return;
       this.fire('album-liked-success', this.album);
-      this._displayToast('liked-success');
+      this._displayToast('likedSuccess');
     },
     triggerAlbumUnlikeToast: function() {
       if (!this.likeAlbumEx) return;
       this.fire('album-unliked-success', this.album);
-      this._displayToast('unliked-success');
+      this._displayToast('unlikedSuccess');
     },
     _hideAllToasts: function() {
-      this.$['unliked-success'].classList.remove('album-toast--show');
-      this.$['unliked-success'].hidden = true;
-      this.$['liked-success'].classList.remove('album-toast--show');
-      this.$['liked-success'].hidden = true;
+      this.$.unlikedSuccess.classList.remove('album-toast--show');
+      this.$.unlikedSuccess.hidden = true;
+      this.$.likedSuccess.classList.remove('album-toast--show');
+      this.$.likedSuccess.hidden = true;
     },
     _displayToast: function (toastId) {
       this._hideAllToasts();
