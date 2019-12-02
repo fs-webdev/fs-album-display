@@ -19,6 +19,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../fs-memories-filter-behavior/fs-memories-filter-behavior.html">
 <link rel="import" href="../fs-album-display/fs-album-reorder-dialog.html">
 <link rel="import" href="../fs-social-menu/fs-social-menu.html">
+<link rel="import" href="../fs-favorite-memory/fs-favorite-memory.html">
+<link rel="import" href="../fs-alert/fs-inline-alert.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -118,7 +120,7 @@ Example:
         margin: 0 0 13px;
       }
 
-      .meta-controls .action {
+      .meta-controls .action, .meta-controls .favorite {
         margin: var(--meta-control-margin);
         display: inline-block;
       }
@@ -234,6 +236,33 @@ Example:
         text-align: left;
       }
 
+      #album-toast-container {
+        hyphens: auto;
+        position: relative;
+        top: -25px;
+      }
+
+      .album-toast {
+        position: absolute;
+        /* Accounting for extra padding added by component */
+        max-width: calc(100% - 5.304rem);
+        opacity: 0;
+        transition: opacity 500ms;
+        text-align: left;
+        z-index: 99;
+        left: 0;
+        right: 0;
+      }
+
+      .album-toast--show {
+        opacity: 1;
+      }
+
+      .album-name {
+        text-transform: capitalize;
+        font-style: italic;
+      }
+
       @media all and (max-width: 979px) {
         :host {
           padding-top:80px;
@@ -283,6 +312,14 @@ Example:
       loading='{{loading}}'
       body='[[_newAlbum]]'
       on-response="_saveSuccess"></iron-ajax>
+      <div id="album-toast-container">
+        <fs-inline-alert id="likedSuccess" class="album-toast" type="success" hidden>
+          <p>[[_handleAlbumToastText(i18n, album.name)]]</p>
+        </fs-inline-alert>
+        <fs-inline-alert id="unlikedSuccess" class="album-toast" type="warning" hidden>
+          <p>[[_handleAlbumToastText(i18n, album.name, 0)]]</p>
+        </fs-inline-alert>
+      </div>
     <!-- Title Display and Input -->
     <div class="content title">
       <span class='action edit-title' on-click='_toggleEditTitle' hidden$='[[readOnly]]' data-test="EditAlbumTitle">
@@ -371,6 +408,17 @@ Example:
       <span class='action reorder' data-test="ReorderAlbumBtn" hidden$='[[_showReorderLink(reorderAlbumExp, readOnly)]]' on-click='_openReorderModal'>
         [[i18n('reorder_album')]]
       </span>
+      <template is="dom-if" if="[[likeAlbumEx]]">
+        <span class="favorite" data-test="FavoriteAlbumBtn" hidden$="[[_hideFavBtn(loggedIn, readOnly)]]">
+          <fs-favorite-memory
+            id="favorite_album"
+            metrics-id="Favorite Album"
+            is-logged-in="[[loggedIn]]"
+            cis-id="[[cisId]]"
+            album-id="[[album.id]]">
+          </fs-favorite-memory>
+        </span>
+      </template>
     </div>
   </template>
 </dom-module>
@@ -488,7 +536,17 @@ Example:
         value: function() {
           return FS.showEx('albumShareEx');
         }
-      }
+      },
+      loggedIn: {
+        type: Boolean,
+        value: function(){ return Boolean(FS.User.sessionId); }
+      },
+      likeAlbumEx: {
+        type: Boolean,
+        value: function () {
+          return FS.showEx('likeAlbumEx');
+        }
+      },
     },
     observers: [
       '_getAlbumOwner(album.contributorPatronId)'
@@ -497,6 +555,8 @@ Example:
     ready: function() {
       document.addEventListener('gallery-filter-behavior:unfiltered-album-artifacts', this._storeArtifactList.bind(this));
       document.addEventListener('fs-album-reorder-dialog:setUpdatedArtifactsOrder', this._updateArtifacts.bind(this));
+      document.addEventListener('album-successfully-liked', this.triggerAlbumLikeToast.bind(this));
+      document.addEventListener('album-successfully-unliked', this.triggerAlbumUnlikeToast.bind(this));
       this._titleInput = this.$$('#titleInput');
       this._descInput = this.$$('#descInput');
     },
@@ -708,6 +768,48 @@ Example:
 
     _metrics: function(e) {
       this.fireMetrics(e);
+    },
+
+    _hideFavBtn: function(loggedIn, readOnly) {
+      if (!loggedIn) return true;
+      return readOnly ? false : true;
+    },
+
+    _handleAlbumToastText: function(i18n, title, liked = true) {
+      if (!i18n || !title) return;
+      const toastEl = liked ? this.$.likedSuccess : this.$.unlikedSuccess;
+      let text = liked ? i18n('album_liked_toast') : i18n('album_unliked_toast');
+      if (text) {
+        text = text.replace('{title}', `<span class="album-name">${title}</span>`);
+        toastEl.querySelector('p').innerHTML = text;
+      }
+    },
+
+    triggerAlbumLikeToast: function() {
+      if (!this.likeAlbumEx) return;
+      this.fire('album-liked-success', this.album);
+      this._displayToast('likedSuccess');
+    },
+    triggerAlbumUnlikeToast: function() {
+      if (!this.likeAlbumEx) return;
+      this.fire('album-unliked-success', this.album);
+      this._displayToast('unlikedSuccess');
+    },
+    _hideAllToasts: function() {
+      this.$.unlikedSuccess.classList.remove('album-toast--show');
+      this.$.unlikedSuccess.hidden = true;
+      this.$.likedSuccess.classList.remove('album-toast--show');
+      this.$.likedSuccess.hidden = true;
+    },
+    _displayToast: function (toastId) {
+      this._hideAllToasts();
+      const toastEl = this.$[toastId];
+      if (toastEl.hidden) {
+        toastEl.hidden = false;
+        setTimeout(() => toastEl.classList.toggle('album-toast--show'), 100);
+        setTimeout(() => toastEl.classList.toggle('album-toast--show'), 3000);
+        setTimeout(() => toastEl.hidden = true, 3500);
+      }
     }
   });
 })();
