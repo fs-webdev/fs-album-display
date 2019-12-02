@@ -30,7 +30,7 @@
     "fs-dialog": "fs-webdev/fs-dialog#^5.0.3",
     "iron-media-query": "2.x",
     "fs-alert": "fs-webdev/fs-alert#2.x",
-    "fs-favorite-memory": "fs-webdev/fs-favorite-memory#like-albums"
+    "fs-favorite-memory": "fs-webdev/fs-favorite-memory#3.x"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
