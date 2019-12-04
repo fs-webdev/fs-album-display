@@ -557,8 +557,22 @@ Example:
       document.addEventListener('fs-album-reorder-dialog:setUpdatedArtifactsOrder', this._updateArtifacts.bind(this));
       document.addEventListener('album-successfully-liked', this.triggerAlbumLikeToast.bind(this));
       document.addEventListener('album-successfully-unliked', this.triggerAlbumUnlikeToast.bind(this));
+      this.addEventListener('fs_metrics_data', this._addAlbumToMetricsLinkName.bind(this));
       this._titleInput = this.$$('#titleInput');
       this._descInput = this.$$('#descInput');
+    },
+
+    /**
+     * Edits the link_name to place Album: in front of it.
+     *
+     * @param event
+     */
+    _addAlbumToMetricsLinkName: function(e) {
+      if (e && e.detail && e.detail.link_name) {
+        if (e.path[0].id === 'social_menu') {
+          e.detail.link_name = 'Album: ' + e.detail.link_name;
+        }
+      }
     },
 
     _storeArtifactList: function(e) {
