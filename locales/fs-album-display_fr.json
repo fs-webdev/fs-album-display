@@ -13,6 +13,6 @@
   "copied": "Copié",
   "album_by": "Album créé par :",
   "reorder_album": "Réorganiser",
-  "album_liked_toast": "L’album {title} a été ajouté à la collection « Mes favoris » dans votre galerie.",
-  "album_unliked_toast": "L’album {title} a été retiré de la collection « Mes favoris » de votre galerie."
+  "album_liked_toast": "L’album {title} a été ajouté à la collection « Mes favoris » dans votre Galerie.",
+  "album_unliked_toast": "L’album {title} a été retiré de la collection « Mes favoris » de votre Galerie."
 }
