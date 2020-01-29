@@ -1,0 +1,177 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../fs-styles/fs-styles.html">
+<link rel="import" href="../wc-i18n/wc-i18n.html">
+<link rel="import" href="../fs-metrics/fs-metrics.html">
+<link rel="import" href="../fs-inner-html/fs-inner-html.html">
+<link rel="import" href="../fs-dialog/fs-modal-dialog.html">
+<link rel="import" href="../fs-dialog/fs-anchored-dialog.html">
+<link rel="import" href="../fs-icon/fs-icon.html">
+
+<dom-module id="fs-album-slideshow">
+  <template>
+    <style include='fs-styles'>
+      .flex-row-between {
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+      }
+      .flex-column {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        align-content: center;
+      }
+      .flex-column span {
+        margin-bottom: 10px;
+        display: inline-block;
+      }
+      .flex-column span fs-icon {
+        vertical-align: sub;
+      }
+      .flex-column small:first-of-type {
+        margin-bottom: 15px;
+      }
+      .flex-column small:last-of-type {
+        margin-bottom: 5px;
+      }
+      .toggleSelects {
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      #slideshowOptions .fs-dialog__close {
+        display: none;
+      }
+      #slideshowOptions #dialogBody {
+        max-width: 260px;
+      }
+      .play-slideshow-btn-icon {
+        vertical-align: sub;
+        margin-right: 4px;
+      }
+      *[hidden] {
+        display: none !important;
+      }
+    </style>
+    <fs-modal-dialog id="reorderModal" keep-fullscreen>
+      <div id="dialogBody" class="fs-dialog__body">
+        <div>
+          hello slideshow
+          <p>Should play audio: [[playAudio]]</p>
+          <p>Should loop: [[loopSlideshow]]</p>
+        </div>
+      </div>
+    </fs-modal-dialog>
+    <!-- Slideshow Config modal -->
+    <fs-anchored-dialog id="slideshowOptions" forced-pointer-direction="up" no-fullscreen-mobile on-fs-dialog-confirm="beginSlideshow">
+      <div id="dialogBody" class="fs-dialog__body">
+        <div class="flex-column">
+          <small>[[i18n('slideshow_options_desc')]]</small>
+          <span on-click="togglePlayAudio" class="toggleSelects" role="switch">
+            <fs-icon icon="toggle-off-state-small" hidden="[[playAudio]]"></fs-icon>
+            <fs-icon icon="toggle-on-state-small" hidden="[[!playAudio]]"></fs-icon>
+            [[i18n('slideshow_options_play_audio')]]
+          </span>
+          <span on-click="toggleLoopSlideshow" class="toggleSelects" role="switch">
+            <fs-icon icon="toggle-off-state-small" hidden="[[loopSlideshow]]"></fs-icon>
+            <fs-icon icon="toggle-on-state-small" hidden="[[!loopSlideshow]]"></fs-icon>
+            [[i18n('slideshow_options_loop_slideshow')]]
+          </span>
+          <small>
+            <fs-inner-html value="[[handleOptionsCountDisplay(fullArtifactsList.length, i18n)]]"></fs-inner-html>
+          </small>
+        </div>
+        <button class="fs-button fs-button--recommended" data-dialog-confirm>
+          <span>
+            <fs-icon icon="play-small" color="var(--fs-color-white)" class="play-slideshow-btn-icon"></fs-icon>[[i18n('play_slideshow')]]
+          </span>
+        </button>
+      </div>
+    </fs-anchored-dialog>
+  </template>
+</dom-module>
+<script>
+(function() {
+  // Set up dialog as a "global" dialog to prevent overlapping elements (on top of dialog)
+  FS.dialog.register('fs-album-slideshow');
+
+  Polymer({
+
+    is: 'fs-album-slideshow',
+
+    behaviors: [
+      WCI18n(),
+      FsBehaviors.Metrics
+    ],
+
+    properties: {
+      albumSlideshowEx: {
+        type: Boolean,
+        value: function(){ return FS.showEx('albumSlideshowEx'); }
+      },
+      /**
+       * ? Are we using the full artifact list (even if they have an 'arrange by' selection showing less than all)?
+       */
+      fullArtifactsList: {
+        type: Array,
+        value: function() { return []; }
+      },
+      /**
+       * * Not sure I need the "album" data yet...
+       */
+      _album: {
+        type: Object,
+        value: function() { return {}; }
+      },
+      playAudio: {
+        type: Boolean,
+        value: false
+      },
+      loopSlideshow: {
+        type: Boolean,
+        value: false
+      }
+    },
+
+    /**
+     * TODO
+     * 
+     * * - Figure out if we are actually going to play audio files
+     * * - Confirm text is final and correlated
+     * * - Confirm transition time between slides
+     * * - Display photos
+     * * - Implement auto-transition
+     * * - Set up controls, in slideshow
+     * * - Confirm if "slideshow" option shows when logged out
+     * * - Set up "final" page overlay (replay and close) - based on loop preference
+     */
+
+    openSlideshowOptions: function(data) {
+      if (!data.album || !data.fullArtifactsList || !data.fullArtifactsList.length) return;
+      this._album = data.album;
+      this.set('fullArtifactsList', data.fullArtifactsList.slice(0));
+      this.$.slideshowOptions.open({ attachToElement: data.target });
+    },
+    beginSlideshow: function(e) {
+      if (e.target.id === 'slideshowOptions') {
+        this.$.slideshowOptions.close();
+        this.$.reorderModal.open();
+      }
+    },
+    handleOptionsCountDisplay: function(listLength, i18n) {
+      if (!i18n) return;
+      let text = i18n('slideshow_options_length');
+      if (text) {
+        text = text.replace('{count}', `<span>${listLength}</span>`);
+        text = text.replace('{min}', `<span>${listLength * 0.4}</span>`);
+        return text;
+      }
+    },
+    togglePlayAudio: function() {
+      this.playAudio = !this.playAudio;
+    },
+    toggleLoopSlideshow: function() {
+      this.loopSlideshow = !this.loopSlideshow;
+    }
+  });
+})();
+</script>

@@ -14,5 +14,6 @@
   "album_by": "Album by:",
   "reorder_album": "Reorder",
   "album_liked_toast": "The {title} album was added to the My Likes collection in your Gallery.",
-  "album_unliked_toast": "The {title} album was removed from the My Likes collection in your Gallery."
+  "album_unliked_toast": "The {title} album was removed from the My Likes collection in your Gallery.",
+  "album_slideshow": "Slideshow"
 }

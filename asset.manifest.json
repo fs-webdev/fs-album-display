@@ -2,5 +2,9 @@
   "bowerFiles": [
     "components/fs-album-display/fs-album-reorder-dialog.html"
   ],
-  "clientManifestFiles": []
+  "clientManifestFiles": [
+    "/components/fs-icons/dist/svg/toggle-on-state-small.svg",
+    "/components/fs-icons/dist/svg/toggle-off-state-small.svg",
+    "/components/fs-icons/dist/svg/play-small.svg"
+  ]
 }

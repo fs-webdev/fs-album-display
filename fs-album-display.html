@@ -18,9 +18,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../fs-metrics/fs-metrics.html">
 <link rel="import" href="../fs-memories-filter-behavior/fs-memories-filter-behavior.html">
 <link rel="import" href="../fs-album-display/fs-album-reorder-dialog.html">
+<link rel="import" href="../fs-album-display/fs-album-slideshow.html">
 <link rel="import" href="../fs-social-menu/fs-social-menu.html">
 <link rel="import" href="../fs-favorite-memory/fs-favorite-memory.html">
 <link rel="import" href="../fs-alert/fs-inline-alert.html">
+<link rel="import" href="../fs-icon/fs-icon.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -263,6 +265,14 @@ Example:
         font-style: italic;
       }
 
+      .slideshow-play-icon {
+        vertical-align: text-top;
+        margin-right: 4px;
+      }
+      .slideshow-play-icon svg {
+        transform: scale(0.85);
+      }
+
       @media all and (max-width: 979px) {
         :host {
           padding-top:80px;
@@ -408,6 +418,9 @@ Example:
       <span class='action reorder' data-test="ReorderAlbumBtn" hidden$='[[_showReorderLink(reorderAlbumExp, readOnly)]]' on-click='_openReorderModal'>
         [[i18n('reorder_album')]]
       </span>
+      <span class='action slideshow' data-test="AlbumSlideshowBtn" hidden='[[!albumSlideshowEx]]' on-click='_openSlideshowOptions'>
+        <fs-icon icon="play-small" color="var(--fs-color-blue-link)" class="slideshow-play-icon"></fs-icon>[[i18n('album_slideshow')]]
+      </span>
       <template is="dom-if" if="[[likeAlbumEx]]">
         <span class="favorite" data-test="FavoriteAlbumBtn" hidden$="[[_hideFavBtn(loggedIn, readOnly)]]">
           <fs-favorite-memory
@@ -515,6 +528,10 @@ Example:
       reorderAlbumExp: {
         type: Boolean,
         value: function(){ return FS.showEx('reorderAlbum'); }
+      },
+      albumSlideshowEx: {
+        type: Boolean,
+        value: function(){ return FS.showEx('albumSlideshowEx'); }
       },
       artifacts: {
         type: Array,
@@ -745,7 +762,7 @@ Example:
     },
 
     _openReorderModal: function() {
-      // If no artifacts in `fullArtifactsList`, assign `artifacts`. On rare occation
+      // If no artifacts in `fullArtifactsList`, assign `artifacts`. On rare occasion
       // the filter event is not fired, which populates the fullArtifactsList.
       if (!this.fullArtifactsList.length) this.fullArtifactsList = this.artifacts.slice(0);
 
@@ -753,6 +770,16 @@ Example:
         fullArtifactsList: this.fullArtifactsList,
         album: this.album,
         listView: this.listView
+      });
+    },
+
+    _openSlideshowOptions: function(e) {
+      if (!this.fullArtifactsList.length) this.fullArtifactsList = this.artifacts.slice(0);
+
+      FS.dialog.fsAlbumSlideshow.openSlideshowOptions({
+        fullArtifactsList: this.fullArtifactsList,
+        album: this.album,
+        target: Polymer.dom(e).rootTarget
       });
     },
 
