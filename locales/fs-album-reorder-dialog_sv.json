@@ -1,0 +1,13 @@
+{
+  "cancel": "Avbryt",
+  "cancel_confirmation_body": "Är du säker på att du vill avbryta? Ingen av dina ändringar kommer att sparas.",
+  "cancel_confirmation_header": "Vill du ta bort dina ordningsändringar?",
+  "continue_editing": "Fortsätt redigera",
+  "discard_changes": "Ta bort ändringar",
+  "drag_drop_instructions": "Dra och släpp objekten för att ändra ordning på dem.",
+  "no_date": "Inget händelsedatum",
+  "no_place": "Ingen händelseplats",
+  "no_title": "Ingen titel",
+  "reorder_album": "Ändra ordning i album",
+  "save": "Spara"
+}
