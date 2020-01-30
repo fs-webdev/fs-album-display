@@ -44,20 +44,38 @@
       #slideshowOptions #dialogBody {
         max-width: 260px;
       }
+      #slideShow #dialogBody {
+        padding: 0;
+      }
+      #slideShow .fs-dialog__close {
+        z-index: 1000;
+        color: #ffffff;
+      }
       .play-slideshow-btn-icon {
         vertical-align: sub;
         margin-right: 4px;
+      }
+      .slide-container {
+        background-color: #333331;
+        display: flex;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+      }
+      .slide-img {
+        max-width: 90vw;
+        max-height: 90vw;
       }
       *[hidden] {
         display: none !important;
       }
     </style>
-    <fs-modal-dialog id="reorderModal" keep-fullscreen>
+    <!-- Slideshow modal -->
+    <fs-modal-dialog id="slideShow" keep-fullscreen>
       <div id="dialogBody" class="fs-dialog__body">
-        <div>
-          hello slideshow
-          <p>Should play audio: [[playAudio]]</p>
-          <p>Should loop: [[loopSlideshow]]</p>
+        <div class="slide-container">
+          <img class="slide-img" src="[[getCurrentSlideSrc(currentSlideIndex, artifacts.length)]]" alt="[[getCurrentSlideAltText(currentSlideIndex, artifacts.length)]]"/>
         </div>
       </div>
     </fs-modal-dialog>
@@ -77,7 +95,7 @@
             [[i18n('slideshow_options_loop_slideshow')]]
           </span>
           <small>
-            <fs-inner-html value="[[handleOptionsCountDisplay(fullArtifactsList.length, i18n)]]"></fs-inner-html>
+            <fs-inner-html value="[[handleOptionsCountDisplay(artifacts.length, i18n)]]"></fs-inner-html>
           </small>
         </div>
         <button class="fs-button fs-button--recommended" data-dialog-confirm>
@@ -108,10 +126,7 @@
         type: Boolean,
         value: function(){ return FS.showEx('albumSlideshowEx'); }
       },
-      /**
-       * ? Are we using the full artifact list (even if they have an 'arrange by' selection showing less than all)?
-       */
-      fullArtifactsList: {
+       artifacts: {
         type: Array,
         value: function() { return []; }
       },
@@ -129,42 +144,115 @@
       loopSlideshow: {
         type: Boolean,
         value: false
+      },
+      // All time listed below is in Milliseconds
+      slideshowTransitionTime: {
+        type: Number,
+        value: 700
+      },
+      slideDisplayTime: {
+        type: Number,
+        value: 4000
+      },
+      totalSlideshowDuration: {
+        type: Number,
+        value: 0
+      },
+      currentSlideIndex: {
+        type: Number,
+        value: 0
+      },
+      activeInterval: {
+        type: Number,
+        value: 0
       }
     },
 
-    /**
-     * TODO
-     * 
-     * * - Figure out if we are actually going to play audio files
-     * * - Confirm text is final and correlated
-     * * - Confirm transition time between slides
-     * * - Display photos
-     * * - Implement auto-transition
-     * * - Set up controls, in slideshow
-     * * - Confirm if "slideshow" option shows when logged out
-     * * - Set up "final" page overlay (replay and close) - based on loop preference
-     */
-
     openSlideshowOptions: function(data) {
-      if (!data.album || !data.fullArtifactsList || !data.fullArtifactsList.length) return;
+      if (!data.album || !data.artifacts || !data.artifacts.length) return;
       this._album = data.album;
-      this.set('fullArtifactsList', data.fullArtifactsList.slice(0));
+      this.totalSlideshowDuration = 0;
+      this.validateArtifacts(data.artifacts);
       this.$.slideshowOptions.open({ attachToElement: data.target });
     },
+    
+    validateArtifacts: function(artifacts) {
+      // Don't need to check for 'Phaudios' since they will always be included with a photo filter 
+      const validGroup = artifacts.filter(item => (item.category === 'IMAGE' && item.contentCategory === 'PHOTO'));
+      
+      this.set('artifacts', validGroup.slice(0));
+    },
+
+    nextSlide: function() {
+      // invoke fade animation
+      if ((this.currentSlideIndex + 1) >= this.artifacts.length) {
+        clearInterval(this.activeInterval);
+      } else {
+        this.currentSlideIndex += 1;
+      }
+    },
+    prevSlide: function() {
+      // invoke fade animation
+      if ((this.currentSlideIndex - 1) < 0) {
+        clearInterval(this.activeInterval);
+      } else {
+        this.currentSlideIndex -= 1;
+      }
+    },
+
+    runSlides: function() {
+      this.activeInterval = setInterval(this.nextSlide.bind(this), this.slideDisplayTime);
+    },
+
     beginSlideshow: function(e) {
       if (e.target.id === 'slideshowOptions') {
         this.$.slideshowOptions.close();
-        this.$.reorderModal.open();
+        this.runSlides();
+        this.$.slideShow.open();
       }
     },
+
+    getAudioDuration: function(audioUrl) {
+      const audio = new Audio(audioUrl)
+      audio.addEventListener('loadedmetadata', () => {
+        this.totalSlideshowDuration += (audio.duration + this.slideshowTransitionTime);
+      })
+    },
+    calcSlideshowDuration: function(listLength) {
+      this.artifacts.forEach(item => {
+        if (item.associatedArtifacts && item.associatedArtifacts.length && items.associatedArtifacts[0].category === 'AUDIO') {
+          this.getAudioDuration(item.url);
+        } else {
+          this.totalSlideshowDuration += (this.slideDisplayTime + this.slideshowTransitionTime);
+        }
+      }) 
+    },
+
+    formatDisplayTime: function(timeInMS) {
+      const minutes = (Math.floor(Math.floor(timeInMS / 1000) / 60) % 60);
+      const seconds = (Math.floor(timeInMS / 1000) % 60);
+      const formattedSeconds = (seconds < 10) ? `0${seconds}` : seconds;
+      return `${minutes}:${formattedSeconds}`;
+    },
+
     handleOptionsCountDisplay: function(listLength, i18n) {
       if (!i18n) return;
       let text = i18n('slideshow_options_length');
       if (text) {
+        this.calcSlideshowDuration(listLength);
+
         text = text.replace('{count}', `<span>${listLength}</span>`);
-        text = text.replace('{min}', `<span>${listLength * 0.4}</span>`);
+        text = text.replace('{min}', `<span>${this.formatDisplayTime(this.totalSlideshowDuration)}</span>`);
         return text;
       }
+    },
+    getCurrentSlideSrc: function(_currentSlideIndex) {
+      if (!this.artifacts || !this.artifacts.length) return;
+      return this.artifacts[_currentSlideIndex].url;
+    },
+    getCurrentSlideAltText: function(_currentSlideIndex) {
+      if (!this.artifacts || !this.artifacts.length) return;
+      return this.artifacts[_currentSlideIndex].title || '';
     },
     togglePlayAudio: function() {
       this.playAudio = !this.playAudio;
