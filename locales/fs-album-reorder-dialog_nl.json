@@ -1,0 +1,13 @@
+{
+  "cancel": "Annuleren",
+  "cancel_confirmation_body": "Weet u zeker dat u wilt annuleren? Uw wijzigingen worden niet opgeslagen.",
+  "cancel_confirmation_header": "Uw wijzigingen bij het herschikken verwerpen?",
+  "continue_editing": "Doorgaan met bewerken",
+  "discard_changes": "Wijzigingen verwerpen",
+  "drag_drop_instructions": "Sleep en verplaats de items om ze te herschikken.",
+  "no_date": "Geen datum gebeurtenis",
+  "no_place": "Geen plaats gebeurtenis",
+  "no_title": "Geen titel",
+  "reorder_album": "Album herschikken",
+  "save": "Opslaan"
+}

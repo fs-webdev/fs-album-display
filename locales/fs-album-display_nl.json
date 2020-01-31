@@ -1,0 +1,18 @@
+{
+  "add_desc": "Beschrijving toevoegen",
+  "add_title": "Titel toevoegen",
+  "album_by": "Album door:",
+  "album_liked_toast": "Het album {title} is aan de collectie Mijn likes in uw galerij toegevoegd.",
+  "album_unliked_toast": "Het album {title} is uit de collectie Mijn likes in uw galerij verwijderd.",
+  "cancel": "Annuleren",
+  "copied": "Gekopieerd",
+  "copy": "Kopiëren",
+  "copy_link": "Link kopiëren",
+  "delete_album": "Album verwijderen",
+  "edit_desc": "Beschrijving bewerken",
+  "edit_title": "Titel bewerken",
+  "email": "E-mail",
+  "reorder_album": "Herschikken",
+  "save": "Opslaan",
+  "share": "Delen"
+}
