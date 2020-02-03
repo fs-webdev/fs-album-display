@@ -1,0 +1,13 @@
+{
+  "cancel": "Mégsem",
+  "cancel_confirmation_body": "Biztosan megszakítod a műveletet? Egyik változtatásod sem lesz elmentve.",
+  "cancel_confirmation_header": "Elveted az újrarendezési változtatásaidat?",
+  "continue_editing": "Szerkesztés folytatása",
+  "discard_changes": "Változások elvetése",
+  "drag_drop_instructions": "Húzd át a tételeket az újrarendezésükhöz.",
+  "no_date": "Az eseménynek nincs dátuma",
+  "no_place": "Az eseménynek nincs helye",
+  "no_title": "Nincs cím",
+  "reorder_album": "Album újrarendezése",
+  "save": "Mentés"
+}

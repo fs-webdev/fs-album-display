@@ -1,0 +1,13 @@
+{
+  "cancel": "Anuluj",
+  "cancel_confirmation_body": "Czy na pewno chcesz anulować? Żadne zmiany nie zostaną zapisane.",
+  "cancel_confirmation_header": "Czy chcesz odrzucić wprowadzone przez ciebie zmiany związane z ponownym zamówieniem?",
+  "continue_editing": "Edytuj dalej",
+  "discard_changes": "Odrzuć zmiany",
+  "drag_drop_instructions": "Przeciągnij i upuść wskazane pozycje, aby ponownie je zamówić.",
+  "no_date": "Brak daty wydarzenia",
+  "no_place": "Brak miejsca wydarzenia",
+  "no_title": "Brak tytułu",
+  "reorder_album": "Zamów ponownie album",
+  "save": "Zapisz"
+}

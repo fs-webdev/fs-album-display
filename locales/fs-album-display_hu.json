@@ -1,0 +1,18 @@
+{
+  "add_desc": "Leírás hozzáadása",
+  "add_title": "Cím hozzáadása",
+  "album_by": "Album:",
+  "album_liked_toast": "A(z) {title} album hozzáadásra került a Galéria Kedveléseim gyűjteményéhez.",
+  "album_unliked_toast": "A(z) {title} album eltávolításra került a Galéria Kedveléseim gyűjteményéből.",
+  "cancel": "Mégsem",
+  "copied": "Másolás megtörtént",
+  "copy": "Másolás",
+  "copy_link": "Hivatkozás másolása",
+  "delete_album": "Album törlése",
+  "edit_desc": "Leírás szerkesztése",
+  "edit_title": "Cím szerkesztése",
+  "email": "Ímél",
+  "reorder_album": "Újrarendezés",
+  "save": "Mentés",
+  "share": "Megosztás"
+}
