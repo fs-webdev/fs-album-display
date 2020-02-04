@@ -1,0 +1,13 @@
+{
+  "cancel": "Annuller",
+  "cancel_confirmation_body": "Er du sikker på, at du vil annullere? Ingen af dine ændringer vil blive gemt.",
+  "cancel_confirmation_header": "Kassér dine omorganiseringsændringer?",
+  "continue_editing": "Fortsæt redigering",
+  "discard_changes": "Se bort fra ændringerne",
+  "drag_drop_instructions": "Træk og slip genstandene for at omorganisere dem.",
+  "no_date": "Ingen begivenhedsdato",
+  "no_place": "Intet begivenhedssted",
+  "no_title": "Ingen titel",
+  "reorder_album": "Omorganiser album",
+  "save": "Gem"
+}

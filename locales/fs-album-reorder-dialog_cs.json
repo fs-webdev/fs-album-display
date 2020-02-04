@@ -1,0 +1,13 @@
+{
+  "cancel": "Zrušit",
+  "cancel_confirmation_body": "Opravdu chcete provedené změny zrušit? Žádné vaše změny nebudou uloženy.",
+  "cancel_confirmation_header": "Chcete změny v uspořádání alba zrušit?",
+  "continue_editing": "Pokračovat v úpravách",
+  "discard_changes": "Zrušit změny",
+  "drag_drop_instructions": "Tažením a puštěním jednotlivých položek změníte jejich pořadí v albu.",
+  "no_date": "Bez data události",
+  "no_place": "Bez místa události",
+  "no_title": "Bez názvu",
+  "reorder_album": "Změnit uspořádání alba",
+  "save": "Uložit"
+}

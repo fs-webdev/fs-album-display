@@ -1,0 +1,18 @@
+{
+  "add_desc": "Tilføj beskrivelse",
+  "add_title": "Tilføj titel",
+  "album_by": "Album ved:",
+  "album_liked_toast": "Dette {title} album blev tilføjet til samlingen Mine Synes godt om i dit galleri.",
+  "album_unliked_toast": "Dette {title} album blev fjernet fra samlingen Mine Synes godt om i dit galleri.",
+  "cancel": "Annuller",
+  "copied": "Kopieret",
+  "copy": "Kopiér",
+  "copy_link": "Kopier link",
+  "delete_album": "Slet album",
+  "edit_desc": "Rediger beskrivelse",
+  "edit_title": "Rediger titel",
+  "email": "E-mail",
+  "reorder_album": "Omorganiser",
+  "save": "Gem",
+  "share": "Del"
+}
