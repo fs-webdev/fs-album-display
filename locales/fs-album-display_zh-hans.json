@@ -1,0 +1,18 @@
+{
+  "add_desc": "加入说明",
+  "add_title": "加入标题",
+  "album_by": "专辑建立者：",
+  "album_liked_toast": "{title}专辑已加入你“忆廊”里“我的喜爱”收藏。",
+  "album_unliked_toast": "{title}专辑已从你“忆廊”里“我的喜爱”收藏中移除。",
+  "cancel": "取消",
+  "copied": "已复制",
+  "copy": "复制",
+  "copy_link": "复制连结",
+  "delete_album": "删除专辑",
+  "edit_desc": "标辑说明",
+  "edit_title": "编辑标题",
+  "email": "电子邮件",
+  "reorder_album": "重新排序",
+  "save": "储存",
+  "share": "分享"
+}

@@ -1,0 +1,13 @@
+{
+  "cancel": "取消",
+  "cancel_confirmation_body": "确定要取消吗？你所有的变更将不会储存。",
+  "cancel_confirmation_header": "舍弃你的重新排序变更？",
+  "continue_editing": "继续编辑",
+  "discard_changes": "舍弃变更",
+  "drag_drop_instructions": "拖放项目来重新把它们排序。",
+  "no_date": "没有事项日期",
+  "no_place": "没有事项地点",
+  "no_title": "无标题",
+  "reorder_album": "重新排序专辑",
+  "save": "储存"
+}
