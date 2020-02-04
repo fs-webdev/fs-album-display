@@ -1,0 +1,13 @@
+{
+  "cancel": "Peruuta",
+  "cancel_confirmation_body": "Haluatko varmasti peruuttaa? Mitään tekemiäsi muutoksia ei tallenneta.",
+  "cancel_confirmation_header": "Hylätäänkö uudelleenjärjestelyn muutokset?",
+  "continue_editing": "Jatka muokkausta",
+  "discard_changes": "Hylkää muutokset",
+  "drag_drop_instructions": "Järjestä kohteet uudelleen raahaamalla ja pudottamalla.",
+  "no_date": "Ei tapahtuman päivämäärää",
+  "no_place": "Ei tapahtuman paikkaa",
+  "no_title": "Ei otsikkoa",
+  "reorder_album": "Järjestä albumi uudelleen",
+  "save": "Tallenna"
+}

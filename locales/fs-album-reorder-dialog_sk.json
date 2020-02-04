@@ -1,0 +1,13 @@
+{
+  "cancel": "Zrušiť",
+  "cancel_confirmation_body": "Ste si istý, že chcete zrušiť tento krok? Žiadna z vašich zmien nebude uložená.",
+  "cancel_confirmation_header": "Odstrániť zmeny v poradí?",
+  "continue_editing": "Pokračovať v upravovaní",
+  "discard_changes": "Odstrániť zmeny",
+  "drag_drop_instructions": "Presuňte a vložte položky, aby ste mohli zmeniť ich poradie.",
+  "no_date": "Žiadny dátum udalosti",
+  "no_place": "Žiadne miesto udalosti",
+  "no_title": "Žiadny názov",
+  "reorder_album": "Reorganizovať album",
+  "save": "Uložiť"
+}

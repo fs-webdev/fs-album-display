@@ -1,0 +1,18 @@
+{
+  "add_desc": "Pridať popis",
+  "add_title": "Pridať názov",
+  "album_by": "Album od:",
+  "album_liked_toast": "Album {title} bol pridaný do zbierky Moje obľúbené vo vašej galérii.",
+  "album_unliked_toast": "Album {title} bol odstránený zo zbierky Moje obľúbené vo vašej galérii.",
+  "cancel": "Zrušiť",
+  "copied": "Skopírované",
+  "copy": "Kopírovať",
+  "copy_link": "Skopírujte link",
+  "delete_album": "Odstrániť album",
+  "edit_desc": "Upraviť popis",
+  "edit_title": "Upraviť názov",
+  "email": "Email",
+  "reorder_album": "Zmeniť poradie",
+  "save": "Uložiť",
+  "share": "Zdieľať"
+}
