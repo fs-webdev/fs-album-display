@@ -4,7 +4,6 @@
 <link rel="import" href="../fs-metrics/fs-metrics.html">
 <link rel="import" href="../fs-inner-html/fs-inner-html.html">
 <link rel="import" href="../fs-dialog/fs-modal-dialog.html">
-<link rel="import" href="../fs-dialog/fs-anchored-dialog.html">
 <link rel="import" href="../fs-icon/fs-icon.html">
 
 <dom-module id="fs-album-slideshow">
@@ -43,6 +42,7 @@
       }
       #slideshowOptions #dialogBody {
         max-width: 260px;
+        border-radius: 4px;
       }
       #slideShow #dialogBody {
         padding: 0;
@@ -57,30 +57,72 @@
       }
       .slide-container {
         background-color: #333331;
-        display: flex;
-        height: 100%;
-        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: 0;
+        max-height: 100%;
+        max-width: 100%;
         padding-top: 56px;
+      }
+      .img-container {
+        display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
+        height: 100%;
+        width: 100%;
       }
       .slide-img {
-        height: 100%;
+        max-height: 100%;
+        max-width: 100%;
+      }
+      .phaudio-container {
+        display: inline-block;
+        padding: 10px 25px;
+        border-radius: 90px;
+        background-color: #ffffff;
+        position: absolute;
+        top: 0;
+        left: 40px;
       }
       *[hidden] {
         display: none !important;
       }
+      @keyframes fadeIn {
+        0% {
+          opacity:0;
+        }
+        100% {
+          opacity:1;
+        }
+      }
+      @keyframes fadeOut {
+        0% {
+          opacity:1;
+        }
+        100% {
+          opacity:0;
+        }
+      }
     </style>
     <!-- Slideshow modal -->
-    <fs-modal-dialog id="slideShow" keep-fullscreen>
-      <div id="dialogBody" class="fs-dialog__body">
+    <fs-modal-dialog id="slideShow" keep-fullscreen on-fs-dialog-close="handleSlideshowClose">
+      <div role="dialog" id="dialogBody" class="fs-dialog__body">
         <div class="slide-container">
-          <img class="slide-img" src="[[getCurrentSlideSrc(currentSlideIndex, artifacts.length)]]" alt="[[getCurrentSlideAltText(currentSlideIndex, artifacts.length)]]"/>
+          <div class="img-container">
+            <div role="timer" class="phaudio-container" hidden$="[[!shouldShowPhaudioPlayer(currentSlideIndex, artifacts.length, totalSlideshowDurationWithAudio, playAudio)]]">
+              <fs-icon icon="audio-recording-small"></fs-icon>
+              <audio id="audioPlayer" src="[[getCurrentSlideAudioSrc(currentSlideIndex)]]" autoplay></audio>
+            </div>
+            <img id="slideImage" class="slide-img" src="[[getCurrentSlideSrc(currentSlideIndex, artifacts.length)]]" alt="[[getCurrentSlideAltText(currentSlideIndex, artifacts.length)]]" on-load="fadeInSlide" />
+          </div>
         </div>
       </div>
     </fs-modal-dialog>
     <!-- Slideshow Config modal -->
-    <fs-anchored-dialog id="slideshowOptions" forced-pointer-direction="up" on-fs-dialog-confirm="beginSlideshow">
+    <fs-modal-dialog id="slideshowOptions" transition="from-bottom" dismiss-on-blur on-fs-dialog-confirm="beginSlideshow">
       <div id="dialogBody" class="fs-dialog__body">
         <div class="flex-column">
           <small>[[i18n('slideshow_options_desc')]]</small>
@@ -95,22 +137,39 @@
             [[i18n('slideshow_options_loop_slideshow')]]
           </span>
           <small>
-            <fs-inner-html value="[[handleOptionsCountDisplay(artifacts.length, i18n)]]"></fs-inner-html>
+            <fs-inner-html value="[[slideshowCountAndTime]]"></fs-inner-html>
           </small>
         </div>
-        <button class="fs-button fs-button--recommended" data-dialog-confirm>
+        <button class="fs-button fs-button--recommended" data-dialog-confirm disabled="[[!artifacts.length]]">
           <span>
             <fs-icon icon="play-small" color="var(--fs-color-white)" class="play-slideshow-btn-icon"></fs-icon>[[i18n('play_slideshow')]]
           </span>
         </button>
       </div>
-    </fs-anchored-dialog>
+    </fs-modal-dialog>
   </template>
 </dom-module>
 <script>
 (function() {
   // Set up dialog as a "global" dialog to prevent overlapping elements (on top of dialog)
   FS.dialog.register('fs-album-slideshow');
+
+  // START of Fullscreen Polyfill
+  if (!Element.prototype.requestFullscreen) {
+    Element.prototype.requestFullscreen = Element.prototype.mozRequestFullscreen || Element.prototype.webkitRequestFullscreen || Element.prototype.msRequestFullscreen;
+  }
+  if (!document.exitFullscreen) {
+    document.exitFullscreen = document.mozExitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+  }
+
+  if (!document.fullscreenElement) {
+    Object.defineProperty(document, 'fullscreenElement', {
+      get: function() {
+        return document.mozFullScreenElement || document.msFullscreenElement || document.webkitFullscreenElement;
+      }
+    });
+  }
+  // END of Fullscreen Polyfill
 
   Polymer({
 
@@ -130,18 +189,25 @@
         type: Array,
         value: function() { return []; }
       },
-      /**
-       * * Not sure I need the "album" data yet...
-       */
-      _album: {
-        type: Object,
-        value: function() { return {}; }
-      },
       playAudio: {
+        type: Boolean,
+        value: true
+      },
+      loopSlideshow: {
+        type: Boolean,
+        value: true
+      },
+      isSlideshowPaused: {
         type: Boolean,
         value: false
       },
-      loopSlideshow: {
+      stopSlideshow: {
+        type: Boolean,
+        value: false
+      },
+      // Need to set a bool to know when speed has changed to update the
+      // initial slideshow time w/o having to re-calc the time every time they open it
+      speedHasChanged: {
         type: Boolean,
         value: false
       },
@@ -154,7 +220,15 @@
         type: Number,
         value: 4000
       },
-      totalSlideshowDuration: {
+      displayedSlideshowDuration: {
+        type: Number,
+        value: 0
+      },
+      totalSlideshowDurationWithAudio: {
+        type: Number,
+        value: 0
+      },
+      totalSlideshowDurationWithoutAudio: {
         type: Number,
         value: 0
       },
@@ -162,72 +236,240 @@
         type: Number,
         value: 0
       },
-      activeInterval: {
-        type: Number,
-        value: 0
+      slideshowCountAndTime: {
+        type: String,
+        value: ''
+      },
+      // Allowing the setTimeout to be ended (to clean up timer) when slideshow closes
+      activeTimeout: {
+        type: String,
+        value: ''
       }
     },
 
+    ready: function() {
+      document.addEventListener('keyup', this.handleKeyPress.bind(this));
+      // Fullscreenchange event isn't standardized yet
+      document.addEventListener('fullscreenchange', this.exitHandler.bind(this));
+      document.addEventListener('webkitfullscreenchange', this.exitHandler.bind(this));
+      document.addEventListener('mozfullscreenchange', this.exitHandler.bind(this));
+      document.addEventListener('MSFullscreenChange', this.exitHandler.bind(this));
+    },
+
+    // None of the "ESC" keyboard events work when in fullscreen
+    exitHandler: function (e) {
+      // fullscreenElement is 'null' when leaving fullscreen mode
+      if (!document.fullscreenElement) {
+        this.$.slideShow.close();
+      }
+    },
+
+    handleKeyPress: function(e) {
+      if (!this.isSlideshowOpen()) return;
+      switch (e.key) {
+        case " ": /* SPACE */
+          if (this.isSlideshowPaused) {
+            this.stopSlideshow = false;
+            this.isSlideshowPaused = false;
+            if (this.$.audioPlayer.canplay) this.$.audioPlayer.play();
+            this.runSlides();
+          } else {
+            // Pause the slideshow too
+            this.stopSlideshow = true;
+            this.$.audioPlayer.pause();
+            this.isSlideshowPaused = true;
+          }
+          break;
+        case "ArrowLeft": /* Left Arrow */
+          this.stopSlideshow = true;
+          clearTimeout(this.activeTimeout);
+          this.prevSlide();
+          break;
+        case "ArrowRight": /* Right Arrow */
+          this.stopSlideshow = true;
+          clearTimeout(this.activeTimeout);
+          this.nextSlide();
+          break;
+      
+        default:
+          break;
+      }
+    },
+
+    /**
+     * Resets some dynamic variables used in the slideshow
+     */
+    reset: function() {
+      this.currentSlideIndex = 0;
+      // Stop audio and reset track to beginning (they may have stopped on the first slide)
+      this.$.audioPlayer.pause();
+      this.$.audioPlayer.currentTime = 0;
+    },
+
+    /**
+     * Opens the initial slideshow options dialog
+     */
     openSlideshowOptions: function(data) {
-      if (!data.album || !data.artifacts || !data.artifacts.length) return;
-      this._album = data.album;
-      this.totalSlideshowDuration = 0;
-      this.validateArtifacts(data.artifacts);
-      this.$.slideshowOptions.open({ attachToElement: data.target });
+      const validArtifacts = (data.artifacts && data.artifacts.length) ? this.validateArtifacts(data.artifacts) : [];
+      // Make sure we have something "new" before resetting the artifacts array and other data
+      const artifactsString = JSON.stringify(this.artifacts);
+      const eventArtifactsString = JSON.stringify(validArtifacts);
+      if (artifactsString !== eventArtifactsString) {
+        this.reset();
+        this.displayedSlideshowDuration = 0;
+        this.set('artifacts', validArtifacts);
+      }
+      this.stopSlideshow = false;
+      this.setSlideshowCountAndTime();
+      this.$.slideshowOptions.open();
     },
     
+    /**
+     * Returns the "valid" set of artifacts in the album that can be used in the slideshow
+     * The currently valid types are:
+     * [Category] > [Content Category]
+     *    - IMAGE > PHOTOS (with or without associated audio files)
+     */
     validateArtifacts: function(artifacts) {
       // Don't need to check for 'Phaudios' since they will always be included with a photo filter 
       const validGroup = artifacts.filter(item => (item.category === 'IMAGE' && item.contentCategory === 'PHOTO'));
-      
-      this.set('artifacts', validGroup.slice(0));
+      return validGroup.slice(0);
     },
 
+    // Slide animation transitions
+    fadeInSlide: function() {
+      this.$.slideImage.style.animation = `300ms ease-in forwards fadeIn`;
+    },
+    fadeOutSlide: function() {
+      this.$.slideImage.style.animation = `${this.slideshowTransitionTime}ms ease-out forwards fadeOut`;
+    },
+
+    /**
+     * Moves to the next slide
+     */
     nextSlide: function() {
-      // invoke fade animation
-      if ((this.currentSlideIndex + 1) >= this.artifacts.length) {
-        clearInterval(this.activeInterval);
-      } else {
+      if ((this.currentSlideIndex + 1) < this.artifacts.length) {
+        this.fadeOutSlide();
         this.currentSlideIndex += 1;
+      } else if (this.currentSlideIndex === (this.artifacts.length - 1)) {
+        if (this.loopSlideshow) {
+          this.fadeOutSlide();
+          this.currentSlideIndex = 0;
+        } else {
+          // Slideshow is done
+          return;
+        }
       }
+      if (this.stopSlideshow) this.stopSlideshow = false;
+      this.runSlides();
     },
+
+    /**
+     * Moves to the previous slide
+     */
     prevSlide: function() {
-      // invoke fade animation
-      if ((this.currentSlideIndex - 1) < 0) {
-        clearInterval(this.activeInterval);
-      } else {
+      // If 'fadeOutSlide' is moved out here the slide would fade on a non-looping prev click on the first slide
+      if ((this.currentSlideIndex - 1) >= 0) {
+        this.fadeOutSlide();
         this.currentSlideIndex -= 1;
+      } else if ((this.currentSlideIndex === 0) && this.loopSlideshow) {
+        this.fadeOutSlide();
+        this.currentSlideIndex = this.artifacts.length - 1;
       }
+      if (this.stopSlideshow) this.stopSlideshow = false;
+      this.runSlides();
     },
 
-    runSlides: function() {
-      this.activeInterval = setInterval(this.nextSlide.bind(this), this.slideDisplayTime);
+    /**
+     * Timer to pause slide progression for the determined amount of time
+     */
+    timer: function(delay) {
+      return new Promise(res => {
+        this.activeTimeout = setTimeout(res, delay);
+      });
     },
 
+    /**
+     * Manages slide progression
+     */
+    runSlides: async function() {
+      if (this.stopSlideshow) return;
+      const delayTime = this.playAudio ? this.artifacts[this.currentSlideIndex].slideLength : this.slideDisplayTime;
+      await this.timer(delayTime - 200); // Allow time for image to render
+      if (!this.stopSlideshow) this.nextSlide();
+    },
+
+    /**
+     * Opens and kicks-off the slideshow
+     */
     beginSlideshow: function(e) {
-      if (e.target.id === 'slideshowOptions') {
+      if (e.target.id === 'slideshowOptions' && this.artifacts.length) {
         this.$.slideshowOptions.close();
         this.runSlides();
         this.$.slideShow.open();
+        this.$.slideShow.requestFullscreen();
       }
     },
 
-    getAudioDuration: function(audioUrl) {
-      const audio = new Audio(audioUrl)
-      audio.addEventListener('loadedmetadata', () => {
-        this.totalSlideshowDuration += (audio.duration + this.slideshowTransitionTime);
-      })
-    },
-    calcSlideshowDuration: function(listLength) {
-      this.artifacts.forEach(item => {
-        if (item.associatedArtifacts && item.associatedArtifacts.length && items.associatedArtifacts[0].category === 'AUDIO') {
-          this.getAudioDuration(item.url);
-        } else {
-          this.totalSlideshowDuration += (this.slideDisplayTime + this.slideshowTransitionTime);
-        }
-      }) 
+    /**
+     * Stops slideshow and resets slideshow state
+     */
+    handleSlideshowClose: function() {
+      clearTimeout(this.activeTimeout);
+      if (document.fullscreenElement) document.exitFullscreen();
+      this.stopSlideshow = true;
+      this.reset();
     },
 
+    handleAudioTimeUpdate: function(audioEl, artifactIndex) {
+      let offset = 0;
+        const dur = (audioEl.duration * 1000); // Audio duration is given in seconds
+        // Phaudios shouldn't prevent photo from showing for at least the 'slideDisplayTime'
+        if (dur < this.slideDisplayTime) offset = this.slideDisplayTime - dur;
+        this.artifacts[artifactIndex].slideLength = (dur + offset);
+        this.totalSlideshowDurationWithAudio += (dur + this.slideshowTransitionTime + offset);
+
+        if (this.playAudio) {
+          this.displayedSlideshowDuration = this.playAudio ? this.totalSlideshowDurationWithAudio : this.totalSlideshowDurationWithoutAudio;
+          this.setSlideshowCountAndTime();
+        }
+    },
+
+    /**
+     * Obtain the audio file duration via the Audio API
+     */
+    getAudioDuration: function(audioUrl, artifactIndex) {
+      const audio = new Audio(audioUrl)
+      audio.addEventListener('loadedmetadata', () => { this.handleAudioTimeUpdate(audio, artifactIndex) })
+    },
+
+    /**
+     * Determines the duration of the slideshow, with and without audio playing.
+     */
+    calcSlideshowDuration: function() {
+      const nonAudioSlideTime = (this.slideDisplayTime + this.slideshowTransitionTime);
+      // Add up all slide times (all images show regardless of audio playing)
+      this.totalSlideshowDurationWithoutAudio = (this.artifacts.length * nonAudioSlideTime);
+      this.totalSlideshowDurationWithAudio = 0;
+
+      this.artifacts.forEach((item, index) => {
+        if (item.associatedArtifacts && item.associatedArtifacts.artifact.length && item.associatedArtifacts.artifact[0].category === 'AUDIO') {
+          item.hasPhaudio = true;
+          // Get Audio time and add it to totalSlideshowDurationWithAudio
+          this.getAudioDuration(item.associatedArtifacts.artifact[0].url, index);
+        } else {
+          // Add all the non-audio slide times to 'totalSlideshowDurationWithAudio'
+          this.totalSlideshowDurationWithAudio += nonAudioSlideTime;
+          item.slideLength = this.slideDisplayTime;
+        }
+      });
+
+      this.displayedSlideshowDuration = this.playAudio ? this.totalSlideshowDurationWithAudio : this.totalSlideshowDurationWithoutAudio;
+    },
+
+    /**
+     * Formats the slideshow time shown in a "[minutes]:[seconds (2-digit)]" format
+     */
     formatDisplayTime: function(timeInMS) {
       const minutes = (Math.floor(Math.floor(timeInMS / 1000) / 60) % 60);
       const seconds = (Math.floor(timeInMS / 1000) % 60);
@@ -235,30 +477,69 @@
       return `${minutes}:${formattedSeconds}`;
     },
 
-    handleOptionsCountDisplay: function(listLength, i18n) {
-      if (!i18n) return;
-      let text = i18n('slideshow_options_length');
+    /**
+     * Updates the displayed slide count and slideshow duration
+     */
+    setSlideshowCountAndTime: function() {
+      if (!this.i18n) return;
+      let text = this.i18n('slideshow_options_length');
       if (text) {
-        this.calcSlideshowDuration(listLength);
+        if ((!this.displayedSlideshowDuration || this.speedHasChanged) && this.artifacts.length) this.calcSlideshowDuration();
 
-        text = text.replace('{count}', `<span>${listLength}</span>`);
-        text = text.replace('{min}', `<span>${this.formatDisplayTime(this.totalSlideshowDuration)}</span>`);
-        return text;
+        text = text.replace('{count}', `<span>${this.artifacts.length}</span>`);
+        text = text.replace('{min}', `<span>${this.formatDisplayTime(this.displayedSlideshowDuration)}</span>`);
+        this.slideshowCountAndTime = text;
       }
     },
-    getCurrentSlideSrc: function(_currentSlideIndex) {
-      if (!this.artifacts || !this.artifacts.length) return;
-      return this.artifacts[_currentSlideIndex].url;
+
+    /**
+     * Returns bool of if slideshow is open
+     */
+    isSlideshowOpen: function() {
+      return !!this.$.slideShow.opened;
     },
-    getCurrentSlideAltText: function(_currentSlideIndex) {
-      if (!this.artifacts || !this.artifacts.length) return;
-      return this.artifacts[_currentSlideIndex].title || '';
+
+    /**
+     * Returns the 'url' from the current slide (for displaying the photo)
+     */
+    getCurrentSlideSrc: function(currentSlideIndex) {
+      if (!this.artifacts || !this.artifacts.length) return '';
+      return this.artifacts[currentSlideIndex].url;
     },
+    /**
+     * Returns the 'title' from the current slide (for 'alt' text)
+     */
+    getCurrentSlideAltText: function(currentSlideIndex) {
+      if (!this.artifacts || !this.artifacts.length) return '';
+      return this.artifacts[currentSlideIndex].title || '';
+    },
+    /**
+     * Returns the 'associated audio' source from the current slide
+     */
+     getCurrentSlideAudioSrc: function(currentSlideIndex) {
+      if (!this.artifacts || !this.artifacts.length || !this.playAudio || !this.artifacts[currentSlideIndex].hasPhaudio) return '';
+      return this.artifacts[currentSlideIndex].associatedArtifacts.artifact[0].url || '';
+    },
+    /**
+     * Toggles the "play photo-audio" slider and updates the displayed slideshow duration
+     */
     togglePlayAudio: function() {
       this.playAudio = !this.playAudio;
+      this.displayedSlideshowDuration = this.playAudio ? this.totalSlideshowDurationWithAudio : this.totalSlideshowDurationWithoutAudio;
+      this.setSlideshowCountAndTime();
     },
+    /**
+     * Toggles the "loop slideshow" slider
+     */
     toggleLoopSlideshow: function() {
       this.loopSlideshow = !this.loopSlideshow;
+    },
+    /**
+     * Determines if the Phaudio player should be shown
+     */
+    shouldShowPhaudioPlayer: function(currentSlideIndex, artifactsLength) {
+      if (!artifactsLength) return false;
+      return this.artifacts[currentSlideIndex].hasPhaudio && this.playAudio;
     }
   });
 })();
