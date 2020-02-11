@@ -686,7 +686,12 @@
      */
     getCurrentSlideSrc: function(currentSlideIndex) {
       if (!this.artifacts || !this.artifacts.length) return '';
-      return this.artifacts[currentSlideIndex].url;
+      const current = this.artifacts[currentSlideIndex];
+      if (current.mimeType === 'image/tiff') {
+        // Most browsers can't display Tiff files, have to use the generated jpg
+        return current.deepZoomLiteUrl || current.thumbUrl;
+      }
+      return current.url;
     },
     /**
      * Returns the 'title' from the current slide (for 'alt' text)
