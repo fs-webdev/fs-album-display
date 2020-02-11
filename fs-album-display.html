@@ -122,10 +122,16 @@ Example:
         margin: 0 0 13px;
       }
 
-      .meta-controls .action, .meta-controls .favorite {
+      .meta-controls .action {
         margin: var(--meta-control-margin);
         display: inline-block;
       }
+      
+      .meta-controls .favorite {
+        display: inline-flex;
+        align-items: baseline;
+      }
+      
 
       .meta-controls .action:before {
         display: inline-block;
@@ -422,7 +428,7 @@ Example:
         <fs-icon icon="play-small" color="var(--fs-color-blue-link)" class="slideshow-play-icon"></fs-icon>[[i18n('album_slideshow')]]
       </span>
       <template is="dom-if" if="[[likeAlbumEx]]">
-        <span class="favorite" data-test="FavoriteAlbumBtn" hidden$="[[_hideFavBtn(loggedIn, readOnly)]]">
+        <span class="action favorite" data-test="FavoriteAlbumBtn" hidden$="[[_hideFavBtn(loggedIn, readOnly)]]">
           <fs-favorite-memory
             id="favorite_album"
             metrics-id="Favorite Album"

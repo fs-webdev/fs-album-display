@@ -37,12 +37,16 @@
         -webkit-user-select: none;
         user-select: none;
       }
+      .toggleSelects fs-icon {
+        margin-right: 5px;
+      }
       #slideshowOptions .fs-dialog__close {
         display: none;
       }
       #slideshowOptions #dialogBody {
         max-width: 260px;
         border-radius: 4px;
+        padding: 15px 20px;
       }
       #slideShow #dialogBody {
         padding: 0;
@@ -74,21 +78,109 @@
         height: 100%;
         width: 100%;
       }
+      .end-of-slideshow-container {
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+      }
+      .end-of-slideshow-container > * {
+        color: #ffffff;
+      }
+      .end-btn-container {
+        width: 160px;
+        margin-top: 20px;
+      }
+      .end-btn {
+        height: 72px;
+        width: 72px;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+        border-radius: 4px;
+      }
+      .end-btn:hover {
+        cursor: pointer;
+      }
+      .end-btn span {
+        margin-bottom: 0;
+        margin-top: 5px;
+      }
       .slide-img {
         max-height: 100%;
         max-width: 100%;
       }
       .phaudio-container {
-        display: inline-block;
-        padding: 10px 25px;
-        border-radius: 90px;
+        display: inline-flex;
+        align-items: baseline;
+        padding: 15px 25px;
         background-color: #ffffff;
+        border-radius: 90px;
         position: absolute;
-        top: 0;
         left: 40px;
+        top: 0;
       }
       *[hidden] {
         display: none !important;
+      }
+      .playing-animation {
+        height: 17px;
+        width: 17px;
+      }
+      .bars-container {
+        position: relative;
+        margin: 0 10px;
+      }
+      .bar {
+        background: #666666;
+        bottom: 1px;
+        height: 3px;
+        position: absolute;
+        width: 3px;
+        animation: sound 0ms -800ms linear infinite alternate;
+        transition: 1s all ease;
+      }
+
+      .paused .bar {
+        animation: none;
+      }
+      .bar:nth-child(1) {
+        left: 1px;
+        animation-duration: 474ms;
+      }
+
+      .bar:nth-child(2) {
+        left: 5px;
+        animation-duration: 433ms;
+      }
+
+      .bar:nth-child(3) {
+        left: 9px;
+        animation-duration: 407ms;
+      }
+
+      .bar:nth-child(4) {
+        left: 13px;
+        animation-duration: 458ms;
+      }
+      .fadeInAnimation {
+        animation: 300ms ease-in forwards fadeIn;
+      }
+      .fadeOutAnimation {
+        animation: 300ms ease-out forwards fadeOut;
+      }
+      @keyframes sound {
+        0% {
+          opacity: .35;
+          height: 3px;
+        }
+        100% {
+          opacity: 1;
+          height: 15px;
+        }
       }
       @keyframes fadeIn {
         0% {
@@ -106,6 +198,14 @@
           opacity:0;
         }
       }
+      @media screen and (max-width: 480px) {
+        #slideshowOptions .fs-dialog__close {
+          display: block;
+        }
+        #slideshowOptions #dialogBody {
+          padding: 50px 30px;
+        }
+      }
     </style>
     <!-- Slideshow modal -->
     <fs-modal-dialog id="slideShow" keep-fullscreen on-fs-dialog-close="handleSlideshowClose">
@@ -114,9 +214,33 @@
           <div class="img-container">
             <div role="timer" class="phaudio-container" hidden$="[[!shouldShowPhaudioPlayer(currentSlideIndex, artifacts.length, totalSlideshowDurationWithAudio, playAudio)]]">
               <fs-icon icon="audio-recording-small"></fs-icon>
-              <audio id="audioPlayer" src="[[getCurrentSlideAudioSrc(currentSlideIndex)]]" autoplay></audio>
+               <!-- PLAYING ANIMATION -->
+               <div class="bars-container">
+                 <div id="bars" class$="{{audioBarsActive(isAudioPlaying)}}">
+                   <div class="bar"></div>
+                   <div class="bar"></div>
+                   <div class="bar"></div>
+                   <div class="bar"></div>
+                 </div>
+               </div>
+              <!-- AUDIO DURATION -->
+              <span class="audio-timer">{{audioCurrentTime}}</span>
+              <audio id="audioPlayer" src$="[[getCurrentSlideAudioSrc(currentSlideIndex, artifacts.length, totalSlideshowDurationWithAudio)]]" on-timeupdate="updateAudioTime"></audio>
             </div>
             <img id="slideImage" class="slide-img" src="[[getCurrentSlideSrc(currentSlideIndex, artifacts.length)]]" alt="[[getCurrentSlideAltText(currentSlideIndex, artifacts.length)]]" on-load="fadeInSlide" />
+            <div class$="end-of-slideshow-container flex-column [[shouldToggleFade(isSlideshowFinished)]]" hidden="[[!isSlideshowFinished]]">
+              <h1>[[i18n('end_menu_end_of_slideshow')]]</h1>
+              <div class="flex-row-between end-btn-container">
+                <button class="end-btn flex-column" on-click="restartSlideshow">
+                  <fs-icon icon="revert-small"></fs-icon>
+                  <span>[[i18n('end_menu_replay')]]</span>
+                </button>
+                <button class="end-btn flex-column" on-click="handleSlideshowClose">
+                  <fs-icon icon="close-small-white" color="#333331"></fs-icon>
+                  <span>[[i18n('end_menu_close')]]</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -189,6 +313,10 @@
         type: Array,
         value: function() { return []; }
       },
+      isAudioPlaying: {
+        type: Boolean,
+        value: false
+      },
       playAudio: {
         type: Boolean,
         value: true
@@ -202,6 +330,10 @@
         value: false
       },
       stopSlideshow: {
+        type: Boolean,
+        value: false
+      },
+      isSlideshowFinished: {
         type: Boolean,
         value: false
       },
@@ -240,6 +372,10 @@
         type: String,
         value: ''
       },
+      audioCurrentTime: {
+        type: String,
+        value: '0:00'
+      },
       // Allowing the setTimeout to be ended (to clean up timer) when slideshow closes
       activeTimeout: {
         type: String,
@@ -248,12 +384,17 @@
     },
 
     ready: function() {
+      this.listen(document, 'gallery-view-changed', 'closeSlideshowOptions');
       document.addEventListener('keyup', this.handleKeyPress.bind(this));
       // Fullscreenchange event isn't standardized yet
-      document.addEventListener('fullscreenchange', this.exitHandler.bind(this));
-      document.addEventListener('webkitfullscreenchange', this.exitHandler.bind(this));
-      document.addEventListener('mozfullscreenchange', this.exitHandler.bind(this));
-      document.addEventListener('MSFullscreenChange', this.exitHandler.bind(this));
+      /* Standard syntax */
+      this.$.slideShow.addEventListener('fullscreenchange', this.exitHandler.bind(this));
+      /* Safari and Opera */
+      this.$.slideShow.addEventListener('webkitfullscreenchange', this.exitHandler.bind(this));
+      /* Firefox */
+      this.$.slideShow.addEventListener('mozfullscreenchange', this.exitHandler.bind(this));
+      /* IE / Edge */
+      this.$.slideShow.addEventListener('msfullscreenchange', this.exitHandler.bind(this));
     },
 
     // None of the "ESC" keyboard events work when in fullscreen
@@ -266,17 +407,21 @@
 
     handleKeyPress: function(e) {
       if (!this.isSlideshowOpen()) return;
+      const player = this.$.audioPlayer;
       switch (e.key) {
         case " ": /* SPACE */
           if (this.isSlideshowPaused) {
-            this.stopSlideshow = false;
             this.isSlideshowPaused = false;
-            if (this.$.audioPlayer.canplay) this.$.audioPlayer.play();
+            this.stopSlideshow = false;
             this.runSlides();
           } else {
             // Pause the slideshow too
             this.stopSlideshow = true;
-            this.$.audioPlayer.pause();
+            clearTimeout(this.activeTimeout);
+            if (this.$.audioPlayer.duration) {
+              this.isAudioPlaying = false;
+              this.$.audioPlayer.pause();
+            }
             this.isSlideshowPaused = true;
           }
           break;
@@ -307,6 +452,14 @@
     },
 
     /**
+     * Closes the slideshow options dialog if open and the browser back button is clicked
+     */
+    closeSlideshowOptions: function() {
+      const slideshowOptions = this.$.slideshowOptions;
+      if (slideshowOptions.opened) slideshowOptions.close();
+    },
+
+    /**
      * Opens the initial slideshow options dialog
      */
     openSlideshowOptions: function(data) {
@@ -320,6 +473,7 @@
         this.set('artifacts', validArtifacts);
       }
       this.stopSlideshow = false;
+      this.isSlideshowFinished = false;
       this.setSlideshowCountAndTime();
       this.$.slideshowOptions.open();
     },
@@ -329,10 +483,11 @@
      * The currently valid types are:
      * [Category] > [Content Category]
      *    - IMAGE > PHOTOS (with or without associated audio files)
+     *    - IMAGE > DOCUMENT
      */
     validateArtifacts: function(artifacts) {
       // Don't need to check for 'Phaudios' since they will always be included with a photo filter 
-      const validGroup = artifacts.filter(item => (item.category === 'IMAGE' && item.contentCategory === 'PHOTO'));
+      const validGroup = artifacts.filter(item => (item.category === 'IMAGE' && (item.contentCategory === 'PHOTO' || item.contentCategory === 'DOCUMENT')));
       return validGroup.slice(0);
     },
 
@@ -342,6 +497,20 @@
     },
     fadeOutSlide: function() {
       this.$.slideImage.style.animation = `${this.slideshowTransitionTime}ms ease-out forwards fadeOut`;
+    },
+
+    shouldToggleFade: function(isSlideshowFinished) {
+      return isSlideshowFinished ? 'fadeInAnimation' : 'fadeOutAnimation';
+    },
+
+    /**
+     * Restarts slideshow. Only called when looping is not enabled
+     */
+    restartSlideshow: function() {
+      this.fadeOutSlide();
+      this.isSlideshowFinished = false;
+      this.currentSlideIndex = 0;
+      this.runSlides();
     },
 
     /**
@@ -356,10 +525,11 @@
           this.fadeOutSlide();
           this.currentSlideIndex = 0;
         } else {
-          // Slideshow is done
+          this.isSlideshowFinished = true;
           return;
         }
       }
+      this.isSlideshowFinished = false;
       if (this.stopSlideshow) this.stopSlideshow = false;
       this.runSlides();
     },
@@ -376,6 +546,7 @@
         this.fadeOutSlide();
         this.currentSlideIndex = this.artifacts.length - 1;
       }
+      this.isSlideshowFinished = false;
       if (this.stopSlideshow) this.stopSlideshow = false;
       this.runSlides();
     },
@@ -394,7 +565,17 @@
      */
     runSlides: async function() {
       if (this.stopSlideshow) return;
-      const delayTime = this.playAudio ? this.artifacts[this.currentSlideIndex].slideLength : this.slideDisplayTime;
+      const artifact = this.artifacts[this.currentSlideIndex];
+      const player = this.$.audioPlayer;
+      let delayTime = this.playAudio ? artifact.slideLength : this.slideDisplayTime;
+      if (this.playAudio && artifact.hasPhaudio) {
+        this.isAudioPlaying = true;
+        this.$.audioPlayer.play();
+        // Allow delay to be reduced if audio is "resumed" from a paused state
+        const duration = isNaN(player.duration) ?  0 : player.duration * 1000;
+        const current = player.currentTime * 1000;
+        if (current !== 0) delayTime = (duration - current);
+      }
       await this.timer(delayTime - 200); // Allow time for image to render
       if (!this.stopSlideshow) this.nextSlide();
     },
@@ -430,6 +611,7 @@
         this.totalSlideshowDurationWithAudio += (dur + this.slideshowTransitionTime + offset);
 
         if (this.playAudio) {
+          this.artifacts[artifactIndex].phaudioDuration = audioEl.duration;
           this.displayedSlideshowDuration = this.playAudio ? this.totalSlideshowDurationWithAudio : this.totalSlideshowDurationWithoutAudio;
           this.setSlideshowCountAndTime();
         }
@@ -516,8 +698,8 @@
     /**
      * Returns the 'associated audio' source from the current slide
      */
-     getCurrentSlideAudioSrc: function(currentSlideIndex) {
-      if (!this.artifacts || !this.artifacts.length || !this.playAudio || !this.artifacts[currentSlideIndex].hasPhaudio) return '';
+     getCurrentSlideAudioSrc: function(currentSlideIndex, artifactsLength) {
+      if (!artifactsLength || !this.playAudio || !this.artifacts[currentSlideIndex].hasPhaudio) return '';
       return this.artifacts[currentSlideIndex].associatedArtifacts.artifact[0].url || '';
     },
     /**
@@ -540,7 +722,20 @@
     shouldShowPhaudioPlayer: function(currentSlideIndex, artifactsLength) {
       if (!artifactsLength) return false;
       return this.artifacts[currentSlideIndex].hasPhaudio && this.playAudio;
-    }
+    },
+    /**
+     * Sets if the audio bars are animating or not
+     */
+    audioBarsActive: function(isAudioPlaying) {
+      return isAudioPlaying ? 'playing-animation' : 'playing-animation paused';
+    },
+    updateAudioTime: function() {
+      const player = this.$.audioPlayer;
+      const duration = isNaN(player.duration) ?  0 : player.duration * 1000;
+      const current = player.currentTime * 1000;
+      this.isAudioPlaying = ((duration - current) !== 0 && !this.isSlideshowPaused);
+      this.audioCurrentTime = this.formatDisplayTime(duration - current);
+    },
   });
 })();
 </script>
