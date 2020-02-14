@@ -8,6 +8,12 @@
     "/components/fs-icons/dist/svg/audio-recording-small.svg",
     "/components/fs-icons/dist/svg/close-small-white.svg",
     "/components/fs-icons/dist/svg/revert-small.svg",
-    "/components/fs-icons/dist/svg/play-small.svg"
+    "/components/fs-icons/dist/svg/play-small.svg",
+    "/components/fs-icons/dist/svg/play-white-medium.svg",
+    "/components/fs-icons/dist/svg/pause-medium-white.svg",
+    "/components/fs-icons/dist/svg/tools-small.svg",
+    "/components/fs-icons/dist/svg/next-flagged-image-small.svg",
+    "/components/fs-icons/dist/svg/previous-flagged-image-small.svg",
+    "/components/fs-icons/dist/svg/replace-check-small.svg"
   ]
 }

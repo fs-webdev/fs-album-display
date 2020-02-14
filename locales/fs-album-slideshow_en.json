@@ -5,12 +5,14 @@
   "end_menu_close": "Close",
   "slideshow_options_desc": "This slideshow includes only photos and photos with audio recordings.",
   "slideshow_options_play_audio": "Play Audio Recordings",
-  "slideshow_options_loop_slideshow": "Loop Slideshow",
+  "slideshow_options_loop_slideshow": "Loop",
   "slideshow_options_length": "{count} memories | {min} minutes",
   "slideshow_controls_prev_slide": "Previous Slide",
   "slideshow_controls_next_slide": "Next Slide",
   "slideshow_controls_play": "Play",
   "slideshow_controls_pause": "Pause",
+  "slideshow_controls_speed": "Normal",
   "slideshow_controls_slide_number": "{current} of {total}",
-  "slideshow_controls_slideshow_speed": "Slideshow Speed"
+  "slideshow_controls_slideshow_speed": "Slideshow Speed",
+  "slideshow_controls_audio_error": "Error loading audio file"
 }

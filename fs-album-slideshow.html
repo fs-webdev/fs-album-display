@@ -4,7 +4,9 @@
 <link rel="import" href="../fs-metrics/fs-metrics.html">
 <link rel="import" href="../fs-inner-html/fs-inner-html.html">
 <link rel="import" href="../fs-dialog/fs-modal-dialog.html">
+<link rel="import" href="../fs-dialog/fs-anchored-dialog.html">
 <link rel="import" href="../fs-icon/fs-icon.html">
+<link rel="import" href="../fs-alert/fs-inline-alert.html">
 
 <dom-module id="fs-album-slideshow">
   <template>
@@ -12,13 +14,13 @@
       .flex-row-between {
         display: flex;
         justify-content: space-between;
-        align-content: center;
+        align-items: center;
+        width: 100%;
       }
       .flex-column {
         display: flex;
         justify-content: flex-start;
         flex-direction: column;
-        align-content: center;
       }
       .flex-column span {
         margin-bottom: 10px;
@@ -32,6 +34,11 @@
       }
       .flex-column small:last-of-type {
         margin-bottom: 5px;
+      }
+      .flex-center-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       .toggleSelects {
         -webkit-user-select: none;
@@ -48,16 +55,22 @@
         border-radius: 4px;
         padding: 15px 20px;
       }
-      #slideShow #dialogBody {
+      #slideShow #dialogBody, #slideshowSpeedModal .fs-dialog__body {
         padding: 0;
       }
       #slideShow .fs-dialog__close {
         z-index: 1000;
         color: #ffffff;
+        display: block;
       }
       .play-slideshow-btn-icon {
         vertical-align: sub;
         margin-right: 4px;
+      }
+      .img-container {
+        position: relative;
+        height: 100%;
+        width: 100%;
       }
       .slide-container {
         background-color: #333331;
@@ -70,21 +83,10 @@
         max-width: 100%;
         padding-top: 56px;
       }
-      .img-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        height: 100%;
-        width: 100%;
-      }
       .end-of-slideshow-container {
         height: 100%;
         width: 100%;
         background-color: rgba(0,0,0,0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
         position: absolute;
       }
       .end-of-slideshow-container > * {
@@ -122,6 +124,111 @@
         position: absolute;
         left: 40px;
         top: 0;
+        z-index: 10;
+      }
+      .audio-loading-error {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 240px;
+        width: max-content;
+      }
+      .slideshow-control-container {
+        position: absolute;
+        bottom: 45px;
+        width: 435px;
+        max-width: 100vw;
+        height: 170px;
+        padding: 30px 80px;
+        background-color: rgba(0,0,0,0.6);
+        justify-content: center;
+        border-radius: 4px;
+      }
+      .controls-index {
+        padding: 5px 10px;
+        border-radius: 15px;
+        background-color: #000000;
+        margin-bottom:25px;
+        height: 25px;
+      }
+      .controls-index * {
+        color: #ffffff;
+      }
+      #slideshowSpeedModal header {
+        border-bottom: 1px solid #dddddd;
+      }
+      #slideshowSpeedModal .fs-dialog__body {
+        overflow: hidden;
+        border-radius: 4px;
+        padding: 10px 0;
+      }
+      .speed-btn {
+        padding: 10px 40px;
+        position: relative;
+      }
+      .speed-btn span {
+        margin-bottom: 0;
+      }
+      .speed-btn fs-icon {
+        position: absolute;
+        left: 12px;
+        top: 12px;
+      }
+      .speed-btn:hover {
+        cursor: pointer;
+        background-color: #dddddd;
+      }
+      .controls-btn-container {
+        width: 80%;
+      }
+      .play-btn {
+        margin-left: 5px;
+      }
+      .pause-btn rect {
+        fill: #333331;
+      }
+      .controls-large {
+        height: 70px;
+        width: 70px;
+      }
+      .controls-large:hover, .controls-medium:hover, .controls-small:hover {
+        cursor: pointer;
+        opacity: 0.6;
+      }
+      .controls-large, .controls-medium, .controls-small {
+        background-color: #ffffff;
+        border-radius: 50%;
+      }
+      .controls-medium fs-icon svg, .controls-small fs-icon svg {
+        margin-top: 2px;
+      }
+      .controls-medium {
+        height: 40px;
+        width: 40px;
+      }
+      .controls-medium fs-icon svg {
+        /* Icon doesn't include background */
+        transform: scale(1.5);
+      }
+      .controls-small {
+        height: 30px;
+        width: 30px;
+      }
+      .controls-btn .loop-btn {
+        position: relative;
+        right: 5px;
+        top: 1px;
+      }
+      .controls-btn.active-loop-btn path:nth-child(1),
+      .controls-btn.active-loop-btn path:nth-child(3) {
+        fill: #ffffff;
+      }
+      .controls-btn.active-loop-btn path:nth-child(2),
+      .controls-btn.active-loop-btn path:nth-child(4) {
+        stroke: #ffffff;
+      }
+      .controls-btn.active-loop-btn {
+        background-color: #87B940;
       }
       *[hidden] {
         display: none !important;
@@ -210,8 +317,11 @@
     <!-- Slideshow modal -->
     <fs-modal-dialog id="slideShow" keep-fullscreen on-fs-dialog-close="handleSlideshowClose">
       <div role="dialog" id="dialogBody" class="fs-dialog__body">
+        <button class="fs-dialog__close" data-dialog-dismiss="" data-test-close="" aria-label="Close">
+          <svg aria-hidden="true" width="13" height="13" viewBox="0 0 13 13" preserveAspectRatio="xMidYMin"><g transform="translate(-1.000000, -1.000000)"><path d="M13 2L2 13M2 2L13 13" stroke="currentColor" stroke-width="2.5"></path></g></svg>
+        </button>
         <div class="slide-container">
-          <div class="img-container">
+          <div class="img-container flex-center-center">
             <div role="timer" class="phaudio-container" hidden$="[[!shouldShowPhaudioPlayer(currentSlideIndex, artifacts.length, totalSlideshowDurationWithAudio, playAudio)]]">
               <fs-icon icon="audio-recording-small"></fs-icon>
                <!-- PLAYING ANIMATION -->
@@ -226,23 +336,86 @@
               <!-- AUDIO DURATION -->
               <span class="audio-timer">{{audioCurrentTime}}</span>
               <audio id="audioPlayer" src$="[[getCurrentSlideAudioSrc(currentSlideIndex, artifacts.length, totalSlideshowDurationWithAudio)]]" on-timeupdate="updateAudioTime"></audio>
+              <fs-inline-alert type="error" class="audio-loading-error" hidden="[[!showAudioError]]">
+                <p>[[i18n('slideshow_controls_audio_error')]]</p>
+              </fs-inline-alert>
             </div>
             <img id="slideImage" class="slide-img" src="[[getCurrentSlideSrc(currentSlideIndex, artifacts.length)]]" alt="[[getCurrentSlideAltText(currentSlideIndex, artifacts.length)]]" on-load="fadeInSlide" />
-            <div class$="end-of-slideshow-container flex-column [[shouldToggleFade(isSlideshowFinished)]]" hidden="[[!isSlideshowFinished]]">
+            <div class$="end-of-slideshow-container flex-column flex-center-center [[shouldToggleFade(isSlideshowFinished)]]" hidden="[[!isSlideshowFinished]]">
               <h1>[[i18n('end_menu_end_of_slideshow')]]</h1>
               <div class="flex-row-between end-btn-container">
-                <button class="end-btn flex-column" on-click="restartSlideshow">
+                <button class="end-btn flex-column" on-click="restartSlideshow" title="[[i18n('end_menu_replay')]]">
                   <fs-icon icon="revert-small"></fs-icon>
                   <span>[[i18n('end_menu_replay')]]</span>
                 </button>
-                <button class="end-btn flex-column" on-click="handleSlideshowClose">
+                <button class="end-btn flex-column" id="slideShowEnd" on-click="handleSlideshowClose" title="[[i18n('end_menu_close')]]">
                   <fs-icon icon="close-small-white" color="#333331"></fs-icon>
                   <span>[[i18n('end_menu_close')]]</span>
                 </button>
               </div>
             </div>
+            <div class="slideshow-control-container flex-column flex-center-center">
+              <div class="controls-index">
+                <span>
+                  <fs-inner-html value="[[getSlideIndexPosition(currentSlideIndex, artifacts.length, i18n)]]"></fs-inner-html>
+                </span>
+              </div>
+              <div class="flex-row-between controls-btn-container">
+                <button class$="controls-btn controls-small [[isActiveLoopBtn(loopSlideshow)]]" on-click="toggleLoopSlideshow" title="[[i18n('slideshow_options_loop_slideshow')]]">
+                  <svg width="25" height="25" fill="none" xmlns="http://www.w3.org/2000/svg" class="loop-btn">
+                    <path d="M17.924 10.612l-2.316.023c-.23 0-.305.159-.164.341l3.78 4.906c.14.182.37.182.512-.008l3.675-4.989c.141-.19.067-.341-.17-.341l-2.317.023" fill="#333331"/>
+                    <path d="M19.624 11.833c-.037-3.806-3.088-6.854-6.816-6.817A6.664 6.664 0 008.287 6.86" stroke="#333331" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round"/>
+                    <path d="M7.069 14.388l2.316-.023c.23 0 .305-.159.164-.341L5.762 9.111c-.141-.182-.371-.182-.512.007l-3.676 4.99c-.14.189-.067.34.171.34l2.317-.022" fill="#333331"/>
+                    <path d="M16.706 18.141a6.684 6.684 0 01-4.521 1.843c-3.728.037-6.78-3.01-6.817-6.817" stroke="#333331" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round"/>
+                  </svg>
+                </button>
+                <button class="controls-btn controls-medium" on-click="handlePrevSlide" title="[[i18n('slideshow_controls_prev_slide')]]">
+                  <fs-icon icon="previous-flagged-image-small"></fs-icon>
+                </button>
+                <button class="controls-btn controls-large" on-click="handlePlayPauseSlideshow" title$="[[getPlayPauseString(isSlideshowPaused)]]">
+                  <fs-icon class="play-btn" icon="play-white-medium" color="#333331" hidden="[[!isSlideshowPaused]]"></fs-icon>
+                  <fs-icon class="pause-btn" icon="pause-medium-white" color="#333331" hidden="[[isSlideshowPaused]]"></fs-icon>
+                </button>
+                <button class="controls-btn controls-medium" on-click="handleNextSlide" title="[[i18n('slideshow_controls_next_slide')]]">
+                  <fs-icon icon="next-flagged-image-small"></fs-icon>
+                </button>
+                <button class="controls-btn controls-small" on-click="openSlideshowSpeedModal" title="[[i18n('slideshow_controls_slideshow_speed')]]">
+                  <fs-icon icon="tools-small"></fs-icon>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
+        <!-- Slideshow speed stepper modal -->
+        <fs-anchored-dialog id="slideshowSpeedModal" transition="from-bottom" no-fullscreen-mobile forced-pointer-direction="down">
+          <header>
+            <h4>Slideshow Speed</h4>
+          </header>
+          <div class="fs-dialog__body">
+            <div class="flex-column">
+              <div class="speed-btn" role="button" data-speed="0.5" on-click="updateSpeedSelection">
+                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '0.5')]]"></fs-icon>
+                <span>0.5</span>
+              </div>
+              <div class="speed-btn" role="button" data-speed="0.75" on-click="updateSpeedSelection">
+                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '0.75')]]"></fs-icon>
+                <span>0.75</span>
+              </div>
+              <div class="speed-btn" role="button" data-speed="normal" on-click="updateSpeedSelection">
+                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, 'normal')]]"></fs-icon>
+                <span>[[i18n('slideshow_controls_speed')]]</span>
+              </div>
+              <div class="speed-btn" role="button" data-speed="1.25" on-click="updateSpeedSelection">
+                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '1.25')]]"></fs-icon>
+                <span>1.25</span>
+              </div>
+              <div class="speed-btn" role="button" data-speed="1.5" on-click="updateSpeedSelection">
+                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '1.5')]]"></fs-icon>
+                <span>1.5</span>
+              </div>
+            </div>
+          </div>
+        </fs-anchored-dialog>
       </div>
     </fs-modal-dialog>
     <!-- Slideshow Config modal -->
@@ -337,6 +510,10 @@
         type: Boolean,
         value: false
       },
+      showAudioError: {
+        type: Boolean,
+        value: false
+      },
       // Need to set a bool to know when speed has changed to update the
       // initial slideshow time w/o having to re-calc the time every time they open it
       speedHasChanged: {
@@ -376,6 +553,10 @@
         type: String,
         value: '0:00'
       },
+      speedSelection: {
+        type: String,
+        value: 'normal'
+      },
       // Allowing the setTimeout to be ended (to clean up timer) when slideshow closes
       activeTimeout: {
         type: String,
@@ -405,35 +586,45 @@
       }
     },
 
+    handlePlayPauseSlideshow: function() {
+      if (this.isSlideshowPaused) {
+        this.isSlideshowPaused = false;
+        this.stopSlideshow = false;
+        this.runSlides();
+      } else {
+        // Pause the slideshow too
+        this.stopSlideshow = true;
+        clearTimeout(this.activeTimeout);
+        if (this.$.audioPlayer.duration) {
+          this.isAudioPlaying = false;
+          this.$.audioPlayer.pause();
+        }
+        this.isSlideshowPaused = true;
+      }
+    },
+    handlePrevSlide: function() {
+      this.stopSlideshow = true;
+      clearTimeout(this.activeTimeout);
+      this.prevSlide();
+    },
+    handleNextSlide: function() {
+      this.stopSlideshow = true;
+      clearTimeout(this.activeTimeout);
+      this.nextSlide();
+    },
+
     handleKeyPress: function(e) {
       if (!this.isSlideshowOpen()) return;
       const player = this.$.audioPlayer;
       switch (e.key) {
         case " ": /* SPACE */
-          if (this.isSlideshowPaused) {
-            this.isSlideshowPaused = false;
-            this.stopSlideshow = false;
-            this.runSlides();
-          } else {
-            // Pause the slideshow too
-            this.stopSlideshow = true;
-            clearTimeout(this.activeTimeout);
-            if (this.$.audioPlayer.duration) {
-              this.isAudioPlaying = false;
-              this.$.audioPlayer.pause();
-            }
-            this.isSlideshowPaused = true;
-          }
+          this.handlePlayPauseSlideshow();
           break;
         case "ArrowLeft": /* Left Arrow */
-          this.stopSlideshow = true;
-          clearTimeout(this.activeTimeout);
-          this.prevSlide();
+          this.handlePrevSlide();
           break;
         case "ArrowRight": /* Right Arrow */
-          this.stopSlideshow = true;
-          clearTimeout(this.activeTimeout);
-          this.nextSlide();
+          this.handleNextSlide();
           break;
       
         default:
@@ -446,6 +637,7 @@
      */
     reset: function() {
       this.currentSlideIndex = 0;
+      this.showAudioError = false;
       // Stop audio and reset track to beginning (they may have stopped on the first slide)
       this.$.audioPlayer.pause();
       this.$.audioPlayer.currentTime = 0;
@@ -487,7 +679,7 @@
      */
     validateArtifacts: function(artifacts) {
       // Don't need to check for 'Phaudios' since they will always be included with a photo filter 
-      const validGroup = artifacts.filter(item => (item.category === 'IMAGE' && (item.contentCategory === 'PHOTO' || item.contentCategory === 'DOCUMENT')));
+      const validGroup = artifacts.filter(item => (item.artifactDisplayState === 'APPROVED' && item.category === 'IMAGE' && (item.contentCategory === 'PHOTO' || item.contentCategory === 'DOCUMENT')));
       return validGroup.slice(0);
     },
 
@@ -495,10 +687,12 @@
     fadeInSlide: function() {
       this.$.slideImage.style.animation = `300ms ease-in forwards fadeIn`;
     },
-    fadeOutSlide: function() {
+    fadeOutSlide: async function() {
       this.$.slideImage.style.animation = `${this.slideshowTransitionTime}ms ease-out forwards fadeOut`;
+      // Reduce the time a bit to avoid blank screen while next image renders
+      await this.timer(300); 
+      return true;
     },
-
     shouldToggleFade: function(isSlideshowFinished) {
       return isSlideshowFinished ? 'fadeInAnimation' : 'fadeOutAnimation';
     },
@@ -506,23 +700,24 @@
     /**
      * Restarts slideshow. Only called when looping is not enabled
      */
-    restartSlideshow: function() {
-      this.fadeOutSlide();
+    restartSlideshow: async function() {
       this.isSlideshowFinished = false;
       this.currentSlideIndex = 0;
+      await this.fadeOutSlide();
       this.runSlides();
     },
 
     /**
      * Moves to the next slide
      */
-    nextSlide: function() {
+    nextSlide: async function() {
+      this.showAudioError = false;
       if ((this.currentSlideIndex + 1) < this.artifacts.length) {
-        this.fadeOutSlide();
+        await this.fadeOutSlide();
         this.currentSlideIndex += 1;
       } else if (this.currentSlideIndex === (this.artifacts.length - 1)) {
         if (this.loopSlideshow) {
-          this.fadeOutSlide();
+          await this.fadeOutSlide();
           this.currentSlideIndex = 0;
         } else {
           this.isSlideshowFinished = true;
@@ -537,13 +732,14 @@
     /**
      * Moves to the previous slide
      */
-    prevSlide: function() {
+    prevSlide: async function() {
+      this.showAudioError = false;
       // If 'fadeOutSlide' is moved out here the slide would fade on a non-looping prev click on the first slide
       if ((this.currentSlideIndex - 1) >= 0) {
-        this.fadeOutSlide();
+        await this.fadeOutSlide();
         this.currentSlideIndex -= 1;
       } else if ((this.currentSlideIndex === 0) && this.loopSlideshow) {
-        this.fadeOutSlide();
+        await this.fadeOutSlide();
         this.currentSlideIndex = this.artifacts.length - 1;
       }
       this.isSlideshowFinished = false;
@@ -561,22 +757,45 @@
     },
 
     /**
-     * Manages slide progression
+     * Manages audio slide error checks, and delayTime updates
      */
-    runSlides: async function() {
-      if (this.stopSlideshow) return;
-      const artifact = this.artifacts[this.currentSlideIndex];
-      const player = this.$.audioPlayer;
-      let delayTime = this.playAudio ? artifact.slideLength : this.slideDisplayTime;
-      if (this.playAudio && artifact.hasPhaudio) {
-        this.isAudioPlaying = true;
-        this.$.audioPlayer.play();
+    handleAudioSlideChecks: async function(delayTime, artifact) {
+      let player = this.$.audioPlayer;
+      if (artifact.hasAudioErr || !artifact.slideLength) {
+        this.showAudioError = true;
+      } else {
+        try {
+          await player.play();
+          this.isAudioPlaying = true;
+        } catch (error) { // Error playing the audio
+          player = {
+            duration: this.slideDisplayTime,
+            currentTime: 0
+          }
+          artifact.hasAudioErr = true;
+        }
         // Allow delay to be reduced if audio is "resumed" from a paused state
         const duration = isNaN(player.duration) ?  0 : player.duration * 1000;
         const current = player.currentTime * 1000;
         if (current !== 0) delayTime = (duration - current);
       }
-      await this.timer(delayTime - 200); // Allow time for image to render
+      return delayTime;
+    },
+
+    /**
+     * Manages slide progression
+     */
+    runSlides: async function() {
+      if (this.stopSlideshow) return;
+      const artifact = this.artifacts[this.currentSlideIndex];
+      let delayTime = (this.playAudio && !artifact.hasAudioErr && artifact.slideLength) ? artifact.slideLength : this.slideDisplayTime;
+      if (this.playAudio && artifact.hasPhaudio) {
+        delayTime = await this.handleAudioSlideChecks(delayTime, artifact);
+      } else {
+        // Adjust slide based on slide speed setting
+        if (this.speedSelection !== 'normal') delayTime *= parseFloat(this.speedSelection);
+      }
+      await this.timer(delayTime);
       if (!this.stopSlideshow) this.nextSlide();
     },
 
@@ -595,34 +814,53 @@
     /**
      * Stops slideshow and resets slideshow state
      */
-    handleSlideshowClose: function() {
-      clearTimeout(this.activeTimeout);
-      if (document.fullscreenElement) document.exitFullscreen();
-      this.stopSlideshow = true;
-      this.reset();
+    handleSlideshowClose: function(e) {
+      if (Polymer.dom(e).localTarget.id === 'slideShow' || e.currentTarget.id === 'slideShowEnd') {
+        clearTimeout(this.activeTimeout);
+        if (document.fullscreenElement) document.exitFullscreen();
+        if (this.$.slideshowSpeedModal.opened) this.$.slideshowSpeedModal.close();
+        this.stopSlideshow = true;
+        this.reset();
+      }
     },
 
+    /**
+     * Handler for when the meta data is loaded for the audio file.
+     * Updates the 'totalSlideshowDurationWithAudio' value with audio's duration
+     */
     handleAudioTimeUpdate: function(audioEl, artifactIndex) {
       let offset = 0;
-        const dur = (audioEl.duration * 1000); // Audio duration is given in seconds
-        // Phaudios shouldn't prevent photo from showing for at least the 'slideDisplayTime'
-        if (dur < this.slideDisplayTime) offset = this.slideDisplayTime - dur;
-        this.artifacts[artifactIndex].slideLength = (dur + offset);
-        this.totalSlideshowDurationWithAudio += (dur + this.slideshowTransitionTime + offset);
+      const dur = (audioEl.duration * 1000); // Audio duration is given in seconds
+      // Phaudios shouldn't prevent photo from showing for at least the 'slideDisplayTime'
+      if (dur < this.slideDisplayTime) offset = this.slideDisplayTime - dur;
+      this.artifacts[artifactIndex].slideLength = (dur + offset);
+      this.totalSlideshowDurationWithAudio += (dur + this.slideshowTransitionTime + offset);
 
-        if (this.playAudio) {
-          this.artifacts[artifactIndex].phaudioDuration = audioEl.duration;
-          this.displayedSlideshowDuration = this.playAudio ? this.totalSlideshowDurationWithAudio : this.totalSlideshowDurationWithoutAudio;
-          this.setSlideshowCountAndTime();
-        }
+      if (this.playAudio) {
+        this.artifacts[artifactIndex].phaudioDuration = audioEl.duration;
+        this.displayedSlideshowDuration = this.playAudio ? this.totalSlideshowDurationWithAudio : this.totalSlideshowDurationWithoutAudio;
+        this.setSlideshowCountAndTime();
+      }
+    },
+
+    /**
+     * Handler for when we know an audio file has an error from the start
+     */
+     handleAudioError: function(audioEl, artifactIndex, err) {
+      this.artifacts[artifactIndex].hasAudioErr = true;
     },
 
     /**
      * Obtain the audio file duration via the Audio API
      */
     getAudioDuration: function(audioUrl, artifactIndex) {
-      const audio = new Audio(audioUrl)
-      audio.addEventListener('loadedmetadata', () => { this.handleAudioTimeUpdate(audio, artifactIndex) })
+      if (!audioUrl.includes('.mp3')) {
+        this.artifacts[artifactIndex].hasAudioErr = true;
+      } else {
+        const audio = new Audio(audioUrl)
+        audio.addEventListener('loadedmetadata', () => { this.handleAudioTimeUpdate(audio, artifactIndex) })
+        audio.addEventListener('error', (err) => { this.handleAudioError(audio, artifactIndex, err) })
+      }
     },
 
     /**
@@ -667,11 +905,31 @@
       let text = this.i18n('slideshow_options_length');
       if (text) {
         if ((!this.displayedSlideshowDuration || this.speedHasChanged) && this.artifacts.length) this.calcSlideshowDuration();
-
+        this.speedHasChanged = false;
         text = text.replace('{count}', `<span>${this.artifacts.length}</span>`);
         text = text.replace('{min}', `<span>${this.formatDisplayTime(this.displayedSlideshowDuration)}</span>`);
         this.slideshowCountAndTime = text;
       }
+    },
+    
+    /**
+     * Updates the displayed slide index reference - on slideshow controls
+     */
+    getSlideIndexPosition: function(currentSlideIndex, artifactsLength, i18n) {
+      if (!i18n) return;
+      let text = i18n('slideshow_controls_slide_number');
+      if (text) {
+        text = text.replace('{current}', currentSlideIndex + 1);
+        text = text.replace('{total}', artifactsLength);
+        return text;
+      }
+      return '';
+    },
+
+    openSlideshowSpeedModal: function(e) {
+      const speedModal = this.$.slideshowSpeedModal;
+      const config = { attachToElement: e.currentTarget };
+      speedModal.opened ? speedModal.close() : speedModal.open(config);
     },
 
     /**
@@ -722,6 +980,12 @@
       this.loopSlideshow = !this.loopSlideshow;
     },
     /**
+     * Toggles the "loop slideshow" slider
+     */
+     isActiveLoopBtn: function(loopSlideshow) {
+      return loopSlideshow ? 'active-loop-btn' : '';
+    },
+    /**
      * Determines if the Phaudio player should be shown
      */
     shouldShowPhaudioPlayer: function(currentSlideIndex, artifactsLength) {
@@ -741,6 +1005,19 @@
       this.isAudioPlaying = ((duration - current) !== 0 && !this.isSlideshowPaused);
       this.audioCurrentTime = this.formatDisplayTime(duration - current);
     },
+    getPlayPauseString: function(isSlideshowPaused) {
+      if (!this.i18n) return '';
+      return isSlideshowPaused ? this.i18n('slideshow_controls_play') : this.i18n('slideshow_controls_pause')
+    },
+    updateSpeedSelection: function(e) {
+      this.speedSelection = e.currentTarget.dataset.speed;
+      this.speedHasChanged = true;
+      // Update the slideshow time displayed on options modal based on new slide display speed
+      this.setSlideshowCountAndTime();
+    },
+    shouldShowCheckmark: function(speedSelection, buttonSpeed) {
+      return speedSelection === buttonSpeed;
+    }
   });
 })();
 </script>
