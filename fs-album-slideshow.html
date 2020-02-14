@@ -393,24 +393,25 @@
           </header>
           <div class="fs-dialog__body">
             <div class="flex-column">
-              <div class="speed-btn" role="button" data-speed="0.5" on-click="updateSpeedSelection">
-                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '0.5')]]"></fs-icon>
+              <!-- Intentionally different speed used than displayed to allow a slower -> faster time in calculation -->
+              <div class="speed-btn" role="button" data-speed="1.5" on-click="updateSpeedSelection">
+                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '1.5')]]"></fs-icon>
                 <span>0.5</span>
               </div>
-              <div class="speed-btn" role="button" data-speed="0.75" on-click="updateSpeedSelection">
-                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '0.75')]]"></fs-icon>
+              <div class="speed-btn" role="button" data-speed="1.25" on-click="updateSpeedSelection">
+                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '1.25')]]"></fs-icon>
                 <span>0.75</span>
               </div>
               <div class="speed-btn" role="button" data-speed="normal" on-click="updateSpeedSelection">
                 <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, 'normal')]]"></fs-icon>
                 <span>[[i18n('slideshow_controls_speed')]]</span>
               </div>
-              <div class="speed-btn" role="button" data-speed="1.25" on-click="updateSpeedSelection">
-                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '1.25')]]"></fs-icon>
+              <div class="speed-btn" role="button" data-speed="0.75" on-click="updateSpeedSelection">
+                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '0.75')]]"></fs-icon>
                 <span>1.25</span>
               </div>
-              <div class="speed-btn" role="button" data-speed="1.5" on-click="updateSpeedSelection">
-                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '1.5')]]"></fs-icon>
+              <div class="speed-btn" role="button" data-speed="0.5" on-click="updateSpeedSelection">
+                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '0.5')]]"></fs-icon>
                 <span>1.5</span>
               </div>
             </div>
