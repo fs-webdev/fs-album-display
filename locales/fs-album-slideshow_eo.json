@@ -3,14 +3,16 @@
   "end_menu_end_of_slideshow": "[Éñð öƒ Šļîðéšĥöŵ--------- П國カ내]",
   "end_menu_replay": "[Ŕéþļåý----- П國カ내]",
   "play_slideshow": "[Þļåý Šļîðéšĥöŵ------- П國カ내]",
+  "slideshow_controls_audio_error": "[Éŕŕöŕ ļöåðîñĝ åûðîö ƒîļé------------ П國カ내]",
   "slideshow_controls_next_slide": "[Ñéẋţ Šļîðé------------- П國カ내]",
   "slideshow_controls_pause": "[Þåûšé--- П國カ내]",
   "slideshow_controls_play": "[Þļåý- П國カ내]",
   "slideshow_controls_prev_slide": "[Þŕéṽîöûš Šļîðé------- П國カ내]",
   "slideshow_controls_slide_number": "[{current} öƒ {total}------------- П國カ내]",
   "slideshow_controls_slideshow_speed": "[Šļîðéšĥöŵ Šþééð-------- П國カ내]",
+  "slideshow_controls_speed": "[Ñöŕɱåļ----- П國カ내]",
   "slideshow_options_desc": "[Ţĥîš šļîðéšĥöŵ îñçļûðéš öñļý þĥöţöš åñð þĥöţöš ŵîţĥ åûðîö ŕéçöŕðîñĝš.-------------------- П國カ내]",
   "slideshow_options_length": "[{count} ɱéɱöŕîéš | {min} ɱîñûţéš------------ П國カ내]",
-  "slideshow_options_loop_slideshow": "[Ļööþ Šļîðéšĥöŵ------- П國カ내]",
+  "slideshow_options_loop_slideshow": "[Ļööþ- П國カ내]",
   "slideshow_options_play_audio": "[Þļåý Åûðîö Ŕéçöŕðîñĝš--------- П國カ내]"
 }
