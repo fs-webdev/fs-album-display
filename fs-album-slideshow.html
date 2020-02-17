@@ -88,6 +88,7 @@
         width: 100%;
         background-color: rgba(0,0,0,0.5);
         position: absolute;
+        z-index: 10;
       }
       .end-of-slideshow-container > * {
         color: #ffffff;
@@ -143,6 +144,7 @@
         background-color: rgba(0,0,0,0.6);
         justify-content: center;
         border-radius: 4px;
+        z-index: 20;
       }
       .controls-index {
         padding: 5px 10px;
@@ -182,7 +184,19 @@
         width: 80%;
       }
       .play-btn {
-        margin-left: 5px;
+        left: 27px;
+      }
+      .prev-btn, .next-btn {
+        top: 13px;
+      }
+      .prev-btn {
+        left: 11px;
+      }
+      .next-btn {
+        left: 14px;
+      }
+      .settings-btn {
+        top: 7px;
       }
       .pause-btn rect {
         fill: #333331;
@@ -198,9 +212,15 @@
       .controls-large, .controls-medium, .controls-small {
         background-color: #ffffff;
         border-radius: 50%;
+        outline: none;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
       }
-      .controls-medium fs-icon svg, .controls-small fs-icon svg {
-        margin-top: 2px;
+      .controls-large fs-icon, .controls-medium fs-icon, .controls-small fs-icon {
+        position: absolute;
       }
       .controls-medium {
         height: 40px;
@@ -214,10 +234,8 @@
         height: 30px;
         width: 30px;
       }
-      .controls-btn .loop-btn {
-        position: relative;
-        right: 5px;
-        top: 1px;
+      .loop-icon {
+        right: 2px;
       }
       .controls-btn.active-loop-btn path:nth-child(1),
       .controls-btn.active-loop-btn path:nth-child(3) {
@@ -277,8 +295,9 @@
         animation: 300ms ease-in forwards fadeIn;
       }
       .fadeOutAnimation {
-        animation: 300ms ease-out forwards fadeOut;
+        animation: 500ms ease-out forwards fadeOut;
       }
+
       @keyframes sound {
         0% {
           opacity: .35;
@@ -305,7 +324,17 @@
           opacity:0;
         }
       }
-      @media screen and (max-width: 480px) {
+      @media screen and (max-width: 979px) {
+        .phaudio-container {
+          left: 15px
+        }
+        .slideshow-control-container {
+          bottom: 0;
+          padding: 0 80px;
+          border-radius: 0;
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+        }
         #slideshowOptions .fs-dialog__close {
           display: block;
         }
@@ -354,7 +383,7 @@
                 </button>
               </div>
             </div>
-            <div class="slideshow-control-container flex-column flex-center-center">
+            <div id="slideshowControls" class$="slideshow-control-container flex-column flex-center-center [[updateControlsVisibility(showControls)]]">
               <div class="controls-index">
                 <span>
                   <fs-inner-html value="[[getSlideIndexPosition(currentSlideIndex, artifacts.length, i18n)]]"></fs-inner-html>
@@ -362,7 +391,7 @@
               </div>
               <div class="flex-row-between controls-btn-container">
                 <button class$="controls-btn controls-small [[isActiveLoopBtn(loopSlideshow)]]" on-click="toggleLoopSlideshow" title="[[i18n('slideshow_options_loop_slideshow')]]">
-                  <svg width="25" height="25" fill="none" xmlns="http://www.w3.org/2000/svg" class="loop-btn">
+                  <svg width="25" height="25" fill="none" xmlns="http://www.w3.org/2000/svg" class="loop-icon">
                     <path d="M17.924 10.612l-2.316.023c-.23 0-.305.159-.164.341l3.78 4.906c.14.182.37.182.512-.008l3.675-4.989c.141-.19.067-.341-.17-.341l-2.317.023" fill="#333331"/>
                     <path d="M19.624 11.833c-.037-3.806-3.088-6.854-6.816-6.817A6.664 6.664 0 008.287 6.86" stroke="#333331" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round"/>
                     <path d="M7.069 14.388l2.316-.023c.23 0 .305-.159.164-.341L5.762 9.111c-.141-.182-.371-.182-.512.007l-3.676 4.99c-.14.189-.067.34.171.34l2.317-.022" fill="#333331"/>
@@ -370,17 +399,17 @@
                   </svg>
                 </button>
                 <button class="controls-btn controls-medium" on-click="handlePrevSlide" title="[[i18n('slideshow_controls_prev_slide')]]">
-                  <fs-icon icon="previous-flagged-image-small"></fs-icon>
+                  <fs-icon class="prev-btn" icon="previous-flagged-image-small"></fs-icon>
                 </button>
                 <button class="controls-btn controls-large" on-click="handlePlayPauseSlideshow" title$="[[getPlayPauseString(isSlideshowPaused)]]">
                   <fs-icon class="play-btn" icon="play-white-medium" color="#333331" hidden="[[!isSlideshowPaused]]"></fs-icon>
                   <fs-icon class="pause-btn" icon="pause-medium-white" color="#333331" hidden="[[isSlideshowPaused]]"></fs-icon>
                 </button>
                 <button class="controls-btn controls-medium" on-click="handleNextSlide" title="[[i18n('slideshow_controls_next_slide')]]">
-                  <fs-icon icon="next-flagged-image-small"></fs-icon>
+                  <fs-icon class="next-btn" icon="next-flagged-image-small"></fs-icon>
                 </button>
                 <button class="controls-btn controls-small" on-click="openSlideshowSpeedModal" title="[[i18n('slideshow_controls_slideshow_speed')]]">
-                  <fs-icon icon="tools-small"></fs-icon>
+                  <fs-icon class="settings-btn" icon="tools-small"></fs-icon>
                 </button>
               </div>
             </div>
@@ -389,7 +418,7 @@
         <!-- Slideshow speed stepper modal -->
         <fs-anchored-dialog id="slideshowSpeedModal" transition="from-bottom" no-fullscreen-mobile forced-pointer-direction="down">
           <header>
-            <h4>Slideshow Speed</h4>
+            <h4>[[i18n('slideshow_controls_slideshow_speed')]]</h4>
           </header>
           <div class="fs-dialog__body">
             <div class="flex-column">
@@ -515,6 +544,14 @@
         type: Boolean,
         value: false
       },
+      showControls: {
+        type: Boolean,
+        value: true
+      },
+      isMouseEnter: {
+        type: Boolean,
+        value: false
+      },
       // Need to set a bool to know when speed has changed to update the
       // initial slideshow time w/o having to re-calc the time every time they open it
       speedHasChanged: {
@@ -559,7 +596,11 @@
         value: 'normal'
       },
       // Allowing the setTimeout to be ended (to clean up timer) when slideshow closes
-      activeTimeout: {
+      slideDisplayTimeout: {
+        type: String,
+        value: ''
+      },
+      slideshowControlsTimeout: {
         type: String,
         value: ''
       }
@@ -577,6 +618,12 @@
       this.$.slideShow.addEventListener('mozfullscreenchange', this.exitHandler.bind(this));
       /* IE / Edge */
       this.$.slideShow.addEventListener('msfullscreenchange', this.exitHandler.bind(this));
+      // Events for showing slideshow controls
+      this.$.slideShow.addEventListener('mousemove', this.handleMouseMove.bind(this));
+      this.$.slideShow.addEventListener('click', this.showControlsOnly.bind(this));
+      this.$.slideShow.addEventListener('touchstart', this.showControlsOnly.bind(this));
+      this.$.slideshowControls.addEventListener('mouseenter', this.handleMouseEnter.bind(this, true));
+      this.$.slideshowControls.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
     },
 
     // None of the "ESC" keyboard events work when in fullscreen
@@ -595,7 +642,7 @@
       } else {
         // Pause the slideshow too
         this.stopSlideshow = true;
-        clearTimeout(this.activeTimeout);
+        clearTimeout(this.slideDisplayTimeout);
         if (this.$.audioPlayer.duration) {
           this.isAudioPlaying = false;
           this.$.audioPlayer.pause();
@@ -605,12 +652,12 @@
     },
     handlePrevSlide: function() {
       this.stopSlideshow = true;
-      clearTimeout(this.activeTimeout);
+      clearTimeout(this.slideDisplayTimeout);
       this.prevSlide();
     },
     handleNextSlide: function() {
       this.stopSlideshow = true;
-      clearTimeout(this.activeTimeout);
+      clearTimeout(this.slideDisplayTimeout);
       this.nextSlide();
     },
 
@@ -697,6 +744,10 @@
     shouldToggleFade: function(isSlideshowFinished) {
       return isSlideshowFinished ? 'fadeInAnimation' : 'fadeOutAnimation';
     },
+    autoFadeoutControls: async function() {
+      await this.timer(2000, true);
+      this.showControls = false;
+    },
 
     /**
      * Restarts slideshow. Only called when looping is not enabled
@@ -721,6 +772,8 @@
           await this.fadeOutSlide();
           this.currentSlideIndex = 0;
         } else {
+          this.isAudioPlaying = false;
+          this.$.audioPlayer.pause();
           this.isSlideshowFinished = true;
           return;
         }
@@ -751,9 +804,13 @@
     /**
      * Timer to pause slide progression for the determined amount of time
      */
-    timer: function(delay) {
+    timer: function(delay, isControls = false) {
       return new Promise(res => {
-        this.activeTimeout = setTimeout(res, delay);
+        if (isControls) {
+          this.slideshowControlsTimeout = setTimeout(res, delay);
+        } else {
+          this.slideDisplayTimeout = setTimeout(res, delay);
+        }
       });
     },
 
@@ -809,6 +866,7 @@
         this.runSlides();
         this.$.slideShow.open();
         this.$.slideShow.requestFullscreen();
+        this.autoFadeoutControls();
       }
     },
 
@@ -817,7 +875,7 @@
      */
     handleSlideshowClose: function(e) {
       if (Polymer.dom(e).localTarget.id === 'slideShow' || e.currentTarget.id === 'slideShowEnd') {
-        clearTimeout(this.activeTimeout);
+        clearTimeout(this.slideDisplayTimeout);
         if (document.fullscreenElement) document.exitFullscreen();
         if (this.$.slideshowSpeedModal.opened) this.$.slideshowSpeedModal.close();
         this.stopSlideshow = true;
@@ -1018,6 +1076,37 @@
     },
     shouldShowCheckmark: function(speedSelection, buttonSpeed) {
       return speedSelection === buttonSpeed;
+    },
+  handleMouseLeave: function(e) {
+    if (!this.$.slideshowSpeedModal.opened) {
+      this.isMouseEnter = false;
+      this.autoFadeoutControls();
+    }
+    },
+    handleMouseEnter: function(e) {
+      clearTimeout(this.slideshowControlsTimeout);
+      this.isMouseEnter = true;
+      this.showControls = true;
+    },
+    handleMouseMove: function(e) {
+      this.debounce('mousemove', () => {
+        this.showControls = true;
+      }, 50);
+    },
+    showControlsOnly: function(e) {
+      this.showControls = true;
+    },
+    handleTouchEvent: async function() {
+      if (!this.isSlideshowOpen()) return;
+      clearTimeout(this.slideshowControlsTimeout);
+      this.shouldToggleFade(true);
+      await this.timer(2000, true);
+      this.autoFadeoutControls();
+    },
+    updateControlsVisibility: function(showControls) {
+      if (!this.isSlideshowOpen()) return;
+      if (showControls && !this.isMouseEnter) this.autoFadeoutControls();
+      return this.shouldToggleFade(showControls);
     }
   });
 })();
