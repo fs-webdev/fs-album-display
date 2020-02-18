@@ -235,6 +235,7 @@
         width: 30px;
       }
       .loop-icon {
+        position: absolute;
         right: 2px;
       }
       .controls-btn.active-loop-btn path:nth-child(1),
@@ -423,12 +424,12 @@
           <div class="fs-dialog__body">
             <div class="flex-column">
               <!-- Intentionally different speed used than displayed to allow a slower -> faster time in calculation -->
-              <div class="speed-btn" role="button" data-speed="1.5" on-click="updateSpeedSelection">
-                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '1.5')]]"></fs-icon>
+              <div class="speed-btn" role="button" data-speed="2" on-click="updateSpeedSelection">
+                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '2')]]"></fs-icon>
                 <span>0.5</span>
               </div>
-              <div class="speed-btn" role="button" data-speed="1.25" on-click="updateSpeedSelection">
-                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '1.25')]]"></fs-icon>
+              <div class="speed-btn" role="button" data-speed="1.5" on-click="updateSpeedSelection">
+                <fs-icon icon="replace-check-small" hidden="[[!shouldShowCheckmark(speedSelection, '1.5')]]"></fs-icon>
                 <span>0.75</span>
               </div>
               <div class="speed-btn" role="button" data-speed="normal" on-click="updateSpeedSelection">
@@ -697,6 +698,7 @@
     closeSlideshowOptions: function() {
       const slideshowOptions = this.$.slideshowOptions;
       if (slideshowOptions.opened) slideshowOptions.close();
+      this.speedSelection = "normal";
     },
 
     /**
@@ -862,10 +864,12 @@
      */
     beginSlideshow: function(e) {
       if (e.target.id === 'slideshowOptions' && this.artifacts.length) {
+        const slideShow = this.$.slideShow;
         this.$.slideshowOptions.close();
         this.runSlides();
-        this.$.slideShow.open();
-        this.$.slideShow.requestFullscreen();
+        slideShow.open();
+        // iOS doesn't support 'requestFullscreen' even with Polyfill
+        if (slideShow.requestFullscreen) slideShow.requestFullscreen();
         this.autoFadeoutControls();
       }
     },
