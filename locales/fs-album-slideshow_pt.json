@@ -1,0 +1,18 @@
+{
+  "end_menu_close": "Encerrar",
+  "end_menu_end_of_slideshow": "Fim da apresentação de slides",
+  "end_menu_replay": "Reproduzir novamente",
+  "play_slideshow": "Executar apresentação de slides",
+  "slideshow_controls_audio_error": "Ocorreu um erro ao carregar o arquivo de áudio.",
+  "slideshow_controls_next_slide": "Próximo Slide",
+  "slideshow_controls_pause": "Pausa",
+  "slideshow_controls_play": "Reproduzir",
+  "slideshow_controls_prev_slide": "Slide Anterior",
+  "slideshow_controls_slide_number": "{current} de {total}",
+  "slideshow_controls_slideshow_speed": "Velocidade da apresentação de slides",
+  "slideshow_controls_speed": "Normal",
+  "slideshow_options_desc": "Essa apresentação de slides inclui apenas fotos e fotos com gravações de áudio.",
+  "slideshow_options_length": "{count} recordações | {min} minutos",
+  "slideshow_options_loop_slideshow": "Loop",
+  "slideshow_options_play_audio": "Executar gravações de áudio"
+}
