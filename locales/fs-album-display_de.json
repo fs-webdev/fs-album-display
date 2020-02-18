@@ -14,5 +14,6 @@
   "album_by": "Album von:",
   "reorder_album": "Neu ordnen",
   "album_liked_toast": "Das Album {title} wurde der Favoriten-Sammlung in Ihrer Galerie hinzugefügt.",
-  "album_unliked_toast": "Das Album {title} wurde aus der Favoriten-Sammlung in Ihrer Galerie entfernt."
+  "album_unliked_toast": "Das Album {title} wurde aus der Favoriten-Sammlung in Ihrer Galerie entfernt.",
+  "album_slideshow": "Diashow"
 }

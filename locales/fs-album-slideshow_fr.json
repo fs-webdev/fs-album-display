@@ -1,0 +1,18 @@
+{
+  "end_menu_close": "Fermer",
+  "end_menu_end_of_slideshow": "Fin du diaporama",
+  "end_menu_replay": "Rejouer",
+  "play_slideshow": "Lancer le diaporama",
+  "slideshow_controls_audio_error": "Erreur survenue lors du chargement du fichier audio.",
+  "slideshow_controls_next_slide": "Photo suivante",
+  "slideshow_controls_pause": "Pause",
+  "slideshow_controls_play": "Lecture",
+  "slideshow_controls_prev_slide": "Photo précédente",
+  "slideshow_controls_slide_number": "{current} de {total}",
+  "slideshow_controls_slideshow_speed": "Vitesse du diaporama",
+  "slideshow_controls_speed": "Normal",
+  "slideshow_options_desc": "Ce diaporama ne contient que des photos et des photos avec des enregistrements audio.",
+  "slideshow_options_length": "{count} souvenirs | {min} minutes",
+  "slideshow_options_loop_slideshow": "Boucle",
+  "slideshow_options_play_audio": "Lecture des enregistrements audio"
+}

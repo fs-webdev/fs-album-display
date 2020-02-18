@@ -1,0 +1,18 @@
+{
+  "end_menu_close": "닫기",
+  "end_menu_end_of_slideshow": "슬라이드쇼 마침",
+  "end_menu_replay": "다시 보기",
+  "play_slideshow": "슬라이드쇼 시작",
+  "slideshow_controls_audio_error": "오디오 파일을 불러오는 데 오류가 발생했습니다",
+  "slideshow_controls_next_slide": "다음 슬라이드",
+  "slideshow_controls_pause": "일시 정지",
+  "slideshow_controls_play": "재생",
+  "slideshow_controls_prev_slide": "이전 슬라이드",
+  "slideshow_controls_slide_number": "{total} 중 {current}",
+  "slideshow_controls_slideshow_speed": "슬라이드쇼 재생 속도",
+  "slideshow_controls_speed": "보통",
+  "slideshow_options_desc": "이 슬라이드쇼에는 사진이나 오디오 녹음이 된 사진만 포함되어 있습니다.",
+  "slideshow_options_length": "{count} 개의 추억 | {min}분",
+  "slideshow_options_loop_slideshow": "반복 재생",
+  "slideshow_options_play_audio": "오디오 재생하기"
+}
