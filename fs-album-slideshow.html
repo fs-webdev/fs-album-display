@@ -84,11 +84,12 @@
         padding-top: 56px;
       }
       .end-of-slideshow-container {
-        height: 100%;
-        width: 100%;
         background-color: rgba(0,0,0,0.5);
         position: absolute;
-        z-index: 10;
+        top: -56px;
+        width: 100%;
+        height: calc(100% + 56px);
+        z-index: 30;
       }
       .end-of-slideshow-container > * {
         color: #ffffff;
@@ -140,7 +141,6 @@
         width: 435px;
         max-width: 100vw;
         height: 170px;
-        padding: 30px 80px;
         background-color: rgba(0,0,0,0.6);
         justify-content: center;
         border-radius: 4px;
@@ -181,7 +181,7 @@
         background-color: #dddddd;
       }
       .controls-btn-container {
-        width: 80%;
+        width: 305px;
       }
       .play-btn {
         left: 27px;
@@ -212,7 +212,6 @@
       .controls-large, .controls-medium, .controls-small {
         background-color: #ffffff;
         border-radius: 50%;
-        outline: none;
         border: none;
         display: flex;
         justify-content: center;
@@ -330,17 +329,29 @@
           left: 15px
         }
         .slideshow-control-container {
+          /* Account for header area */
+          height: calc(100% + 56px);
           bottom: 0;
-          padding: 0 80px;
-          border-radius: 0;
-          border-top-left-radius: 4px;
-          border-top-right-radius: 4px;
+          width: 100%;
+          justify-content: flex-end;
+          padding-bottom: 30px;
         }
         #slideshowOptions .fs-dialog__close {
           display: block;
         }
         #slideshowOptions #dialogBody {
           padding: 50px 30px;
+        }
+      }
+      @media screen and (max-width: 400px) {
+        .slideshow-control-container {
+          height: 170px;
+          width: 435px;
+          justify-content: center;
+          bottom: 0;
+          border-radius: 0;
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
         }
       }
     </style>
@@ -384,7 +395,7 @@
                 </button>
               </div>
             </div>
-            <div id="slideshowControls" class$="slideshow-control-container flex-column flex-center-center [[updateControlsVisibility(showControls)]]">
+            <div id="slideshowControls" class$="slideshow-control-container flex-column flex-center-center [[updateControlsVisibility(showControls, isSlideshowFinished)]]">
               <div class="controls-index">
                 <span>
                   <fs-inner-html value="[[getSlideIndexPosition(currentSlideIndex, artifacts.length, i18n)]]"></fs-inner-html>
@@ -635,7 +646,8 @@
       }
     },
 
-    handlePlayPauseSlideshow: function() {
+    handlePlayPauseSlideshow: function(e) {
+      this.blurButton(e);
       if (this.isSlideshowPaused) {
         this.isSlideshowPaused = false;
         this.stopSlideshow = false;
@@ -651,12 +663,14 @@
         this.isSlideshowPaused = true;
       }
     },
-    handlePrevSlide: function() {
+    handlePrevSlide: function(e) {
+      this.blurButton(e);
       this.stopSlideshow = true;
       clearTimeout(this.slideDisplayTimeout);
       this.prevSlide();
     },
-    handleNextSlide: function() {
+    handleNextSlide: function(e) {
+      this.blurButton(e);
       this.stopSlideshow = true;
       clearTimeout(this.slideDisplayTimeout);
       this.nextSlide();
@@ -667,13 +681,13 @@
       const player = this.$.audioPlayer;
       switch (e.key) {
         case " ": /* SPACE */
-          this.handlePlayPauseSlideshow();
+          this.handlePlayPauseSlideshow(e);
           break;
         case "ArrowLeft": /* Left Arrow */
-          this.handlePrevSlide();
+          this.handlePrevSlide(e);
           break;
         case "ArrowRight": /* Right Arrow */
-          this.handleNextSlide();
+          this.handleNextSlide(e);
           break;
       
         default:
@@ -990,6 +1004,7 @@
     },
 
     openSlideshowSpeedModal: function(e) {
+      this.blurButton(e);
       const speedModal = this.$.slideshowSpeedModal;
       const config = { attachToElement: e.currentTarget };
       speedModal.opened ? speedModal.close() : speedModal.open(config);
@@ -1039,7 +1054,8 @@
     /**
      * Toggles the "loop slideshow" slider
      */
-    toggleLoopSlideshow: function() {
+    toggleLoopSlideshow: function(e) {
+      this.blurButton(e);
       this.loopSlideshow = !this.loopSlideshow;
     },
     /**
@@ -1077,6 +1093,8 @@
       this.speedHasChanged = true;
       // Update the slideshow time displayed on options modal based on new slide display speed
       this.setSlideshowCountAndTime();
+      this.$.slideshowSpeedModal.close();
+      this.autoFadeoutControls();
     },
     shouldShowCheckmark: function(speedSelection, buttonSpeed) {
       return speedSelection === buttonSpeed;
@@ -1098,7 +1116,11 @@
       }, 50);
     },
     showControlsOnly: function(e) {
-      this.showControls = true;
+      if (e.type === 'touchstart') {
+        this.showControls = (Polymer.dom(e).localTarget.id !== 'slideshowControls')
+      } else {
+        this.showControls = true;
+      }
     },
     handleTouchEvent: async function() {
       if (!this.isSlideshowOpen()) return;
@@ -1107,10 +1129,17 @@
       await this.timer(2000, true);
       this.autoFadeoutControls();
     },
-    updateControlsVisibility: function(showControls) {
+    updateControlsVisibility: function(showControls, isSlideshowFinished) {
       if (!this.isSlideshowOpen()) return;
-      if (showControls && !this.isMouseEnter) this.autoFadeoutControls();
-      return this.shouldToggleFade(showControls);
+      if (!isSlideshowFinished && showControls && !this.isMouseEnter) this.autoFadeoutControls();
+      return isSlideshowFinished ? this.shouldToggleFade(false) : this.shouldToggleFade(showControls);
+    },
+    /**
+     * Blurs the button clicked, so keyboard shortcuts are always functional
+     */
+    blurButton: function(e) {
+      // If a keypress was used e.currentTarget is 'document' which has no 'blur'
+      if (e.currentTarget.blur) e.currentTarget.blur(e);
     }
   });
 })();
