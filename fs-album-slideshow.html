@@ -1089,6 +1089,7 @@
       // Update the slideshow time displayed on options modal based on new slide display speed
       this.setSlideshowCountAndTime();
       this.$.slideshowSpeedModal.close();
+      this.isMouseEnter = false;
       this.autoFadeoutControls();
     },
     shouldShowCheckmark: function(speedSelection, buttonSpeed) {
