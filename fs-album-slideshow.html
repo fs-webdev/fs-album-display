@@ -403,7 +403,7 @@
               </div>
               <div class="flex-row-between controls-btn-container">
                 <button class$="controls-btn controls-small [[isActiveLoopBtn(loopSlideshow)]]" on-click="toggleLoopSlideshow" title="[[i18n('slideshow_options_loop_slideshow')]]">
-                  <svg width="25" height="25" fill="none" xmlns="http://www.w3.org/2000/svg" class="loop-icon">
+                  <svg width="25" height="25" fill="none" xmlns="http://www.w3.org/2000/svg" class="loop-icon" title="[[i18n('slideshow_options_loop_slideshow')]]">
                     <path d="M17.924 10.612l-2.316.023c-.23 0-.305.159-.164.341l3.78 4.906c.14.182.37.182.512-.008l3.675-4.989c.141-.19.067-.341-.17-.341l-2.317.023" fill="#333331"/>
                     <path d="M19.624 11.833c-.037-3.806-3.088-6.854-6.816-6.817A6.664 6.664 0 008.287 6.86" stroke="#333331" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round"/>
                     <path d="M7.069 14.388l2.316-.023c.23 0 .305-.159.164-.341L5.762 9.111c-.141-.182-.371-.182-.512.007l-3.676 4.99c-.14.189-.067.34.171.34l2.317-.022" fill="#333331"/>
@@ -411,17 +411,17 @@
                   </svg>
                 </button>
                 <button class="controls-btn controls-medium" on-click="handlePrevSlide" title="[[i18n('slideshow_controls_prev_slide')]]">
-                  <fs-icon class="prev-btn" icon="previous-flagged-image-small"></fs-icon>
+                  <fs-icon class="prev-btn" icon="previous-flagged-image-small" title="[[i18n('slideshow_controls_prev_slide')]]"></fs-icon>
                 </button>
-                <button class="controls-btn controls-large" on-click="handlePlayPauseSlideshow" title="[[getPlayPauseString(isSlideshowPaused)]]">
-                  <fs-icon class="play-btn" icon="play-white-medium" color="#333331" hidden="[[!isSlideshowPaused]]"></fs-icon>
-                  <fs-icon class="pause-btn" icon="pause-medium-white" color="#333331" hidden="[[isSlideshowPaused]]"></fs-icon>
+                <button class="controls-btn controls-large" on-click="handlePlayPauseSlideshow" title="[[getPlayPauseString(isSlideshowPaused, artifacts.length, totalSlideshowDurationWithAudio)]]">
+                  <fs-icon class="play-btn" icon="play-white-medium" color="#333331" hidden="[[!isSlideshowPaused]]" title="[[getPlayPauseString(isSlideshowPaused, artifacts.length, totalSlideshowDurationWithAudio)]]"></fs-icon>
+                  <fs-icon class="pause-btn" icon="pause-medium-white" color="#333331" hidden="[[isSlideshowPaused]]" title="[[getPlayPauseString(isSlideshowPaused, artifacts.length, totalSlideshowDurationWithAudio)]]"></fs-icon>
                 </button>
                 <button class="controls-btn controls-medium" on-click="handleNextSlide" title="[[i18n('slideshow_controls_next_slide')]]">
-                  <fs-icon class="next-btn" icon="next-flagged-image-small"></fs-icon>
+                  <fs-icon class="next-btn" icon="next-flagged-image-small" title="[[i18n('slideshow_controls_next_slide')]]"></fs-icon>
                 </button>
                 <button class="controls-btn controls-small" on-click="openSlideshowSpeedModal" title="[[i18n('slideshow_controls_slideshow_speed')]]">
-                  <fs-icon class="settings-btn" icon="tools-small"></fs-icon>
+                  <fs-icon class="settings-btn" icon="tools-small" title="[[i18n('slideshow_controls_slideshow_speed')]]"></fs-icon>
                 </button>
               </div>
             </div>
