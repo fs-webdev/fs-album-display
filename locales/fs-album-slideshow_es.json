@@ -1,0 +1,18 @@
+{
+  "end_menu_close": "Cerrar",
+  "end_menu_end_of_slideshow": "Fin de la presentación",
+  "end_menu_replay": "Volver a reproducir",
+  "play_slideshow": "Reproducir presentación",
+  "slideshow_controls_audio_error": "Error al cargar archivo de audio",
+  "slideshow_controls_next_slide": "Siguiente diapositiva",
+  "slideshow_controls_pause": "Pausa",
+  "slideshow_controls_play": "Reproducir",
+  "slideshow_controls_prev_slide": "Diapositiva anterior",
+  "slideshow_controls_slide_number": "{current} de {total}",
+  "slideshow_controls_slideshow_speed": "Velocidad de la presentación",
+  "slideshow_controls_speed": "Normal",
+  "slideshow_options_desc": "Esta presentación solo incluye fotos y fotos con grabaciones de audio.",
+  "slideshow_options_length": "{count} recuerdos | {min} minutos",
+  "slideshow_options_loop_slideshow": "Bucle",
+  "slideshow_options_play_audio": "Reproducir grabaciones de audio"
+}
