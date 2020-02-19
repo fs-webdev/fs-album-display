@@ -413,7 +413,7 @@
                 <button class="controls-btn controls-medium" on-click="handlePrevSlide" title="[[i18n('slideshow_controls_prev_slide')]]">
                   <fs-icon class="prev-btn" icon="previous-flagged-image-small"></fs-icon>
                 </button>
-                <button class="controls-btn controls-large" on-click="handlePlayPauseSlideshow" title$="[[getPlayPauseString(isSlideshowPaused)]]">
+                <button class="controls-btn controls-large" on-click="handlePlayPauseSlideshow" title="[[getPlayPauseString(isSlideshowPaused)]]">
                   <fs-icon class="play-btn" icon="play-white-medium" color="#333331" hidden="[[!isSlideshowPaused]]"></fs-icon>
                   <fs-icon class="pause-btn" icon="pause-medium-white" color="#333331" hidden="[[isSlideshowPaused]]"></fs-icon>
                 </button>
@@ -945,10 +945,14 @@
       this.totalSlideshowDurationWithAudio = 0;
 
       this.artifacts.forEach((item, index) => {
-        if (item.associatedArtifacts && item.associatedArtifacts.artifact.length && item.associatedArtifacts.artifact[0].category === 'AUDIO') {
+        let audioIndex = -1;
+        if (item.associatedArtifacts && item.associatedArtifacts.artifact.length) {
+          audioIndex = item.associatedArtifacts.artifact.findIndex(associated => associated.category === 'AUDIO');
+        }
+        if (audioIndex >= 0) {
           item.hasPhaudio = true;
           // Get Audio time and add it to totalSlideshowDurationWithAudio
-          this.getAudioDuration(item.associatedArtifacts.artifact[0].url, index);
+          this.getAudioDuration(item.associatedArtifacts.artifact[audioIndex].url, index);
         } else {
           // Add all the non-audio slide times to 'totalSlideshowDurationWithAudio'
           this.totalSlideshowDurationWithAudio += nonAudioSlideTime;
