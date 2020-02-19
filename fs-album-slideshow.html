@@ -720,14 +720,9 @@
      */
     openSlideshowOptions: function(data) {
       const validArtifacts = (data.artifacts && data.artifacts.length) ? this.validateArtifacts(data.artifacts) : [];
-      // Make sure we have something "new" before resetting the artifacts array and other data
-      const artifactsString = JSON.stringify(this.artifacts);
-      const eventArtifactsString = JSON.stringify(validArtifacts);
-      if (artifactsString !== eventArtifactsString) {
-        this.reset();
-        this.displayedSlideshowDuration = 0;
-        this.set('artifacts', validArtifacts);
-      }
+      this.reset();
+      this.displayedSlideshowDuration = 0;
+      this.set('artifacts', validArtifacts);
       this.stopSlideshow = false;
       this.isSlideshowFinished = false;
       this.setSlideshowCountAndTime();
@@ -1099,11 +1094,11 @@
     shouldShowCheckmark: function(speedSelection, buttonSpeed) {
       return speedSelection === buttonSpeed;
     },
-  handleMouseLeave: function(e) {
-    if (!this.$.slideshowSpeedModal.opened) {
-      this.isMouseEnter = false;
-      this.autoFadeoutControls();
-    }
+    handleMouseLeave: function(e) {
+      if (!this.$.slideshowSpeedModal.opened) {
+        this.isMouseEnter = false;
+        this.autoFadeoutControls();
+      }
     },
     handleMouseEnter: function(e) {
       clearTimeout(this.slideshowControlsTimeout);
@@ -1116,9 +1111,11 @@
       }, 50);
     },
     showControlsOnly: function(e) {
+      const isNotSlideshowControlsClick = (Polymer.dom(e).localTarget.id !== 'slideshowControls');
       if (e.type === 'touchstart') {
-        this.showControls = (Polymer.dom(e).localTarget.id !== 'slideshowControls')
+        this.showControls = isNotSlideshowControlsClick;
       } else {
+        if (isNotSlideshowControlsClick) this.autoFadeoutControls();
         this.showControls = true;
       }
     },
