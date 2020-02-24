@@ -781,6 +781,7 @@ Example:
 
     _openSlideshowOptions: function(e) {
       if (!this.fullArtifactsList.length) this.fullArtifactsList = this.artifacts.slice(0);
+      this.fireMetrics({link_name: 'Album: Slideshow Clicked'});
 
       FS.dialog.fsAlbumSlideshow.openSlideshowOptions({
         artifacts: this.artifacts
