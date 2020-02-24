@@ -376,7 +376,6 @@
                </div>
               <!-- AUDIO DURATION -->
               <span class="audio-timer">{{audioCurrentTime}}</span>
-              <audio id="audioPlayer" src$="[[getCurrentSlideAudioSrc(currentSlideIndex, artifacts.length, totalSlideshowDurationWithAudio)]]" on-timeupdate="updateAudioTime"></audio>
               <fs-inline-alert type="error" class="audio-loading-error" hidden="[[!showAudioError]]">
                 <p>[[i18n('slideshow_controls_audio_error')]]</p>
               </fs-inline-alert>
@@ -528,6 +527,10 @@
         type: Array,
         value: function() { return []; }
       },
+      audioTracks: {
+        type: Array,
+        value: function() { return []; }
+      },
       isAudioPlaying: {
         type: Boolean,
         value: false
@@ -643,6 +646,7 @@
       // fullscreenElement is 'null' when leaving fullscreen mode
       if (!document.fullscreenElement) {
         this.$.slideShow.close();
+        this.pauseCurrentAudio();
       }
     },
 
@@ -656,29 +660,29 @@
         // Pause the slideshow too
         this.stopSlideshow = true;
         clearTimeout(this.slideDisplayTimeout);
-        if (this.$.audioPlayer.duration) {
-          this.isAudioPlaying = false;
-          this.$.audioPlayer.pause();
-        }
+        this.pauseCurrentAudio(false);
         this.isSlideshowPaused = true;
       }
     },
     handlePrevSlide: function(e) {
       this.blurButton(e);
+      this.pauseCurrentAudio();
       this.stopSlideshow = true;
       clearTimeout(this.slideDisplayTimeout);
+      this.isSlideshowPaused = false;
       this.prevSlide();
     },
     handleNextSlide: function(e) {
       this.blurButton(e);
+      this.pauseCurrentAudio();
       this.stopSlideshow = true;
       clearTimeout(this.slideDisplayTimeout);
+      this.isSlideshowPaused = false;
       this.nextSlide();
     },
 
     handleKeyPress: function(e) {
       if (!this.isSlideshowOpen()) return;
-      const player = this.$.audioPlayer;
       switch (e.key) {
         case " ": /* SPACE */
           this.handlePlayPauseSlideshow(e);
@@ -699,11 +703,11 @@
      * Resets some dynamic variables used in the slideshow
      */
     reset: function() {
-      this.currentSlideIndex = 0;
       this.showAudioError = false;
       // Stop audio and reset track to beginning (they may have stopped on the first slide)
-      this.$.audioPlayer.pause();
-      this.$.audioPlayer.currentTime = 0;
+      this.pauseCurrentAudio();
+      this.currentSlideIndex = 0;
+      this.audioTracks = [];
     },
 
     /**
@@ -782,9 +786,9 @@
         if (this.loopSlideshow) {
           await this.fadeOutSlide();
           this.currentSlideIndex = 0;
+          // Accounting for when you have one slide and have looping on
+          if (this.artifacts.length === 1) this.fadeInSlide();
         } else {
-          this.isAudioPlaying = false;
-          this.$.audioPlayer.pause();
           this.isSlideshowFinished = true;
           return;
         }
@@ -829,7 +833,7 @@
      * Manages audio slide error checks, and delayTime updates
      */
     handleAudioSlideChecks: async function(delayTime, artifact) {
-      let player = this.$.audioPlayer;
+      let player = this.getAudioPlayer();
       if (artifact.hasAudioErr || !artifact.slideLength) {
         this.showAudioError = true;
       } else {
@@ -890,9 +894,9 @@
       if (Polymer.dom(e).localTarget.id === 'slideShow' || e.currentTarget.id === 'slideShowEnd') {
         clearTimeout(this.slideDisplayTimeout);
         if (document.fullscreenElement) document.exitFullscreen();
+        this.reset();
         if (this.$.slideshowSpeedModal.opened) this.$.slideshowSpeedModal.close();
         this.stopSlideshow = true;
-        this.reset();
       }
     },
 
@@ -900,7 +904,7 @@
      * Handler for when the meta data is loaded for the audio file.
      * Updates the 'totalSlideshowDurationWithAudio' value with audio's duration
      */
-    handleAudioTimeUpdate: function(audioEl, artifactIndex) {
+    handleAudioDataLoaded: function(audioEl, artifactIndex) {
       let offset = 0;
       const dur = (audioEl.duration * 1000); // Audio duration is given in seconds
       // Phaudios shouldn't prevent photo from showing for at least the 'slideDisplayTime'
@@ -918,7 +922,7 @@
     /**
      * Handler for when we know an audio file has an error from the start
      */
-     handleAudioError: function(audioEl, artifactIndex, err) {
+     handleAudioError: function(artifactIndex) {
       this.artifacts[artifactIndex].hasAudioErr = true;
     },
 
@@ -926,13 +930,12 @@
      * Obtain the audio file duration via the Audio API
      */
     getAudioDuration: function(audioUrl, artifactIndex) {
-      if (!audioUrl.includes('.mp3')) {
-        this.artifacts[artifactIndex].hasAudioErr = true;
-      } else {
-        const audio = new Audio(audioUrl)
-        audio.addEventListener('loadedmetadata', () => { this.handleAudioTimeUpdate(audio, artifactIndex) })
-        audio.addEventListener('error', (err) => { this.handleAudioError(audio, artifactIndex, err) })
-      }
+      const audioEl = new Audio(audioUrl);
+      audioEl.addEventListener('loadedmetadata', () => { this.handleAudioDataLoaded(audioEl, artifactIndex) });
+      audioEl.addEventListener('error', () => { this.handleAudioError(artifactIndex) });
+      audioEl.addEventListener('timeupdate', () => { this.updateAudioTime(audioEl, artifactIndex) });
+      // Add audio to array to avoid dup loading of audio track
+      this.push('audioTracks', { audioEl, artifactIndex });
     },
 
     /**
@@ -951,6 +954,7 @@
         }
         if (audioIndex >= 0) {
           item.hasPhaudio = true;
+          item.associatedAudioIndex = audioIndex;
           // Get Audio time and add it to totalSlideshowDurationWithAudio
           this.getAudioDuration(item.associatedArtifacts.artifact[audioIndex].url, index);
         } else {
@@ -1040,7 +1044,8 @@
      */
      getCurrentSlideAudioSrc: function(currentSlideIndex, artifactsLength) {
       if (!artifactsLength || !this.playAudio || !this.artifacts[currentSlideIndex].hasPhaudio) return '';
-      return this.artifacts[currentSlideIndex].associatedArtifacts.artifact[0].url || '';
+      const artifact = this.artifacts[currentSlideIndex];
+      return artifact.associatedArtifacts.artifact[artifact.associatedAudioIndex || 0].url || '';
     },
     /**
      * Toggles the "play photo-audio" slider and updates the displayed slideshow duration
@@ -1076,10 +1081,10 @@
     audioBarsActive: function(isAudioPlaying) {
       return isAudioPlaying ? 'playing-animation' : 'playing-animation paused';
     },
-    updateAudioTime: function() {
-      const player = this.$.audioPlayer;
-      const duration = isNaN(player.duration) ?  0 : player.duration * 1000;
-      const current = player.currentTime * 1000;
+    updateAudioTime: function(audioEl, audioArtifactIndex) {
+      if (audioArtifactIndex !== this.currentSlideIndex) return;
+      const duration = isNaN(audioEl.duration) ?  0 : audioEl.duration * 1000;
+      const current = audioEl.currentTime * 1000;
       this.isAudioPlaying = ((duration - current) !== 0 && !this.isSlideshowPaused);
       this.audioCurrentTime = this.formatDisplayTime(duration - current);
     },
@@ -1142,6 +1147,18 @@
     blurButton: function(e) {
       // If a keypress was used e.currentTarget is 'document' which has no 'blur'
       if (e.currentTarget.blur) e.currentTarget.blur(e);
+    },
+    getAudioPlayer: function() {
+      if (!this.audioTracks || !this.audioTracks.length) return false;
+      const audioTrackIndex = this.audioTracks.findIndex(track => track.artifactIndex === this.currentSlideIndex);
+      return (audioTrackIndex >= 0) ? this.audioTracks[audioTrackIndex].audioEl : false;
+    },
+    pauseCurrentAudio: function(resetTime = true) {
+      const player = this.getAudioPlayer();
+      if (player) {
+        player.pause();
+        if (resetTime) player.currentTime = 0;
+      }
     }
   });
 })();
