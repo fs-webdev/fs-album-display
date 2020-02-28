@@ -1,0 +1,18 @@
+{
+  "end_menu_close": "Tutup",
+  "end_menu_end_of_slideshow": "Akhir Slideshow",
+  "end_menu_replay": "Putar Ulang",
+  "play_slideshow": "Putar Slideshow",
+  "slideshow_controls_audio_error": "Galat memuat fail audio",
+  "slideshow_controls_next_slide": "Slide Berikutnya",
+  "slideshow_controls_pause": "Jeda",
+  "slideshow_controls_play": "Putar",
+  "slideshow_controls_prev_slide": "Slide Sebelumnya",
+  "slideshow_controls_slide_number": "{current} dari {total}",
+  "slideshow_controls_slideshow_speed": "Kecepatan Slideshow",
+  "slideshow_controls_speed": "Normal",
+  "slideshow_options_desc": "Slideshow ini mencakup hanya foto dan foto dengan rekaman audio.",
+  "slideshow_options_length": "{count} meemori | {min} menit",
+  "slideshow_options_loop_slideshow": "Loop",
+  "slideshow_options_play_audio": "Putar Rekaman Audio"
+}

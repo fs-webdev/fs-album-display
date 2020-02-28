@@ -1,0 +1,13 @@
+{
+  "cancel": "Batalkan",
+  "cancel_confirmation_body": "Apakah Anda yakin ingin membatalkan? Tidak ada dari perubahan Anda akan disimpan.",
+  "cancel_confirmation_header": "Abaikan perubahan penyusunan ulang Anda?",
+  "continue_editing": "Lanjutkan Mengedit",
+  "discard_changes": "Abaikan Perubahan",
+  "drag_drop_instructions": "Seret dan letakkan item untuk menyusunnya ulang.",
+  "no_date": "Tidak ada tanggal peristiwa",
+  "no_place": "Tidak ada tempat peristiwa",
+  "no_title": "Tanpa judul",
+  "reorder_album": "Susun Ulang Album",
+  "save": "Simpan"
+}

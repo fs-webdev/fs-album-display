@@ -1,0 +1,19 @@
+{
+  "add_desc": "Tambahkan Deskripsi",
+  "add_title": "Tambahkan Judul",
+  "album_by": "Album menurut:",
+  "album_liked_toast": "Album {title} ditambahkan ke koleksi Kesukaan Saya di Galeri Anda.",
+  "album_slideshow": "Slideshow",
+  "album_unliked_toast": "Album {title} dihapus dari koleksi Kesukaan Saya di Galeri Anda.",
+  "cancel": "Batalkan",
+  "copied": "Telah disalin",
+  "copy": "Salin",
+  "copy_link": "Salin Tautan",
+  "delete_album": "Hapus Album",
+  "edit_desc": "Edit Deskripsi",
+  "edit_title": "Edit Judul",
+  "email": "Posel",
+  "reorder_album": "Susun ulang",
+  "save": "Simpan",
+  "share": "Bagikan"
+}
