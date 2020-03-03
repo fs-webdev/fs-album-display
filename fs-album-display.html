@@ -627,6 +627,9 @@ Example:
         this.socialConfig.title = this.album.name;
         this.socialConfig.desc = this.album.description;
         this.socialConfig.media = this.album.thumbUrl;
+        if (FS.showEx('shareToWhatsAppEx')) {
+          this.socialConfig.showWhatsApp = true;
+        }
         this.socialConfig.thumb = this.album.thumbUrl;
         this.socialConfig = Object.assign({}, this.socialConfig);
       }

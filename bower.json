@@ -1,6 +1,6 @@
 {
   "name": "fs-album-display",
-  "version": "4.6.10",
+  "version": "4.6.11",
   "authors": [
     "Josh Crowther <jshcrowthe@gmail.com>"
   ],
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
-    "web-component-tester": "^6.0.0"
+    "web-component-tester": "^6.5.1"
   },
   "variants": {
     "1.x": {
