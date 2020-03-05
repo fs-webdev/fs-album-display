@@ -1,0 +1,18 @@
+{
+  "end_menu_close": "Tapuni ",
+  "end_menu_end_of_slideshow": "Faaiuga o le Atafaasolo",
+  "end_menu_replay": "Toe Ta ",
+  "play_slideshow": "Faaali le Atafaasolo",
+  "slideshow_controls_audio_error": "Mea sese a o tatalaina le faila o le otio",
+  "slideshow_controls_next_slide": "O le Isi Atafaasolo",
+  "slideshow_controls_pause": "Faatali ",
+  "slideshow_controls_play": "Ta ",
+  "slideshow_controls_prev_slide": "Atafaasolo Talu Ai",
+  "slideshow_controls_slide_number": "{current} o le {total} ",
+  "slideshow_controls_slideshow_speed": "Saoasaoa o le Atafaasolo",
+  "slideshow_controls_speed": "Masani ",
+  "slideshow_options_desc": "O lenei atafaasolo e aofia ai na o ata ma ata e i ai puega o leo.",
+  "slideshow_options_length": "{count} manatuaga | {min} minute",
+  "slideshow_options_loop_slideshow": "Lio",
+  "slideshow_options_play_audio": "Ta le Puega o Leo "
+}
