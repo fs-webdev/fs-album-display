@@ -1,0 +1,18 @@
+{
+  "end_menu_close": "បិទ",
+  "end_menu_end_of_slideshow": "ចុងបញ្ចប់​នៃ​ការ​បង្ហាញ​ស្លាយជា​បន្ត​បន្ទាប់",
+  "end_menu_replay": "បង្ហាញ​ឡើង​វិញ",
+  "play_slideshow": "ចាក់​ការ​បង្ហាញស្លាយ​ជា​បន្ត​បន្ទាប់",
+  "slideshow_controls_audio_error": "មាន​កំហុស​​ក្នុង​ផ្ទុក​ឯកសារ​សំឡេង",
+  "slideshow_controls_next_slide": "ការ​បង្ហាញ​បន្ទាប់",
+  "slideshow_controls_pause": "ផ្អាក",
+  "slideshow_controls_play": "ចាក់មើល",
+  "slideshow_controls_prev_slide": "ការ​បង្ហាញ​មុន",
+  "slideshow_controls_slide_number": "{current} នៃ {total}",
+  "slideshow_controls_slideshow_speed": "ល្បឿន​នៃ​ការ​បង្ហាញ​ស្លាយជា​បន្ត​បន្ទាប់",
+  "slideshow_controls_speed": "ធម្មតា",
+  "slideshow_options_desc": "ការ​បង្ហាញ​ជា​បន្ត​បន្ទាប់​នេះ​នឹង​ដាក់​បញ្ចូល​តែ​រូបថត និង​រូបថត​ដែល​មាន​សំឡេង​ប៉ុណ្ណោះ ។",
+  "slideshow_options_length": "{count}អនុស្សាវរីយ៍ | {min} នាទី",
+  "slideshow_options_loop_slideshow": "រង្វិលជុំ",
+  "slideshow_options_play_audio": "ចាក់​ការ​ថត​សំឡេង"
+}
