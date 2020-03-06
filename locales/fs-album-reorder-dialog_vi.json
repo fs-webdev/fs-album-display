@@ -1,0 +1,13 @@
+{
+  "cancel": "Hủy",
+  "cancel_confirmation_body": "Bạn có chắc là muốn hủy không? Không có thay đổi nào của bạn sẽ được lưu lại.",
+  "cancel_confirmation_header": "Loại bỏ những thay đổi bạn sắp xếp lại?",
+  "continue_editing": "Tiếp Tục Chỉnh Sửa",
+  "discard_changes": "Loại Bỏ Những Thay Đổi",
+  "drag_drop_instructions": "Kéo và thả để sắp xếp lại ảnh.",
+  "no_date": "Không có ngày của sự kiện",
+  "no_place": "Không có địa điểm của sự kiện",
+  "no_title": "Không có tựa đề",
+  "reorder_album": "Sắp Xếp Lại Album",
+  "save": "Lưu"
+}

@@ -1,0 +1,19 @@
+{
+  "add_desc": "Thêm Phần Miêu Tả",
+  "add_title": "Thêm Tựa Đề",
+  "album_by": "Album được tạo bởi:",
+  "album_liked_toast": "{title}Album đã được thêm vào bộ sưu tập Tôi Thích trong Thư Viện Ảnh của bạn.",
+  "album_slideshow": "Chiếu Ảnh Slide",
+  "album_unliked_toast": "{title}Album đã được loại bỏ khỏi bộ sưu tập Tôi Thích trong Thư Viện Ảnh của bạn.",
+  "cancel": "Hủy",
+  "copied": "Đã Được Sao Chép",
+  "copy": "Sao Chép",
+  "copy_link": "Sao Chép Đường Liên Kết",
+  "delete_album": "Xóa Album",
+  "edit_desc": "Hiệu Chỉnh Phần Miêu Tả",
+  "edit_title": "Hiệu Chỉnh Tựa Đề",
+  "email": "Email",
+  "reorder_album": "Sắp Xếp Lại",
+  "save": "Lưu",
+  "share": "Chia Sẻ"
+}
