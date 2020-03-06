@@ -1,0 +1,18 @@
+{
+  "end_menu_close": "Tāpuni",
+  "end_menu_end_of_slideshow": "Fakaʻosinga ʻo e Slideshow",
+  "end_menu_replay": "Toe Kamata",
+  "play_slideshow": "Kamata e Slideshow",
+  "slideshow_controls_audio_error": "Fehālaaki hono fakaava e faile ʻo e ongó",
+  "slideshow_controls_next_slide": "Laʻi ʻAta Hokó",
+  "slideshow_controls_pause": "Mālōlō",
+  "slideshow_controls_play": "Kamata",
+  "slideshow_controls_prev_slide": "Laʻi ʻAta Ki Muʻá",
+  "slideshow_controls_slide_number": "{current} ʻo e {total}",
+  "slideshow_controls_slideshow_speed": "Vave ʻo e Slideshow",
+  "slideshow_controls_speed": "Tuʻunga Mahení",
+  "slideshow_options_desc": "Ko e ngaahi tā pē mo e ngaahi ʻata fakataha mo honau ngaahi ongo kuo hiki ʻoku kau ʻi he slideshow ko ʻení. ",
+  "slideshow_options_length": "Ngaahi manatu melie ʻe{count} | miniti ʻe {min} ",
+  "slideshow_options_loop_slideshow": "Loop",
+  "slideshow_options_play_audio": "Kamata e Ngaahi Ongo kuo Hikí"
+}
