@@ -1,0 +1,13 @@
+{
+  "cancel": "Anuloje",
+  "cancel_confirmation_body": "A jeni i sigurt se dëshironi ta anuloni? Asnjë nga ndryshimet tuaja nuk do të ruhet.",
+  "cancel_confirmation_header": "A t’i heqim ndryshimet tuaja të renditjes rishtas?",
+  "continue_editing": "Vazhdo Redaktimin",
+  "discard_changes": "Hiqi Ndryshimet",
+  "drag_drop_instructions": "Tërhiqini dhe lëshojini materialet që t’i renditni rishtas.",
+  "no_date": "Nuk ka datë të ngjarjes",
+  "no_place": "Nuk ka vend të ngjarjes",
+  "no_title": "Nuk ka titull",
+  "reorder_album": "Renditi Rishtas Materialet në Album",
+  "save": "Ruaje"
+}
