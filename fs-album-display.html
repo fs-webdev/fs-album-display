@@ -421,7 +421,7 @@ Example:
       <span class='action delete' data-test="DeleteAlbumBtn" hidden$='[[readOnly]]' on-tap='_tryAlbumDelete'>
         [[i18n('delete_album')]]
       </span>
-      <span class='action reorder' data-test="ReorderAlbumBtn" hidden$='[[_showReorderLink(reorderAlbumExp, readOnly)]]' on-click='_openReorderModal'>
+      <span class='action reorder' data-test="ReorderAlbumBtn" hidden$='[[_showReorderLink(readOnly)]]' on-click='_openReorderModal'>
         [[i18n('reorder_album')]]
       </span>
       <span class='action slideshow' data-test="AlbumSlideshowBtn" hidden='[[!albumSlideshowEx]]' on-click='_openSlideshowOptions'>
@@ -530,10 +530,6 @@ Example:
       ownerCisId: {
         type: String,
         value: ''
-      },
-      reorderAlbumExp: {
-        type: Boolean,
-        value: function(){ return FS.showEx('reorderAlbum'); }
       },
       albumSlideshowEx: {
         type: Boolean,
@@ -791,11 +787,8 @@ Example:
       });
     },
 
-    _showReorderLink: function(reorderAlbumExp, readOnly) {
-      if (reorderAlbumExp) {
-        return readOnly ? true : false;
-      }
-      return true;
+    _showReorderLink: function(readOnly) {
+      return readOnly ? true : false;
     },
 
     /*
