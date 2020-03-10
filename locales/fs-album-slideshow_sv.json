@@ -1,0 +1,18 @@
+{
+  "end_menu_close": "Stäng",
+  "end_menu_end_of_slideshow": "Slut på bildspelet",
+  "end_menu_replay": "Spela upp igen",
+  "play_slideshow": "Spela upp bildspel",
+  "slideshow_controls_audio_error": "Fel vid hämtning av ljudfil",
+  "slideshow_controls_next_slide": "Nästa bild",
+  "slideshow_controls_pause": "Pausa",
+  "slideshow_controls_play": "Spela upp",
+  "slideshow_controls_prev_slide": "Föregående bild",
+  "slideshow_controls_slide_number": "{current} av {total}",
+  "slideshow_controls_slideshow_speed": "Uppspelningshastighet",
+  "slideshow_controls_speed": "Normal",
+  "slideshow_options_desc": "Det här bildspelet består bara av fotografier och fotografier med ljudinspelningar.",
+  "slideshow_options_length": "{count} minnen | {min} minuter",
+  "slideshow_options_loop_slideshow": "Loop",
+  "slideshow_options_play_audio": "Spela upp ljudinspelningar"
+}
