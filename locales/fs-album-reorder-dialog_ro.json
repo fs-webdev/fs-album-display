@@ -1,0 +1,13 @@
+{
+  "cancel": "Anulează",
+  "cancel_confirmation_body": "Ești sigur că dorești să anulezi? Nicio modificare nu va fi salvată.",
+  "cancel_confirmation_header": "Dorești să renunți la modificările cauzate de rearanjare?",
+  "continue_editing": "Continuă redactarea",
+  "discard_changes": "Renunță la modificări",
+  "drag_drop_instructions": "Glisează și fixează elementele pentru a le rearanja.",
+  "no_date": "Nicio dată a evenimentului",
+  "no_place": "Niciun loc al evenimentului",
+  "no_title": "Niciun titlu",
+  "reorder_album": "Album înregistrat",
+  "save": "Salvează"
+}

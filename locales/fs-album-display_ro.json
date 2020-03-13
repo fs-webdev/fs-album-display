@@ -1,0 +1,19 @@
+{
+  "add_desc": "Adaugă descriere",
+  "add_title": "Adaugă titlu",
+  "album_by": "Album creat de:",
+  "album_liked_toast": "Albumul {title} a fost adăugat la colecția Albume care îmi plac, aflată în Galeria ta.",
+  "album_slideshow": "Prezentare",
+  "album_unliked_toast": "Albumul {title} a fost șters din colecția Albume care îmi plac, aflată în Galeria ta.",
+  "cancel": "Anulează",
+  "copied": "Copiat",
+  "copy": "Copiază",
+  "copy_link": "Copiază link",
+  "delete_album": "Șterge album",
+  "edit_desc": "Redactează descrierea",
+  "edit_title": "Redactează titlul",
+  "email": "E-mail",
+  "reorder_album": "Rearanjare",
+  "save": "Salvează",
+  "share": "Împărtășește"
+}

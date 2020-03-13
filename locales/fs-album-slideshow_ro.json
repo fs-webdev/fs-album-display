@@ -1,0 +1,18 @@
+{
+  "end_menu_close": "Închide",
+  "end_menu_end_of_slideshow": "Sfârșitul prezentării",
+  "end_menu_replay": "Redă din nou",
+  "play_slideshow": "Redă prezentarea",
+  "slideshow_controls_audio_error": "Eroare la încărcarea fișierului audio",
+  "slideshow_controls_next_slide": "Fotografia următoare",
+  "slideshow_controls_pause": "Pauză",
+  "slideshow_controls_play": "Redă",
+  "slideshow_controls_prev_slide": "Fotografia anterioară",
+  "slideshow_controls_slide_number": "{current} din {total}",
+  "slideshow_controls_slideshow_speed": "Viteza prezentării",
+  "slideshow_controls_speed": "Normal",
+  "slideshow_options_desc": "Această prezentare include doar fotografii și fotografii cu înregistrări audio.",
+  "slideshow_options_length": "{count} amintiri | {min} minute",
+  "slideshow_options_loop_slideshow": "Repetă",
+  "slideshow_options_play_audio": "Redă înregistrările audio"
+}
