@@ -23,6 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../fs-favorite-memory/fs-favorite-memory.html">
 <link rel="import" href="../fs-alert/fs-inline-alert.html">
 <link rel="import" href="../fs-icon/fs-icon.html">
+<link rel="import" href="../fs-report-abuse/fs-report-abuse.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -126,12 +127,12 @@ Example:
         margin: var(--meta-control-margin);
         display: inline-block;
       }
-      
+
       .meta-controls .favorite {
         display: inline-flex;
         align-items: baseline;
       }
-      
+
 
       .meta-controls .action:before {
         display: inline-block;
@@ -310,6 +311,13 @@ Example:
           left: initial;
         }
       }
+
+      .report-abuse-wrapper {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        width: fit-content;
+      }
     </style>
     <iron-ajax
       id='getPatron'
@@ -421,6 +429,17 @@ Example:
           album-id="[[album.id]]">
         </fs-favorite-memory>
       </span>
+    </div>
+    <div class='report-abuse-wrapper' hidden$="[[_hideReportAbuse(readOnly, loggedIn, albumReportAbuseEx)]]">
+      <button on-click='_openReportAbuse' class='fs-button fs-button--minor'>
+        <svg width="13" height="14" viewBox="0 0 13 18" xmlns="http://www.w3.org/2000/svg">
+          <g fill="none" fill-rule="evenodd">
+            <path d="M12.236 1H2.87V.812c0-.447-.36-.81-.808-.812-.447 0-.81.36-.81.807v14.37c-.19.134-.394.307-.5.512-.17.33-.198.725-.09 1.08.12.353.373.655.705.826.33.17.725.2 1.08.09.353-.12.656-.372.826-.703.17-.332.203-.733.09-1.08-.095-.29-.276-.53-.522-.7V11.99h9.397c.416 0 .757-.34.757-.757V1.758c0-.416-.342-.757-.758-.757z" fill="#0051C4"></path>
+            <path d="M0-1h15v19H0z"></path>
+          </g>
+        </svg>
+        <span>[[i18n('report_abuse')]]</span>
+      </button>
     </div>
   </template>
 </dom-module>
@@ -536,6 +555,10 @@ Example:
       loggedIn: {
         type: Boolean,
         value: function(){ return Boolean(FS.User.sessionId); }
+      },
+      albumReportAbuseEx: {
+        type: Boolean,
+        value: function(){ return FS.showEx('albumReportAbuseEx'); }
       }
     },
     observers: [
@@ -815,6 +838,19 @@ Example:
         setTimeout(() => toastEl.classList.toggle('album-toast--show'), 3000);
         setTimeout(() => toastEl.hidden = true, 3500);
       }
+    },
+    _hideReportAbuse(readOnly, loggedIn, albumReportAbuseEx) {
+      return !readOnly || !loggedIn || !albumReportAbuseEx;
+    },
+    _openReportAbuse() {
+      if(!FS.dialog.fsReportAbuse) {
+        FS.dialog.register('fs-report-abuse');
+      }
+      const dialog = FS.dialog.fsReportAbuse;
+      dialog.fetchData();
+      dialog.appName = 'Photos and Stories';
+      dialog.subject = `Abuse reported for album ${this.album.id}`;
+      dialog.open();
     }
   });
 })();
