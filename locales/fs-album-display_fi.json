@@ -15,5 +15,6 @@
   "reorder_album": "Järjestele uudestaan",
   "album_liked_toast": "{title}-albumi lisättiin oman galleriasi Suosikkini-kokoelmaan.",
   "album_unliked_toast": "{title}-albumi poistettiin oman galleriasi Suosikkini-kokoelmasta.",
-  "album_slideshow": "Diaesitys"
+  "album_slideshow": "Diaesitys",
+  "report_abuse": "Ilmoita väärinkäytöstä"
 }

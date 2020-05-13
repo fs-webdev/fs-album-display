@@ -15,5 +15,6 @@
   "reorder_album": "Herschikken",
   "album_liked_toast": "Het album {title} is aan de collectie Mijn likes in uw galerij toegevoegd.",
   "album_unliked_toast": "Het album {title} is uit de collectie Mijn likes in uw galerij verwijderd.",
-  "album_slideshow": "Diavoorstelling"
+  "album_slideshow": "Diavoorstelling",
+  "report_abuse": "Misbruik melden"
 }
