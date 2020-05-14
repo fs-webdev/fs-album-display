@@ -15,5 +15,6 @@
   "reorder_album": "再注文",
   "album_liked_toast": "ギャラリーの「いいね！」コレクションに{title}のアルバムを追加しました。",
   "album_unliked_toast": "ギャラリーの「いいね！」コレクションから{title}のアルバムを削除しました。",
-  "album_slideshow": "スライドショー"
+  "album_slideshow": "スライドショー",
+  "report_abuse": "不正使用の報告"
 }

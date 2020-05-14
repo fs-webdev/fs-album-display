@@ -15,5 +15,6 @@
   "reorder_album": "Reorganizar",
   "album_liked_toast": "O álbum {title} foi acrescentado à coleção “Minhas curtidas” em sua Galeria.",
   "album_unliked_toast": "O álbum {title} foi removido da coleção “Minhas curtidas” em sua Galeria.",
-  "album_slideshow": "Apresentação de slides"
+  "album_slideshow": "Apresentação de slides",
+  "report_abuse": "Relatar abuso"
 }

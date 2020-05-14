@@ -15,5 +15,6 @@
   "reorder_album": "Zamów ponownie",
   "album_liked_toast": "Album o nazwie {title} został dodany do zbioru Lubię to w twojej galerii.",
   "album_unliked_toast": "Album o nazwie {title} został usunięty ze zbioru Lubię to w twojej galerii.",
-  "album_slideshow": "Pokaz slajdów"
+  "album_slideshow": "Pokaz slajdów",
+  "report_abuse": "Zgłoś nadużycie"
 }

@@ -15,5 +15,6 @@
   "reorder_album": "Réorganiser",
   "album_liked_toast": "L’album {title} a été ajouté à la collection « Mes favoris » dans votre Galerie.",
   "album_unliked_toast": "L’album {title} a été retiré de la collection « Mes favoris » de votre Galerie.",
-  "album_slideshow": "Diaporama"
+  "album_slideshow": "Diaporama",
+  "report_abuse": "Signaler une infraction"
 }
