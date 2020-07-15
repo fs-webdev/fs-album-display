@@ -1,0 +1,20 @@
+{
+  "add_desc": "Legg til beskrivelse",
+  "add_title": "Legg til tittel",
+  "album_by": "Album av:",
+  "album_liked_toast": "{title} Albumet ble lagt til i samlingen Hva jeg liker i galleriet.",
+  "album_slideshow": "Lysbildefremvisning",
+  "album_unliked_toast": "{title} Albumet ble fjernet fra samlingen Hva jeg liker i galleriet.",
+  "cancel": "Avbryt",
+  "copied": "Kopiert",
+  "copy": "Kopier",
+  "copy_link": "Kopier kobling",
+  "delete_album": "Slett album",
+  "edit_desc": "Rediger beskrivelse",
+  "edit_title": "Rediger tittel",
+  "email": "E-post",
+  "reorder_album": "Organiser på nytt",
+  "report_abuse": "Rapporter misbruk",
+  "save": "Lagre",
+  "share": "Del"
+}
