@@ -496,6 +496,11 @@ Example:
         type: Object
       },
 
+      _likeToBookmarkEx: {
+        type: Boolean,
+        value: function() { return FS.showEx('likeToBookmarkEx'); }
+      },
+
       // ELEMENT INPUTS
       /**
        * An album object from artifactmanager
@@ -808,7 +813,7 @@ Example:
     _handleAlbumToastText: function(i18n, title, liked = true) {
       if (!i18n || !title) return;
       const toastEl = liked ? this.$.likedSuccess : this.$.unlikedSuccess;
-      let text = liked ? i18n('album_liked_toast') : i18n('album_unliked_toast');
+      let text = this._getAlbumToastText(liked);
       if (text) {
         text = text.replace('{title}', `<span class="album-name">${title}</span>`);
         toastEl.querySelector('p').innerHTML = text;
@@ -852,6 +857,13 @@ Example:
       dialog.subject = `Abuse reported for album ${this.album.id}`;
       dialog.abuseCaseDescription = `${FS.baseUrl}/photos/gallery/album/${this.album.id}`;
       dialog.open();
+    },
+    _getAlbumToastText(liked) {
+      if(liked) {
+        return this._likeToBookmarkEx ? this.i18n('album_bookmarked_toast'): this.i18n('album_liked_toast');
+      } else {
+        return this._likeToBookmarkEx ? this.i18n('album_unbookmarked_toast'): this.i18n('album_unliked_toast');
+      }
     }
   });
 })();
