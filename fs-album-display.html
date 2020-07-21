@@ -815,8 +815,10 @@ Example:
       const toastEl = liked ? this.$.likedSuccess : this.$.unlikedSuccess;
       let text = this._getAlbumToastText(liked);
       if (text) {
-        text = text.replace('{title}', `<span class="album-name">${title}</span>`);
+        // Inject span to style album title, but use innerText for title to prevent XSS
+        text = text.replace('{title}', `<span class="album-name"></span>`);
         toastEl.querySelector('p').innerHTML = text;
+        toastEl.querySelector('.album-name').innerText = title;
       }
     },
 
