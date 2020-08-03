@@ -15,6 +15,8 @@
   "reorder_album": "Riordina",
   "album_liked_toast": "L’album {title} è stato aggiunto alla raccolta “I miei Mi piace” della Galleria.",
   "album_unliked_toast": "L’album {title} è stato rimosso dalla raccolta “I miei Mi piace” della Galleria.",
+  "album_bookmarked_toast": "L’album {title} è stato contrassegnato con un segnalibro nella tua Galleria.",
+  "album_unbookmarked_toast": "L’album {title} non è più contrassegnato con un segnalibro nella tua Galleria.",
   "album_slideshow": "Presentazione",
   "report_abuse": "Segnala abuso"
 }

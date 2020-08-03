@@ -15,6 +15,8 @@
   "reorder_album": "Изменить порядок",
   "album_liked_toast": "Альбом {title} был добавлен в коллекцию «Мне нравится» в Галерее.",
   "album_unliked_toast": "Альбом {title} был удален из коллекции «Мне нравится» в Галерее.",
+  "album_bookmarked_toast": "Альбом {title} был отмечен закладкой в вашей Галерее.",
+  "album_unbookmarked_toast": "Альбом {title} больше не отмечен закладкой в вашей Галерее.",
   "album_slideshow": "Слайдшоу",
   "report_abuse": "Сообщить о нарушении"
 }

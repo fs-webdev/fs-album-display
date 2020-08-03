@@ -15,6 +15,8 @@
   "reorder_album": "重新排序",
   "album_liked_toast": "{title}專輯已加入你「憶廊」裡「我的喜愛」收藏。",
   "album_unliked_toast": "{title}專輯已從你「憶廊」裡「我的喜愛」收藏中移除。",
+  "album_bookmarked_toast": "{title}專輯已加入你「憶廊」的書籤中。",
+  "album_unbookmarked_toast": "{title}專輯已不在你「憶廊」的書籤中。",
   "album_slideshow": "投影片",
   "report_abuse": "舉報不當使用"
 }

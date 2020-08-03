@@ -15,6 +15,8 @@
   "reorder_album": "재정렬",
   "album_liked_toast": "{title}앨범이 갤러리의 “좋아요” 모음에 추가되었습니다.",
   "album_unliked_toast": "{title}앨범이 갤러리의 “좋아요” 모음에서 삭제되었습니다.",
+  "album_bookmarked_toast": "앨범 {title}이/가 여러분의 갤러리에 북마크되었습니다.",
+  "album_unbookmarked_toast": "앨범 {title}은/는 여러분의 갤러리에 더이상 북마크되지 않습니다.",
   "album_slideshow": "슬라이드 쇼",
   "report_abuse": "오남용 신고"
 }
