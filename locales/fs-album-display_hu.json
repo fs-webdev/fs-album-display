@@ -15,6 +15,8 @@
   "reorder_album": "Újrarendezés",
   "album_liked_toast": "A(z) {title} album hozzáadásra került a Galéria Kedveléseim gyűjteményéhez.",
   "album_unliked_toast": "A(z) {title} album eltávolításra került a Galéria Kedveléseim gyűjteményéből.",
+  "album_bookmarked_toast": "A(z) {title} album megjelölésre került könyvjelzővel a Galériádban.",
+  "album_unbookmarked_toast": "A(z) {title} album már nincs megjelölve könyvjelzővel a Galériádban.",
   "album_slideshow": "Diavetítés",
   "report_abuse": "Visszaélés jelentése"
 }

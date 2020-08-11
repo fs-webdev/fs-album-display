@@ -15,6 +15,8 @@
   "reorder_album": "Ändra ordning",
   "album_liked_toast": "Albumet {title} lades till i samlingen Mina gillamarkeringar in ditt galleri.",
   "album_unliked_toast": "Albumet {title} togs bort från samlingen Mina gillamarkeringar in ditt galleri.",
+  "album_bookmarked_toast": "Albumet {title} bokmärktes i ditt galleri.",
+  "album_unbookmarked_toast": "Albumet {title} är inte längre bokmärkt i ditt galleri.",
   "album_slideshow": "Bildspel",
   "report_abuse": "Rapportera missbruk"
 }

@@ -15,6 +15,8 @@
   "reorder_album": "Susun ulang",
   "album_liked_toast": "Album {title} ditambahkan ke koleksi Kesukaan Saya di Galeri Anda.",
   "album_unliked_toast": "Album {title} dihapus dari koleksi Kesukaan Saya di Galeri Anda.",
+  "album_bookmarked_toast": "Album {title} ditandai di Galeri Anda.",
+  "album_unbookmarked_toast": "Album {title} tidak lagi ditandai di Galeri Anda.",
   "album_slideshow": "Slideshow",
   "report_abuse": "Laporkan Penyalahgunaan"
 }

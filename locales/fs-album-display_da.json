@@ -15,6 +15,8 @@
   "reorder_album": "Omorganiser",
   "album_liked_toast": "Dette {title} album blev tilføjet til samlingen Mine Synes godt om i dit galleri.",
   "album_unliked_toast": "Dette {title} album blev fjernet fra samlingen Mine Synes godt om i dit galleri.",
+  "album_bookmarked_toast": "Albummet {title} blev markeret i dit galleri.",
+  "album_unbookmarked_toast": "Albummet {title} er ikke længere markeret i dit galleri",
   "album_slideshow": "Diasshow",
   "report_abuse": "Rapportér misbrug"
 }
