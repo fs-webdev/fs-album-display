@@ -15,6 +15,8 @@
   "reorder_album": "Toe oka ",
   "album_liked_toast": "O le {title} tusiata na faaopoopo i  Au Fiafia i lau Potutusi.",
   "album_unliked_toast": "O le {title} tusiata na aveesea mai i Au Fiafia i lau Potutusi.",
+  "album_bookmarked_toast": "O le {title} tusiata na faailogatusiina i totonu o lau Potutusi.",
+  "album_unbookmarked_toast": "O le {title} tusiata e le’o toe faailogatusiina i totonu o lau Potutusi.",
   "album_slideshow": "Ata faasolosolo ",
   "report_abuse": "Lipoti le Faatautala "
 }

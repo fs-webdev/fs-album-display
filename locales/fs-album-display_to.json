@@ -15,6 +15,8 @@
   "reorder_album": "Toe fokotuʻutuʻu foʻou",
   "album_liked_toast": "Naʻe tānaki atu ʻa e ʻalapama {title} ki he tānakiʻanga ʻi he Ko ʻEku Ngaahi Saiʻiá ʻi hoʻo Gallery. ",
   "album_unliked_toast": "Naʻe toʻo ʻa e ʻalapama {title} mei he tānakiʻanga ʻi he Ko ʻEku Ngaahi Saiʻiá ʻi hoʻo Gallery.",
+  "album_bookmarked_toast": "Naʻe fakaʻilongaʻi ʻa e ʻalapama {title} ʻi hoʻo Tauhiʻanga Taá.",
+  "album_unbookmarked_toast": "ʻOku ʻikai ke toe fakaʻilongaʻi ʻa e ʻalapama {title} ʻi hoʻo Tauhiʻanga Taá.",
   "album_slideshow": "Slideshow",
   "report_abuse": "Lipooti e Ngāuehala ʻAki"
 }

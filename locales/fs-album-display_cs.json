@@ -15,6 +15,8 @@
   "reorder_album": "Změnit uspořádání",
   "album_liked_toast": "Album {title} bylo přidáno do sbírky Moje oblíbené ve vaší Galerii.",
   "album_unliked_toast": "Album {title} bylo odstraněno ze sbírky Moje oblíbené ve vaší Galerii.",
+  "album_bookmarked_toast": "K albu {title} byla ve vaší Galerii přidána záložka.",
+  "album_unbookmarked_toast": "U alba {title} ve vaší Galerii již není žádná záložka.",
   "album_slideshow": "Prezentace",
   "report_abuse": "Nahlásit nevhodné chování"
 }

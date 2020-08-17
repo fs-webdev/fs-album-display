@@ -15,6 +15,8 @@
   "reorder_album": "Zmeniť poradie",
   "album_liked_toast": "Album {title} bol pridaný do zbierky Moje obľúbené vo vašej galérii.",
   "album_unliked_toast": "Album {title} bol odstránený zo zbierky Moje obľúbené vo vašej galérii.",
+  "album_bookmarked_toast": "Album {title} bol vo vašej galérii označený záložkou.",
+  "album_unbookmarked_toast": "Album {title} už viac nie je vo vašej galérii označený záložkou.",
   "album_slideshow": "Obrázková galéria",
   "report_abuse": "Nahlásiť zneužitie"
 }
