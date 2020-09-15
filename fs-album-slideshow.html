@@ -639,6 +639,7 @@
       this.$.slideShow.addEventListener('touchstart', this.showControlsOnly.bind(this));
       this.$.slideshowControls.addEventListener('mouseenter', this.handleMouseEnter.bind(this, true));
       this.$.slideshowControls.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
+      this.fire('gallery-fs-album-slideshow-ready');
     },
 
     // None of the "ESC" keyboard events work when in fullscreen
