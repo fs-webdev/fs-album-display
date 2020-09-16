@@ -622,7 +622,7 @@
     },
 
     ready: function() {
-      this.listen(document, 'gallery-view-changed', 'closeSlideshowOptions');
+      this.listen(document, 'gallery-view-changed', 'handleGalleryViewChanged');
       document.addEventListener('keyup', this.handleKeyPress.bind(this));
       // Fullscreenchange event isn't standardized yet
       /* Standard syntax */
@@ -1159,6 +1159,12 @@
       if (player) {
         player.pause();
         if (resetTime) player.currentTime = 0;
+      }
+    },
+    handleGalleryViewChanged: function(e) {
+      // If the gallery view is being set to its initial state, leave the slideshow open
+      if (e.detail.oldValue) {
+        this.closeSlideshowOptions();
       }
     }
   });
