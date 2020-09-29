@@ -1163,7 +1163,7 @@
     },
     handleGalleryViewChanged: function(e) {
       // If the gallery view is being set to its initial state, leave the slideshow open
-      if (e.detail.oldValue) {
+      if (e.detail.oldValue && e.detail.oldValue !== e.detail.value) {
         this.closeSlideshowOptions();
       }
     }
