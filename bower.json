@@ -1,6 +1,6 @@
 {
   "name": "fs-album-display",
-  "version": "4.8.8",
+  "version": "4.9.0",
   "authors": [
     "Josh Crowther <jshcrowthe@gmail.com>"
   ],
@@ -31,7 +31,8 @@
     "iron-media-query": "2.x",
     "fs-alert": "fs-webdev/fs-alert#2.x",
     "fs-favorite-memory": "fs-webdev/fs-favorite-memory#3.x",
-    "fs-report-abuse": "fs-webdev/fs-report-abuse#1.x"
+    "fs-report-abuse": "fs-webdev/fs-report-abuse#1.x",
+    "fs-social-menu": "fs-webdev/fs-social-menu#4.x"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^2.0.0",

@@ -14,5 +14,6 @@
   "slideshow_controls_speed": "Normal",
   "slideshow_controls_slide_number": "{current} of {total}",
   "slideshow_controls_slideshow_speed": "Slideshow Speed",
-  "slideshow_controls_audio_error": "Error loading audio file"
+  "slideshow_controls_audio_error": "Error loading audio file",
+  "share":"Share"
 }

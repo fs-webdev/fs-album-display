@@ -7,6 +7,7 @@
 <link rel="import" href="../fs-dialog/fs-anchored-dialog.html">
 <link rel="import" href="../fs-icon/fs-icon.html">
 <link rel="import" href="../fs-alert/fs-inline-alert.html">
+<link rel="import" href="../fs-social-menu/fs-social-menu.html">
 
 <dom-module id="fs-album-slideshow">
   <template>
@@ -62,6 +63,22 @@
         z-index: 1000;
         color: #ffffff;
         display: block;
+      }
+      #slideShow .share-button {
+        align-items: center;
+        background : none;
+        border-radius: 6px;
+        border: 1px solid white;
+        color: #ffffff;
+        display: flex;
+        padding: 9px 18px;
+        position: absolute;
+        right: 60px;
+        top: 5px;
+        z-index: 2;
+      }
+      #slideShow .share-button fs-icon {
+        margin-right: 10px;
       }
       .play-slideshow-btn-icon {
         vertical-align: sub;
@@ -358,7 +375,13 @@
     <!-- Slideshow modal -->
     <fs-modal-dialog id="slideShow" keep-fullscreen on-fs-dialog-close="handleSlideshowClose">
       <div role="dialog" id="dialogBody" class="fs-dialog__body">
-        <button class="fs-dialog__close" data-dialog-dismiss="" data-test-close="" aria-label="Close">
+        <fs-social-menu hidden="[[!shareSlideshowEx]]">
+          <button class="share-button" on-click="toggleSocialMenu">
+            <fs-icon icon="share-batch-small" color="var(--fs-color-white)"></fs-icon>
+            [[i18n('share')]]
+          </button>
+        </fs-social-menu>
+        <button class="fs-dialog__close" data-dialog-dismiss="" data-test-close="" aria-label="[[i18n('end_menu_close')]]">
           <svg aria-hidden="true" width="13" height="13" viewBox="0 0 13 13" preserveAspectRatio="xMidYMin"><g transform="translate(-1.000000, -1.000000)"><path d="M13 2L2 13M2 2L13 13" stroke="currentColor" stroke-width="2.5"></path></g></svg>
         </button>
         <div class="slide-container">
@@ -618,6 +641,10 @@
       slideshowControlsTimeout: {
         type: String,
         value: ''
+      },
+      shareSlideshowEx: {
+        type: Boolean,
+        value: function(){ return FS.showEx('shareSlideshowEx'); }
       }
     },
 
@@ -1166,6 +1193,17 @@
       if (e.detail.oldValue && e.detail.oldValue !== e.detail.value) {
         this.closeSlideshowOptions();
       }
+    },
+    toggleSocialMenu: function(e) {
+      // Prevents the menu from immediately closing
+      e.stopPropagation();
+      const socialMenu = this.$$('fs-social-menu');
+      socialMenu.config = {
+        uri: window.location.pathname + '?playSlideshow'
+      };
+      this.$$('fs-social-menu').toggle({
+        target: e.target
+      });
     }
   });
 })();
