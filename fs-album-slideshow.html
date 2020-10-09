@@ -1195,6 +1195,9 @@
       }
     },
     toggleSocialMenu: function(e) {
+      this.fireMetrics({
+        link_name: 'Slideshow: Share'
+      });
       // Prevents the menu from immediately closing
       e.stopPropagation();
       const socialMenu = this.$$('fs-social-menu');
