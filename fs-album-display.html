@@ -627,6 +627,13 @@ Example:
         }
         this.socialConfig.thumb = this.album.thumbUrl;
         this.socialConfig = Object.assign({}, this.socialConfig);
+
+        // Update slideshow social share config
+        if (FS && FS.dialog && FS.dialog.fsAlbumSlideshow) {
+          slideshowSocialConfig = Object.assign({}, this.socialConfig);
+          slideshowSocialConfig.uri = slideshowSocialConfig.uri + '?playSlideshow';
+          FS.dialog.fsAlbumSlideshow.socialConfig = slideshowSocialConfig;
+        }
       }
     },
 

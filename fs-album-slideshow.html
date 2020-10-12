@@ -645,6 +645,10 @@
       shareSlideshowEx: {
         type: Boolean,
         value: function(){ return FS.showEx('shareSlideshowEx'); }
+      },
+      socialConfig: {
+        type: Object,
+        value: function() { return {}; }
       }
     },
 
@@ -1201,9 +1205,7 @@
       // Prevents the menu from immediately closing
       e.stopPropagation();
       const socialMenu = this.$$('fs-social-menu');
-      socialMenu.config = {
-        uri: window.location.pathname + '?playSlideshow'
-      };
+      socialMenu.config = this.socialConfig;
       this.$$('fs-social-menu').toggle({
         target: e.target
       });
