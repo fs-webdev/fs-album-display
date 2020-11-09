@@ -1,9 +1,9 @@
 {
-  "play_slideshow": "Cho Chạy Chiếu Ảnh Slide",
-  "end_menu_end_of_slideshow": "Kết Thúc Chiếu Ảnh Slide",
+  "play_slideshow": "Cho Chạy Trình Chiếu Slide",
+  "end_menu_end_of_slideshow": "Kết Thúc Trình Chiếu Slide",
   "end_menu_replay": "Chiếu Lại",
   "end_menu_close": "Đóng",
-  "slideshow_options_desc": "Phần chiếu ảnh slide này chỉ gồm có ảnh và ảnh có kèm thu âm.",
+  "slideshow_options_desc": "Phần trình chiếu slide này chỉ gồm có ảnh và ảnh có kèm thu âm.",
   "slideshow_options_play_audio": "Cho Chạy Các Bản Ghi Âm",
   "slideshow_options_loop_slideshow": "Lặp Đi Lặp Lại",
   "slideshow_options_length": "{count} kỷ niệm | {min} phút",
@@ -13,7 +13,7 @@
   "slideshow_controls_pause": "Dừng",
   "slideshow_controls_speed": "Bình Thường",
   "slideshow_controls_slide_number": "{current} of {total}",
-  "slideshow_controls_slideshow_speed": "Tốc Độ Chiếu Ảnh Slide",
+  "slideshow_controls_slideshow_speed": "Tốc Độ Trình Chiếu Slide",
   "slideshow_controls_audio_error": "Có lỗi trong khi tải tập tin âm thanh",
   "share": "Chia sẻ"
 }
