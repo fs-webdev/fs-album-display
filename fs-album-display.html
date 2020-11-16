@@ -430,7 +430,7 @@ Example:
         </fs-favorite-memory>
       </span>
     </div>
-    <div class='report-abuse-wrapper' hidden$="[[_hideReportAbuse(readOnly, loggedIn, albumReportAbuseEx)]]">
+    <div class='report-abuse-wrapper' hidden$="[[_hideReportAbuse(readOnly, loggedIn)]]">
       <button on-click='_openReportAbuse' class='fs-button fs-button--minor'>
         <svg width="13" height="14" viewBox="0 0 13 18" xmlns="http://www.w3.org/2000/svg">
           <g fill="none" fill-rule="evenodd">
@@ -561,10 +561,6 @@ Example:
         type: Boolean,
         value: function(){ return Boolean(FS.User.sessionId); }
       },
-      albumReportAbuseEx: {
-        type: Boolean,
-        value: function(){ return FS.showEx('albumReportAbuseEx'); }
-      }
     },
     observers: [
       '_getAlbumOwner(album.contributorPatronId)'
@@ -853,8 +849,8 @@ Example:
         setTimeout(() => toastEl.hidden = true, 3500);
       }
     },
-    _hideReportAbuse(readOnly, loggedIn, albumReportAbuseEx) {
-      return !readOnly || !loggedIn || !albumReportAbuseEx;
+    _hideReportAbuse(readOnly, loggedIn) {
+      return !readOnly || !loggedIn;
     },
     _openReportAbuse() {
       if(!FS.dialog.fsReportAbuse) {
