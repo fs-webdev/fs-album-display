@@ -285,6 +285,9 @@
         animation: sound 0ms -800ms linear infinite alternate;
         transition: 1s all ease;
       }
+      .play-slideshow-button {
+        white-space: normal;
+      }
 
       .paused .bar {
         animation: none;
@@ -501,7 +504,7 @@
             <fs-inner-html value="[[slideshowCountAndTime]]"></fs-inner-html>
           </small>
         </div>
-        <button class="fs-button fs-button--recommended" data-dialog-confirm disabled="[[!artifacts.length]]">
+        <button class="fs-button fs-button--recommended play-slideshow-button" data-dialog-confirm disabled="[[!artifacts.length]]">
           <span>
             <fs-icon icon="play-small" color="var(--fs-color-white)" class="play-slideshow-btn-icon"></fs-icon>[[i18n('play_slideshow')]]
           </span>
