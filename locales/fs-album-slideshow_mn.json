@@ -5,7 +5,7 @@
   "end_menu_close": "Хаах",
   "slideshow_options_desc": "Энэ слайд шоу зөвхөн зураг болон дуу бичлэг хавсаргасан зургуудыг багтаадаг.",
   "slideshow_options_play_audio": "Дуу бичлэгийг тоглуулах",
-  "slideshow_options_loop_slideshow": "Loop",
+  "slideshow_options_loop_slideshow": "Давтан тоглуулах",
   "slideshow_options_length": "{count} дурсамж | {min} минут",
   "slideshow_controls_prev_slide": "Өмнөх хуудас",
   "slideshow_controls_next_slide": "Дараагийн хуудас",
