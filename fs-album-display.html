@@ -499,11 +499,6 @@ Example:
         type: Object
       },
 
-      _likeToBookmarkEx: {
-        type: Boolean,
-        value: function() { return FS.showEx('likeToBookmarkEx'); }
-      },
-
       // ELEMENT INPUTS
       /**
        * An album object from artifactmanager
@@ -868,9 +863,9 @@ Example:
     },
     _getAlbumToastText(liked) {
       if(liked) {
-        return this._likeToBookmarkEx ? this.i18n('album_bookmarked_toast'): this.i18n('album_liked_toast');
+        return this.i18n('album_bookmarked_toast');
       } else {
-        return this._likeToBookmarkEx ? this.i18n('album_unbookmarked_toast'): this.i18n('album_unliked_toast');
+        return this.i18n('album_unbookmarked_toast');
       }
     }
   });
