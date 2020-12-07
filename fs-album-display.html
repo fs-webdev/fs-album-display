@@ -90,7 +90,6 @@ Example:
         color: #0060d7;
         position: relative;
         font-size: 14px;
-        font-size: 0.9286rem;
         white-space: nowrap;
       }
 
@@ -130,7 +129,6 @@ Example:
       .meta-controls .favorite {
         display: inline-flex;
       }
-
 
       .meta-controls .action:before {
         display: inline-block;
@@ -270,9 +268,14 @@ Example:
         font-style: italic;
       }
 
+      .meta-controls .action.slideshow {
+        display: inline-flex;
+        align-items: center;
+      }
+
       .slideshow-play-icon {
-        vertical-align: text-top;
         margin-right: 4px;
+        height: 17px;
       }
       .slideshow-play-icon svg {
         transform: scale(0.85);
@@ -432,7 +435,8 @@ Example:
         [[i18n('reorder_album')]]
       </span>
       <span class='action slideshow' data-test="AlbumSlideshowBtn" hidden='[[!albumSlideshowEx]]' on-click='_openSlideshowOptions'>
-        <fs-icon icon="play-small" color="var(--fs-color-blue-link)" class="slideshow-play-icon"></fs-icon>[[i18n('album_slideshow')]]
+        <fs-icon icon="play-small" color="var(--fs-color-blue-link)" class="slideshow-play-icon"></fs-icon>
+        <span>[[i18n('album_slideshow')]]</span>
       </span>
       <span class="action favorite" data-test="FavoriteAlbumBtn" hidden$="[[_hideFavBtn(loggedIn, readOnly)]]">
       <fs-favorite-memory
