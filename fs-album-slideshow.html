@@ -378,7 +378,7 @@
     <!-- Slideshow modal -->
     <fs-modal-dialog id="slideShow" keep-fullscreen on-fs-dialog-close="handleSlideshowClose">
       <div role="dialog" id="dialogBody" class="fs-dialog__body">
-        <fs-social-menu hidden="[[!shareSlideshowEx]]" open-in-new-tab>
+        <fs-social-menu open-in-new-tab>
           <button class="share-button" on-click="toggleSocialMenu">
             <fs-icon icon="share-batch-small" color="var(--fs-color-white)"></fs-icon>
             [[i18n('share')]]
@@ -644,10 +644,6 @@
       slideshowControlsTimeout: {
         type: String,
         value: ''
-      },
-      shareSlideshowEx: {
-        type: Boolean,
-        value: function(){ return FS.showEx('shareSlideshowEx'); }
       },
       socialConfig: {
         type: Object,
