@@ -12,7 +12,7 @@
   "copy": "コピー",
   "copied": "コピー完了",
   "album_by": "アルバム作成者：",
-  "reorder_album": "並び替え",
+  "reorder_album": "並べ替え",
   "album_liked_toast": "ギャラリーの「いいね！」コレクションに{title}のアルバムを追加しました。",
   "album_unliked_toast": "ギャラリーの「いいね！」コレクションから{title}のアルバムを削除しました。",
   "album_bookmarked_toast": "ギャラリーに「{title}」のアルバムをブックマークしました。",
